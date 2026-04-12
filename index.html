@@ -6,96 +6,95 @@
     <title>Israel Katsaus</title>
 
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            }
-        /* Yläpalkin tyylit */
-        .navbar {
-            background-color: #0038b8;     /* sininen tausta */
-            position: sticky;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            margin: 0;
-            padding: 0;
-        }
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
 
-        .navbar-container {
-            position: relative;
-            height: 100px;
-            display: flex;
-            align-items: center;
-                               /* gap: 70px; Pienempi gap → linkit lähempänä logoa */
-        }
+    /* Yläpalkin tyylit */
+    .navbar {
+        background-color: #0038b8;
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
 
-        .navbar-logo {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+    .navbar-container {
+        position: relative;
+        height: 100px;
+        display: flex;
+        align-items: center;
+    }
 
-        .navbar-logo img {
-            height: 100px;           /* Muuta tätä jos logo on liian iso/pieni */
-            margin-right: 20px;
-        }
+    .navbar-logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
+    .navbar-logo img {
+        height: 100px;
+    }
+
+    /* Navigaatiolinkit - TÄRKEIMMÄT MUUTOKSET TÄÄLLÄ */
+    .navbar-links a {
+        color: #ffffff;
+        text-decoration: none;        /* Poistaa alleviivauksen */
+        font-size: 1.1rem;
+        padding: 8px 15px;            /* Siistii ulkonäköä */
+        transition: color 0.3s;
+    }
+
+    .navbar-links a:hover {
+        color: #ffcc00;
+    }
+
+    /* Mobiilivalikko */
+    .menu-icon {
+        display: none;
+        font-size: 1.8rem;
+        color: white;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 768px) {
         .navbar-links {
-            margin-left: 30px;
-}
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100px;           /* Korjattu hieman paremmaksi */
+            left: 0;
+            width: 100%;
+            background-color: #1a1a1a;
+            padding: 20px 0;
         }
 
-       .navbar-links a {
-            color: #ffffff;
-            text-decoration: none;        /* Tämä poistaa alleviivauksen */
-            font-size: 1.1rem;
-            transition: color 0.3s;
-            padding: 8px 15px;            /* Lisätty pientä tilaa, näyttää siistimmältä */
-}
+        .navbar-links.active {
+            display: flex;
+        }
 
-/* Hover-efekti (väri vaihtuu, mutta ei alleviivaa) */
-.navbar-links a:hover {
-    color: #ffcc00;
-}
-/* <-- Lisää tämä rivi */
-.navbar-links a { color: #ffffff !important; }
+        .navbar-links a {
+            color: #ffffff;
+            text-decoration: none;     /* Varmistetaan myös mobiilissa */
+            padding: 12px 25px;
+            display: block;
+            width: 100%;
+        }
 
         .navbar-links a:hover {
-            color: #ffcc00;         /* Keltainen hover-efekti */
+            color: #ffcc00;
+            background-color: rgba(255, 204, 0, 0.15);
         }
 
-        /* Mobiilivalikko */
         .menu-icon {
-            display: none;
-            font-size: 1.8rem;
-            color: white;
-            cursor: pointer;
+            display: block;
         }
-
-        @media screen and (max-width: 768px) {
-            .navbar-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background-color: #1a1a1a;
-                padding: 20px 0;
-            }
-            
-            .navbar-links.active {
-                display: flex;
-            }
-            
-            .menu-icon {
-                display: block;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
 
