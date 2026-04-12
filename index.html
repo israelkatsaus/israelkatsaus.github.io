@@ -24,34 +24,37 @@
     }
 
     .navbar-container {
-        position: relative;
-        height: 100px;
-        display: flex;
-        align-items: center;
-    }
+    position: relative;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   /* Tämä auttaa tasapainottamaan */
+    padding: 0 40px;                  /* Lisää tilaa reunoille */
+}
 
-    .navbar-logo {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+.navbar-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-    .navbar-logo img {
-        height: 100px;
-    }
+.navbar-links {
+    margin-left: auto;                /* Tämä siirtää linkit oikealle */
+    display: flex;
+    gap: 10px;                        /* Linkkien väli (voit säätää) */
+}
 
-    /* Navigaatiolinkit - TÄRKEIMMÄT MUUTOKSET TÄÄLLÄ */
-    .navbar-links a {
-        color: #ffffff;
-        text-decoration: none;        /* Poistaa alleviivauksen */
-        font-size: 1.1rem;
-        padding: 8px 15px;            /* Siistii ulkonäköä */
-        transition: color 0.3s;
-    }
+.navbar-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 8px 15px;
+    transition: color 0.3s;
+}
 
-    .navbar-links a:hover {
-        color: #ffcc00;
-    }
+.navbar-links a:hover {
+    color: #ffcc00;
+}
 
     /* Mobiilivalikko */
     .menu-icon {
@@ -67,7 +70,7 @@
             flex-direction: column;
             position: absolute;
             top: 100px;           /* Korjattu hieman paremmaksi */
-            left: 10;
+            left: 0;
             width: 100%;
             background-color: #1a1a1a;
             padding: 20px 0;
