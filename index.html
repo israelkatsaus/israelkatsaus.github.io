@@ -6,27 +6,40 @@
 
 <style>
 
-body{margin:0;font-family:Arial;}
+body{
+margin:0;
+font-family:Arial;
+}
 
 .navbar{
 background:#0038b8;
-color:white;
 position:sticky;
 top:0;
+z-index:1000;
 }
 
 .navbar-container{
 max-width:1200px;
 margin:auto;
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 padding:10px 20px;
+position:relative;
 }
 
 .logo img{
 height:60px;
 }
+
+.menu{
+font-size:30px;
+color:white;
+cursor:pointer;
+display:none;
+}
+
+/* LINKS DESKTOP */
 
 .nav-links{
 display:flex;
@@ -36,42 +49,63 @@ gap:20px;
 .nav-links a{
 color:white;
 text-decoration:none;
-font-size:18px;
 }
+
+/* OVERLAY */
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+opacity:0;
+visibility:hidden;
+transition:0.3s;
+z-index:900;
+}
+
+.overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+/* MOBILE MENU */
+
+@media(max-width:768px){
 
 .menu{
-display:none;
-font-size:28px;
-cursor:pointer;
+display:block;
 }
 
-/* MOBILE */
-
-@media (max-width:768px){
-
 .nav-links{
-display:none;
-flex-direction:column;
+position:absolute;
+top:70px;
+left:0;
 width:100%;
 background:#0038b8;
-position:absolute;
-left:0;
-top:70px;
-padding:15px 0;
+flex-direction:column;
+display:none;
+padding:10px 0;
+animation:slide 0.3s ease;
 }
 
 .nav-links a{
-padding:10px 20px;
+padding:15px 20px;
 }
 
 .nav-links.active{
 display:flex;
 }
 
-.menu{
-display:block;
 }
 
+/* ANIMATION */
+
+@keyframes slide{
+from{transform:translateY(-10px);opacity:0;}
+to{transform:translateY(0);opacity:1;}
 }
 
 </style>
@@ -89,19 +123,29 @@ display:block;
 <div class="menu" onclick="toggleMenu()">☰</div>
 
 <div class="nav-links" id="navLinks">
-<a href="#">Etusivu</a>
-<a href="#">Uutiset</a>
-<a href="#">Analyysit</a>
-<a href="#">Yhteystiedot</a>
+<a href="#" onclick="closeMenu()">Etusivu</a>
+<a href="#" onclick="closeMenu()">Uutiset</a>
+<a href="#" onclick="closeMenu()">Analyysit</a>
+<a href="#" onclick="closeMenu()">Yhteystiedot</a>
 </div>
 
 </div>
 </nav>
 
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
 <script>
+
 function toggleMenu(){
 document.getElementById("navLinks").classList.toggle("active");
+document.getElementById("overlay").classList.toggle("active");
 }
+
+function closeMenu(){
+document.getElementById("navLinks").classList.remove("active");
+document.getElementById("overlay").classList.remove("active");
+}
+
 </script>
 
 </body>
