@@ -11,13 +11,10 @@
         padding: 0;
     }
 
-    /* Yläpalkin tyylit */
     .navbar {
         background-color: #0038b8;
         position: sticky;
         top: 0;
-        left: 0;
-        right: 0;
         width: 100%;
         z-index: 1000;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
@@ -42,12 +39,10 @@
         height: 100px;
     }
 
-    /* Navigaatiolinkit */
+    /* Linkit vasemmalla */
     .navbar-links {
-        margin-left: auto;
-        margin-right: 140px;           /* Tilaa oikealle logolle */
         display: flex;
-        gap: 15px;
+        gap: 20px;                    /* Linkkien väli */
     }
 
     .navbar-links a {
@@ -62,7 +57,7 @@
         color: #ffcc00;
     }
 
-    /* Oikeassa reunassa oleva uusi logo */
+    /* Oikea logo */
     .navbar-right-logo {
         position: absolute;
         right: 30px;
@@ -71,7 +66,7 @@
     }
 
     .navbar-right-logo img {
-        height: 65px;                  /* Muuta tätä jos logo on liian iso/pieni */
+        height: 65px;
         width: auto;
     }
 
@@ -81,6 +76,7 @@
         font-size: 1.8rem;
         color: white;
         cursor: pointer;
+        margin-left: auto;            /* Siirretään oikealle mobiilissa */
     }
 
     /* Mobiiliversio */
@@ -98,7 +94,6 @@
             width: 100%;
             background-color: #1a1a1a;
             padding: 20px 0;
-            margin-right: 0;
         }
 
         .navbar-links.active {
@@ -106,21 +101,13 @@
         }
 
         .navbar-links a {
-            color: #ffffff;
-            text-decoration: none;
             padding: 12px 25px;
             display: block;
             width: 100%;
         }
 
-        .navbar-links a:hover {
-            color: #ffcc00;
-            background-color: rgba(255, 204, 0, 0.15);
-        }
-
-        /* Piilotetaan oikea logo mobiilissa (näyttää siistimmältä) */
         .navbar-right-logo {
-            display: none;
+            display: none;               /* Piilotetaan oikea logo mobiilissa */
         }
 
         .menu-icon {
@@ -135,12 +122,7 @@
     <nav class="navbar">
         <div class="navbar-container">
     
-    <!-- Keskellä oleva päälogo -->
-    <a href="index.html" class="navbar-logo">
-        <img src="/assets/2.png" alt="Israel Katsaus logo">
-    </a>
-
-    <!-- Navigaatiolinkit -->
+    <!-- Vasemmalla: Linkit -->
     <div class="navbar-links" id="navLinks">
         <a href="index.html">Etusivu</a>
         <a href="uutiset.html">Uutiset</a>
@@ -148,12 +130,17 @@
         <a href="yhteystiedot.html">Yhteystiedot</a>
     </div>
 
-    <!-- Oikeassa reunassa uusi logo -->
+    <!-- Keskellä: Päälogo -->
+    <a href="index.html" class="navbar-logo">
+        <img src="/assets/2.png" alt="Israel Katsaus logo">
+    </a>
+
+    <!-- Oikealla: Toinen logo -->
     <a href="#" class="navbar-right-logo">
         <img src="assets/logo4.png" alt="Oikea logo">
     </a>
 
-    <!-- Hampurilaisvalikko (mobiili) -->
+    <!-- Hampurilaisvalikko -->
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
 </div>
     </nav>
