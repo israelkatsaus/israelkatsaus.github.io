@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Israel Katsaus</title>
 
-    <style>
+<style>
     html, body {
         margin: 0;
         padding: 0;
@@ -28,35 +28,33 @@
         height: 100px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 0 40px;
+        padding: 0 30px;
     }
 
+    /* Keskellä oleva päälogo */
     .navbar-logo {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-    .navbar-right-logo {
-        position: absolute;
-        right: 30px;           /* Etäisyys oikeasta reunasta */
-        top: 50%;
-        transform: translateY(-50%);
     }
 
     .navbar-logo img {
         height: 100px;
-    .navbar-right-logo img {
-        height: 70px;          /* Säätää oikean logon kokoa - muuta tarvittaessa */
-        width: auto;
-}
     }
 
-    /* Navigaatiolinkit - TÄRKEIMMÄT MUUTOKSET TÄÄLLÄ */
+    /* Navigaatiolinkit */
+    .navbar-links {
+        margin-left: auto;
+        margin-right: 140px;           /* Tilaa oikealle logolle */
+        display: flex;
+        gap: 15px;
+    }
+
     .navbar-links a {
         color: #ffffff;
-        text-decoration: none;        /* Poistaa alleviivauksen */
+        text-decoration: none;
         font-size: 1.1rem;
-        padding: 8px 15px;            /* Siistii ulkonäköä */
+        padding: 8px 16px;
         transition: color 0.3s;
     }
 
@@ -64,7 +62,20 @@
         color: #ffcc00;
     }
 
-    /* Mobiilivalikko */
+    /* Oikeassa reunassa oleva uusi logo */
+    .navbar-right-logo {
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .navbar-right-logo img {
+        height: 65px;                  /* Muuta tätä jos logo on liian iso/pieni */
+        width: auto;
+    }
+
+    /* Hampurilaisvalikko */
     .menu-icon {
         display: none;
         font-size: 1.8rem;
@@ -72,27 +83,31 @@
         cursor: pointer;
     }
 
+    /* Mobiiliversio */
     @media screen and (max-width: 768px) {
+        .navbar-container {
+            padding: 0 20px;
+        }
+
         .navbar-links {
             display: none;
             flex-direction: column;
             position: absolute;
-            top: 100px;           /* Korjattu hieman paremmaksi */
+            top: 100px;
             left: 0;
             width: 100%;
             background-color: #1a1a1a;
             padding: 20px 0;
+            margin-right: 0;
         }
 
         .navbar-links.active {
-            margin-left: auto;
             display: flex;
-            gap: 10px;
         }
 
         .navbar-links a {
             color: #ffffff;
-            text-decoration: none;     /* Varmistetaan myös mobiilissa */
+            text-decoration: none;
             padding: 12px 25px;
             display: block;
             width: 100%;
@@ -101,6 +116,11 @@
         .navbar-links a:hover {
             color: #ffcc00;
             background-color: rgba(255, 204, 0, 0.15);
+        }
+
+        /* Piilotetaan oikea logo mobiilissa (näyttää siistimmältä) */
+        .navbar-right-logo {
+            display: none;
         }
 
         .menu-icon {
