@@ -3,128 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Israel Katsaus</title>
 
 <style>
 
-html, body{
-margin:0;
-padding:0;
-font-family: Arial, sans-serif;
-}
+body{margin:0;font-family:Arial;}
 
 .navbar{
 background:#0038b8;
+color:white;
 position:sticky;
 top:0;
-width:100%;
-z-index:1000;
-box-shadow:0 2px 8px rgba(0,0,0,0.3);
 }
 
 .navbar-container{
 max-width:1200px;
 margin:auto;
-height:100px;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:0 20px;
-position:relative;
+padding:10px 20px;
 }
 
-/* LOGO KESKELLÄ */
-
-.navbar-logo{
-position:absolute;
-left:50%;
-transform:translateX(-50%);
+.logo img{
+height:60px;
 }
 
-.navbar-logo img{
-height:90px;
-}
-
-/* LINKIT */
-
-.navbar-links{
+.nav-links{
 display:flex;
 gap:20px;
 }
 
-.navbar-links a{
+.nav-links a{
 color:white;
 text-decoration:none;
-font-size:1.1rem;
-padding:10px 15px;
-transition:0.3s;
+font-size:18px;
 }
 
-.navbar-links a:hover{
-color:#ffcc00;
-}
-
-/* OIKEA LOGO */
-
-.navbar-right-logo img{
-height:45px;
-}
-
-/* MENU IKONI */
-
-.menu-icon{
+.menu{
 display:none;
 font-size:28px;
-color:white;
 cursor:pointer;
 }
 
 /* MOBILE */
 
-@media screen and (max-width:768px){
+@media (max-width:768px){
 
-.navbar-container{
-max-width:1200px;
-margin:auto;
-height:80px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-}
-
-.navbar-logo{
-position:static;
-transform:none;
-}
-
-.navbar-logo img{
-height:60px;
-}
-
-.navbar-links{
+.nav-links{
 display:none;
 flex-direction:column;
-position:absolute;
-top:80px;
-left:0;
 width:100%;
 background:#0038b8;
+position:absolute;
+left:0;
+top:70px;
 padding:15px 0;
 }
 
-.navbar-links.active{
+.nav-links a{
+padding:10px 20px;
+}
+
+.nav-links.active{
 display:flex;
 }
 
-.navbar-links a{
-padding:15px 25px;
-}
-
-.navbar-right-logo{
-display:none;
-}
-
-.menu-icon{
+.menu{
 display:block;
 }
 
@@ -138,37 +82,26 @@ display:block;
 <nav class="navbar">
 <div class="navbar-container">
 
-<div class="navbar-links" id="navLinks">
-<a href="index.html">Etusivu</a>
-<a href="uutiset.html">Uutiset</a>
-<a href="analyysit.html">Analyysit</a>
-<a href="yhteystiedot.html">Yhteystiedot</a>
+<div class="logo">
+<img src="/assets/2.png">
 </div>
 
-<a href="index.html" class="navbar-logo">
-<img src="/assets/2.png">
-</a>
+<div class="menu" onclick="toggleMenu()">☰</div>
 
-<a href="#" class="navbar-right-logo">
-<img src="assets/logo5.png">
-</a>
-
-<div class="menu-icon" onclick="toggleMenu()">☰</div>
+<div class="nav-links" id="navLinks">
+<a href="#">Etusivu</a>
+<a href="#">Uutiset</a>
+<a href="#">Analyysit</a>
+<a href="#">Yhteystiedot</a>
+</div>
 
 </div>
 </nav>
 
-<main style="max-width:1200px;margin:40px auto;padding:20px;">
-<p>Tulossa...</p>
-</main>
-
 <script>
-
 function toggleMenu(){
-const links=document.getElementById("navLinks");
-links.classList.toggle("active");
+document.getElementById("navLinks").classList.toggle("active");
 }
-
 </script>
 
 </body>
