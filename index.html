@@ -4,148 +4,150 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Coolvetica font -->
 <style>
+@import url('https://fonts.cdnfonts.com/css/coolvetica');
 
-body{
-margin:0;
-font-family:Coolvetica;
+body {
+  margin: 0;
+  font-family: Coolvetica, Arial, sans-serif;
 }
 
-.navbar{
-background:#0038b8;
-position:sticky;
-top:0;
-z-index:1000;
+/* NAVBAR */
+.navbar {
+  background: #0038b8;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.navbar-container{
-max-width:1200px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 20px;
-position:relative;
+.navbar-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
 }
 
-.logo img{
-height:60px;
+.logo img {
+  height: 60px;
 }
 
-.menu{
-font-size:30px;
-color:white;
-cursor:pointer;
-display:none;
+/* HAMBURGER */
+.menu {
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  display: none;
 }
 
-/* LINKS DESKTOP */
-
-.nav-links{
-display:flex;
-gap:20px;
+/* DESKTOP LINKS */
+.nav-links {
+  display: flex;
+  gap: 20px;
 }
 
-.nav-links a{
-color:white;
-text-decoration:none;
+.nav-links a {
+  color: white;
+  text-decoration: none;
 }
 
 /* OVERLAY */
-
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-opacity:0;
-visibility:hidden;
-transition:0.3s;
-z-index:900;
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 900;
 }
 
-.overlay.active{
-opacity:1;
-visibility:visible;
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
-/* MOBILE MENU */
+/* MOBILE */
+@media (max-width: 768px) {
 
-@media(max-width:768px){
+  .menu {
+    display: block;
+  }
 
-.menu{
-display:block;
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0038b8;
+
+    flex-direction: column;
+    display: flex;
+
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .nav-links a {
+    padding: 15px 20px;
+  }
+
+  .nav-links.active {
+    max-height: 500px;
+  }
 }
-
-.nav-links{
-position:absolute;
-top:70px;
-left:0;
-width:100%;
-background:#0038b8;
-flex-direction:column;
-display:none;
-padding:10px 0;
-animation:slide 0.3s ease;
-}
-
-.nav-links a{
-padding:15px 20px;
-}
-
-.nav-links.active{
-display:flex;
-}
-
-}
-
-/* ANIMATION */
-
-@keyframes slide{
-from{transform:translateY(-10px);opacity:0;}
-to{transform:translateY(0);opacity:1;}
-}
-
 </style>
 </head>
 
 <body>
 
 <nav class="navbar">
-<div class="navbar-container">
+  <div class="navbar-container">
 
-<div class="logo">
-<img src="/assets/2.png">
-</div>
+    <div class="logo">
+      <img src="/assets/2.png" alt="Logo">
+    </div>
 
-<div class="menu" onclick="toggleMenu()">☰</div>
+    <div class="menu" onclick="toggleMenu()">☰</div>
 
-<div class="nav-links" id="navLinks">
-<a href="#" onclick="closeMenu()">Etusivu</a>
-<a href="#" onclick="closeMenu()">Uutiset</a>
-<a href="#" onclick="closeMenu()">Analyysit</a>
-<a href="#" onclick="closeMenu()">Yhteystiedot</a>
-</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#" onclick="closeMenu()">Etusivu</a>
+      <a href="#" onclick="closeMenu()">Uutiset</a>
+      <a href="#" onclick="closeMenu()">Analyysit</a>
+      <a href="#" onclick="closeMenu()">Yhteystiedot</a>
+    </div>
 
-</div>
+  </div>
 </nav>
 
 <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
 <script>
+function toggleMenu() {
+  const nav = document.getElementById("navLinks");
+  const overlay = document.getElementById("overlay");
 
-function toggleMenu(){
-document.getElementById("navLinks").classList.toggle("active");
-document.getElementById("overlay").classList.toggle("active");
+  const isActive = nav.classList.toggle("active");
+  overlay.classList.toggle("active", isActive);
 }
 
-function closeMenu(){
-document.getElementById("navLinks").classList.remove("active");
-document.getElementById("overlay").classList.remove("active");
+function closeMenu() {
+  document.getElementById("navLinks").classList.remove("active");
+  document.getElementById("overlay").classList.remove("active");
 }
 
+/* FIX: reset state when resizing to desktop */
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) {
+    closeMenu();
+  }
+});
 </script>
 
 </body>
