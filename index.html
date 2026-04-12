@@ -48,14 +48,18 @@
 }
         }
 
-        .navbar-links a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: color 0.3s;
-    padding: 8px 15px;
+       .navbar-links a {
+            color: #ffffff;
+            text-decoration: none;        /* Tämä poistaa alleviivauksen */
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            padding: 8px 15px;            /* Lisätty pientä tilaa, näyttää siistimmältä */
 }
 
+/* Hover-efekti (väri vaihtuu, mutta ei alleviivaa) */
+.navbar-links a:hover {
+    color: #ffcc00;
+}
 /* <-- Lisää tämä rivi */
 .navbar-links a { color: #ffffff !important; }
 
