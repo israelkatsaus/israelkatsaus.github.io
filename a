@@ -2,155 +2,292 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  
-<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet"><meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uutissivusto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Saira', sans-serif;
+            line-height: 1.5;
+        }
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        /* NAVBAR */
+        .navbar {
+            background: #0038b8;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-<!-- Coolvetica font -->
-<style>
+        .navbar-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
 
-body {
-  margin: 0;
-  font-family: 'Saira', sans-serif;
-}
-/* NAVBAR */
-.navbar {
-  background: #0038b8;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+        .logo img {
+            height: 80px;
+        }
 
-.navbar-container {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-}
+        .menu {
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            display: none;
+        }
 
-.logo img {
-  height: 80px;
-}
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
 
-/* HAMBURGER */
-.menu {
-  font-size: 30px;
-  color: white;
-  cursor: pointer;
-  display: none;
-}
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+        }
 
-/* DESKTOP LINKS */
-.nav-links {
-  display: flex;
-  gap: 20px;
-  background: #0038b8;
-}
+        /* OVERLAY */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            z-index: 900;
+        }
 
-.nav-links a {
-  color: white;
-  text-decoration: none;
-}
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
-/* OVERLAY */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.3s;
-  z-index: 900;
-}
+        /* NEWS SECTION */
+        .news-wrapper {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 20px;
+        }
 
-.overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
+        .news-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 300px;
+            grid-auto-rows: auto;
+            gap: 20px;
+        }
 
-/* MOBILE */
-@media (max-width: 768px) {
+        /* Pääuutinen */
+        .main-article {
+            grid-row: span 2;
+            text-decoration: none;
+            color: black;
+            position: relative;
+        }
 
-  .menu {
-    display: block;
-  }
+        .main-article img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
 
-  .nav-links {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background: #0038b8;
+        .main-text {
+            padding-top: 10px;
+        }
 
-    flex-direction: column;
-    display: flex;
+        .main-text h2 {
+            margin: 0;
+            font-size: 28px;
+        }
 
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
+        /* Pienet uutiset */
+        .news-card {
+            text-decoration: none;
+            color: black;
+            transition: 0.2s;
+        }
 
-  .nav-links a {
-    padding: 15px 20px;
-  }
+        .news-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
 
-  .nav-links.active {
-    max-height: 500px;
-  }
-}
-</style>
+        .news-card:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Luetuimmat */
+        .popular {
+            background: #f3f3f3;
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .popular h3 {
+            margin-top: 0;
+        }
+
+        .popular a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: black;
+        }
+
+        .popular a:hover {
+            text-decoration: underline;
+        }
+
+        /* RESPONSIIVISUUS */
+        @media (max-width: 768px) {
+            .menu {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: #0038b8;
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .nav-links.active {
+                max-height: 500px;
+            }
+
+            .nav-links a {
+                padding: 15px 20px;
+            }
+
+            .news-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .main-article img {
+                height: 250px;
+            }
+
+            .popular {
+                order: 10; /* siirretään alimmaiseksi */
+            }
+        }
+
+        @media (max-width: 900px) and (min-width: 769px) {
+            .news-layout {
+                grid-template-columns: 2fr 1fr;
+            }
+            
+            .main-article {
+                grid-row: span 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<nav class="navbar">
-  <div class="navbar-container">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="/assets/LOGO2.png" alt="Logo">
+            </div>
 
-    <div class="logo">
-      <img src="/assets/LOGO2.png" alt="Logo">
-    </div>
+            <div class="menu" onclick="toggleMenu()">☰</div>
 
-    <div class="menu" onclick="toggleMenu()">☰</div>
+            <div class="nav-links" id="navLinks">
+                <a href="#" onclick="closeMenu()">Etusivu</a>
+                <a href="#" onclick="closeMenu()">Uutiset</a>
+                <a href="#" onclick="closeMenu()">Analyysit</a>
+                <a href="#" onclick="closeMenu()">Yhteystiedot</a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="nav-links" id="navLinks">
-      <a href="#" onclick="closeMenu()">Etusivu</a>
-      <a href="#" onclick="closeMenu()">Uutiset</a>
-      <a href="#" onclick="closeMenu()">Analyysit</a>
-      <a href="#" onclick="closeMenu()">Yhteystiedot</a>
-    </div>
+    <section class="news-wrapper">
+        <div class="news-layout">
 
-  </div>
-</nav>
+            <!-- PÄÄUUTINEN -->
+            <a href="uutinen1.html" class="main-article">
+                <img src="https://picsum.photos/800/500" alt="Pääuutinen">
+                <div class="main-text">
+                    <h2>Pääuutinen: Suuri tapahtuma maailmalla</h2>
+                    <p>Lyhyt ingressi joka kertoo uutisen tärkeimmän asian.</p>
+                </div>
+            </a>
 
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+            <!-- PIENET UUTISET -->
+            <a href="uutinen2.html" class="news-card">
+                <img src="https://picsum.photos/400/250" alt="">
+                <h3>Uutinen otsikko</h3>
+            </a>
 
-<script>
-function toggleMenu() {
-  const nav = document.getElementById("navLinks");
-  const overlay = document.getElementById("overlay");
+            <a href="uutinen3.html" class="news-card">
+                <img src="https://picsum.photos/401/250" alt="">
+                <h3>Toinen uutinen</h3>
+            </a>
 
-  const isActive = nav.classList.toggle("active");
-  overlay.classList.toggle("active", isActive);
-}
+            <a href="uutinen4.html" class="news-card">
+                <img src="https://picsum.photos/402/250" alt="">
+                <h3>Kolmas uutinen</h3>
+            </a>
 
-function closeMenu() {
-  document.getElementById("navLinks").classList.remove("active");
-  document.getElementById("overlay").classList.remove("active");
-}
+            <a href="uutinen5.html" class="news-card">
+                <img src="https://picsum.photos/403/250" alt="">
+                <h3>Neljäs uutinen</h3>
+            </a>
 
-/* FIX: reset state when resizing to desktop */
-window.addEventListener("resize", () => {
-  if (window.innerWidth > 768) {
-    closeMenu();
-  }
-});
-</script>
+            <!-- LUETUIMMAT -->
+            <aside class="popular">
+                <h3>Luetuimmat</h3>
+                <a href="#">1. Tämä uutinen kiinnostaa kaikkia</a>
+                <a href="#">2. Toinen suosittu uutinen</a>
+                <a href="#">3. Kolmas uutinen</a>
+                <a href="#">4. Neljäs uutinen</a>
+                <a href="#">5. Viides uutinen</a>
+            </aside>
+
+        </div>
+    </section>
+
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById("navLinks");
+            const overlay = document.getElementById("overlay");
+            const isActive = nav.classList.toggle("active");
+            overlay.classList.toggle("active", isActive);
+        }
+
+        function closeMenu() {
+            document.getElementById("navLinks").classList.remove("active");
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        // Sulje valikko kun ikkunan kokoa muutetaan desktop-kokoon
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 768) {
+                closeMenu();
+            }
+        });
+    </script>
 
 </body>
 </html>
