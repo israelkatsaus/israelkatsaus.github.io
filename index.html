@@ -101,6 +101,84 @@ body {
 
   .nav-links.active {
     max-height: 500px;
+    .news-wrapper{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
+}
+
+.news-layout{
+display:grid;
+grid-template-columns:2fr 1fr 1fr 300px;
+grid-auto-rows:auto;
+gap:20px;
+}
+
+/* Pääuutinen */
+
+.main-article{
+grid-row:span 2;
+text-decoration:none;
+color:black;
+position:relative;
+}
+
+.main-article img{
+width:100%;
+height:400px;
+object-fit:cover;
+border-radius:6px;
+}
+
+.main-text{
+padding-top:10px;
+}
+
+.main-text h2{
+margin:0;
+font-size:28px;
+}
+
+/* pienet uutiset */
+
+.news-card{
+text-decoration:none;
+color:black;
+transition:0.2s;
+}
+
+.news-card img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:6px;
+}
+
+.news-card:hover{
+transform:translateY(-3px);
+}
+
+/* luetuimmat */
+
+.popular{
+background:#f3f3f3;
+padding:20px;
+border-radius:6px;
+}
+
+.popular h3{
+margin-top:0;
+}
+
+.popular a{
+display:block;
+margin-bottom:10px;
+text-decoration:none;
+color:black;
+}
+
+.popular a:hover{
+text-decoration:underline;
   }
 }
 </style>
@@ -126,6 +204,59 @@ body {
 
   </div>
 </nav>
+
+  <section class="news-wrapper">
+
+<div class="news-layout">
+
+<!-- PÄÄUUTINEN -->
+<a href="uutinen1.html" class="main-article">
+<img src="https://picsum.photos/800/500">
+<div class="main-text">
+<h2>Pääuutinen: Suuri tapahtuma maailmalla</h2>
+<p>Lyhyt ingressi joka kertoo uutisen tärkeimmän asian.</p>
+</div>
+</a>
+
+<!-- PIENET UUTISET -->
+
+<a href="uutinen2.html" class="news-card">
+<img src="https://picsum.photos/400/250">
+<h3>Uutinen otsikko</h3>
+</a>
+
+<a href="uutinen3.html" class="news-card">
+<img src="https://picsum.photos/401/250">
+<h3>Toinen uutinen</h3>
+</a>
+
+<a href="uutinen4.html" class="news-card">
+<img src="https://picsum.photos/402/250">
+<h3>Kolmas uutinen</h3>
+</a>
+
+<a href="uutinen5.html" class="news-card">
+<img src="https://picsum.photos/403/250">
+<h3>Neljäs uutinen</h3>
+</a>
+
+<!-- LUETUIMMAT -->
+
+<aside class="popular">
+
+<h3>Luetuimmat</h3>
+
+<a href="#">1. Tämä uutinen kiinnostaa kaikkia</a>
+<a href="#">2. Toinen suosittu uutinen</a>
+<a href="#">3. Kolmas uutinen</a>
+<a href="#">4. Neljäs uutinen</a>
+<a href="#">5. Viides uutinen</a>
+
+</aside>
+
+</div>
+
+</section>
 
 <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
