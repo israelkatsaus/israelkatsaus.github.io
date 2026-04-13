@@ -80,11 +80,11 @@
 
         .news-layout {
             display: grid;
-            grid-template-columns: 2fr 1fr 300px;   /* 2fr = pääuutinen + kaksi pientä uutista */
+            grid-template-columns: 2fr 1fr 1fr 300px;   /* Pääuutinen | pieni1 | pieni2 | luetuimmat */
             gap: 20px;
         }
 
-        /* Pääuutinen */
+        /* Pääuutinen vasemmalla */
         .main-article {
             grid-column: 1;
             grid-row: span 2;
@@ -100,25 +100,17 @@
         }
 
         .main-text h2 {
-            margin: 10px 0 5px 0;
+            margin: 12px 0 8px 0;
             font-size: 28px;
         }
 
-        /* Pienet uutiset - vasen sarake (2 uutista päällekkäin) */
-        .small-news-left {
-            display: flex;
-            flex-direction: column;
+        /* Pienet uutiset - 2x2 ruudukko pääuutisen oikealla */
+        .small-news {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
             gap: 20px;
-            grid-column: 2;
-            grid-row: span 2;
-        }
-
-        /* Pienet uutiset - oikea sarake (2 uutista päällekkäin) */
-        .small-news-right {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            grid-column: 2;
+            grid-column: 2 / 4;     /* vie kaksi keskimmäistä saraketta */
             grid-row: span 2;
         }
 
@@ -130,7 +122,7 @@
 
         .news-card img {
             width: 100%;
-            height: 150px;
+            height: 155px;
             object-fit: cover;
             border-radius: 6px;
         }
@@ -139,9 +131,9 @@
             transform: translateY(-3px);
         }
 
-        /* Luetuimmat - oikealla reunalla */
+        /* Luetuimmat - kaikkein oikealla */
         .popular {
-            grid-column: 3;
+            grid-column: 4;
             grid-row: span 2;
             background: #f3f3f3;
             padding: 20px;
@@ -165,18 +157,23 @@
         }
 
         /* RESPONSIIVISUUS */
-        @media (max-width: 900px) {
+        @media (max-width: 992px) {
+            .news-layout {
+                grid-template-columns: 2fr 1fr 300px;
+            }
+            .small-news {
+                grid-column: 2;
+                grid-row: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
             .news-layout {
                 grid-template-columns: 1fr;
             }
-
-            .main-article {
-                grid-column: 1;
-                grid-row: auto;
-            }
-
-            .small-news-left,
-            .small-news-right,
+            
+            .main-article,
+            .small-news,
             .popular {
                 grid-column: 1;
                 grid-row: auto;
@@ -185,9 +182,8 @@
             .main-article img {
                 height: 280px;
             }
-        }
 
-        @media (max-width: 768px) {
+            /* Hamburger menu */
             .menu {
                 display: block;
             }
@@ -237,7 +233,7 @@
     <section class="news-wrapper">
         <div class="news-layout">
 
-            <!-- PÄÄUUTINEN -->
+            <!-- PÄÄUUTINEN VASEN -->
             <a href="uutinen1.html" class="main-article">
                 <img src="https://picsum.photos/800/500" alt="Pääuutinen">
                 <div class="main-text">
@@ -246,24 +242,21 @@
                 </div>
             </a>
 
-            <!-- VASEN SARAKE: Uutinen otsikko + Kolmas uutinen -->
-            <div class="small-news-left">
+            <!-- PIENET UUTISET - 2 saraketta, 2 riviä pääuutisen oikealla -->
+            <div class="small-news">
                 <a href="uutinen2.html" class="news-card">
                     <img src="https://picsum.photos/400/250" alt="">
                     <h3>Uutinen otsikko</h3>
                 </a>
 
-                <a href="uutinen4.html" class="news-card">
-                    <img src="https://picsum.photos/402/250" alt="">
-                    <h3>Kolmas uutinen</h3>
-                </a>
-            </div>
-
-            <!-- OIKEA SARAKE: Toinen uutinen + Neljäs uutinen -->
-            <div class="small-news-right">
                 <a href="uutinen3.html" class="news-card">
                     <img src="https://picsum.photos/401/250" alt="">
                     <h3>Toinen uutinen</h3>
+                </a>
+
+                <a href="uutinen4.html" class="news-card">
+                    <img src="https://picsum.photos/402/250" alt="">
+                    <h3>Kolmas uutinen</h3>
                 </a>
 
                 <a href="uutinen5.html" class="news-card">
@@ -272,7 +265,7 @@
                 </a>
             </div>
 
-            <!-- LUETUIMMAT - oikealla puolella -->
+            <!-- LUETUIMMAT - pienten uutisten oikealla -->
             <aside class="popular">
                 <h3>Luetuimmat</h3>
                 <a href="#">1. Tämä uutinen kiinnostaa kaikkia</a>
