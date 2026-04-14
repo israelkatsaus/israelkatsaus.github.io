@@ -306,6 +306,66 @@
             }
         });
     </script>
+    <script>
+// Hae uutiset JSON-tiedostosta ja renderöi ne automaattisesti
+async function loadNews() {
+    try {
+        const response = await fetch('news.json');
+        const data = await response.json();
+        
+        const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date)); // Uusin ensin
+        
+        const container = document.getElementById('newsContainer');
+        container.innerHTML = '';
+
+        // Pääuutinen = aina ensimmäinen (uusin)
+        if (articles.length > 0) {
+            const main = articles[0];
+            container.innerHTML += `
+                <a href="uutinen${main.id}.html" class="main-article">
+                    <img src="${main.image}" alt="${main.title}">
+                    <div class="main-text">
+                        <h2>${main.title}</h2>
+                        <p>${main.excerpt}</p>
+                    </div>
+                </a>
+            `;
+        }
+
+        // Pienet uutiset (seuraavat 4)
+        const smallNewsHTML = articles.slice(1, 5).map(article => `
+            <a href="uutinen${article.id}.html" class="news-card">
+                <img src="${article.image}" alt="${article.title}">
+                <h3>${article.title}</h3>
+            </a>
+        `).join('');
+
+        container.innerHTML += `
+            <div class="small-news">
+                ${smallNewsHTML}
+            </div>
+        `;
+
+        // Luetuimmat (esim. seuraavat 5)
+        const popularHTML = articles.slice(1, 6).map((article, index) => `
+            <a href="uutinen${article.id}.html">${index+1}. ${article.title}</a>
+        `).join('');
+
+        container.innerHTML += `
+            <aside class="popular">
+                <h3>Luetuimmat</h3>
+                ${popularHTML}
+            </aside>
+        `;
+
+    } catch (error) {
+        console.error("Uutisten lataus epäonnistui", error);
+    }
+}
+
+// Lataa uutiset sivun avautuessa
+window.onload = loadNews;
+</script>
 
 </body>
 </html>
