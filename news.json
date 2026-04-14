@@ -1,1 +1,20 @@
-
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Uusin iso juttu",
+      "excerpt": "Lyhyt ingressi...",
+      "image": "https://picsum.photos/800/500",
+      "date": "2026-04-14",
+      "category": "Pääuutinen"
+    },
+    {
+      "id": 2,
+      "title": "Toinen uutinen",
+      "excerpt": "Ingressi...",
+      "image": "https://picsum.photos/400/250",
+      "date": "2026-04-13"
+    }
+    // Lisäät tähän uusia uutisia
+  ]
+}
