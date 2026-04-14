@@ -2,19 +2,38 @@
   "articles": [
     {
       "id": 1,
-      "title": "Uusin iso juttu",
-      "excerpt": "Lyhyt ingressi...",
-      "image": "https://picsum.photos/800/500",
-      "date": "2026-04-14",
-      "category": "Pääuutinen"
+      "title": "Suuri talousuudistus etenee eduskunnassa",
+      "excerpt": "Hallitus esittää merkittäviä muutoksia verotukseen ja sosiaaliturvaan. Asiantuntijat jakautuneet arvioissaan.",
+      "image": "https://picsum.photos/id/1015/800/600",
+      "date": "2026-04-14"
     },
     {
       "id": 2,
-      "title": "Toinen uutinen",
-      "excerpt": "Ingressi...",
-      "image": "https://picsum.photos/400/250",
+      "title": "Sää muuttuu rajusti – lumimyrsky tulossa pohjoiseen",
+      "excerpt": "Ilmatieteen laitos varoittaa voimakkaasta tuulesta ja runsaasta lumisateesta.",
+      "image": "https://picsum.photos/id/1016/800/600",
       "date": "2026-04-13"
+    },
+    {
+      "id": 3,
+      "title": "Tekoäly muuttaa työmarkkinoita – näin valmistautua",
+      "excerpt": "Uusi raportti ennustaa jopa 30 prosentin työtehtävien katoamista seuraavan kymmenen vuoden aikana.",
+      "image": "https://picsum.photos/id/201/800/600",
+      "date": "2026-04-12"
+    },
+    {
+      "id": 4,
+      "title": "Suomi nousi jälleen onnellisimpien maiden listalla",
+      "excerpt": "YK:n vuotuinen World Happiness Report julkaistiin tänään.",
+      "image": "https://picsum.photos/id/870/800/600",
+      "date": "2026-04-11"
+    },
+    {
+      "id": 5,
+      "title": "Jalkapallomaajoukkueen EM-karsinnat alkavat vahvasti",
+      "excerpt": "Huuhkajat nappasi tärkeän voiton vieraissa.",
+      "image": "https://picsum.photos/id/201/800/600",
+      "date": "2026-04-10"
     }
-    // Lisäät tähän uusia uutisia
   ]
 }
