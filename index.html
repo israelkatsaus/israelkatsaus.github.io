@@ -7,48 +7,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap">
-    
+   
     <style>
         body {
-    margin: 0;
-    font-family: "Gelasio", serif;
-    line-height: 1.65;        /* suosittelen tätä Gelasiolle */
-    color: #222;              
-}
-
+            margin: 0;
+            font-family: "Gelasio", serif;
+            line-height: 1.65;
+            color: #222;
+        }
         /* NAVBAR */
-.navbar {
-    background: #0038b8;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.navbar-container {
-    max-width: 1200px;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 20px;
-}
-
-.logo img {
-    height: 65px;
-}
-
-.menu {
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-    display: none;
-}
-
+        .navbar {
+            background: #0038b8;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 20px;
+        }
+        .logo img {
+            height: 65px;
+        }
+        .menu {
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            display: none;
+        }
         .nav-links {
             display: flex;
             gap: 20px;
         }
-
         .nav-links a {
             color: white;
             text-decoration: none;
@@ -68,7 +62,6 @@
             transition: 0.3s;
             z-index: 900;
         }
-
         .overlay.active {
             opacity: 1;
             visibility: visible;
@@ -80,61 +73,50 @@
             margin: auto;
             padding: 40px 20px;
         }
-
         .news-layout {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 300px;   /* Pääuutinen | pieni1 | pieni2 | luetuimmat */
+            grid-template-columns: 2fr 1fr 1fr 300px;
             gap: 20px;
         }
-
-        /* Pääuutinen vasemmalla */
         .main-article {
             grid-column: 1;
             grid-row: span 2;
             text-decoration: none;
             color: black;
         }
-
         .main-article img {
             width: 100%;
             height: 400px;
             object-fit: cover;
             border-radius: 6px;
         }
-
         .main-text h2 {
             margin: 12px 0 8px 0;
             font-size: 28px;
         }
 
-        /* Pienet uutiset - 2x2 ruudukko pääuutisen oikealla */
         .small-news {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
             gap: 20px;
-            grid-column: 2 / 4;     /* vie kaksi keskimmäistä saraketta */
+            grid-column: 2 / 4;
             grid-row: span 2;
         }
-
         .news-card {
             text-decoration: none;
             color: black;
             transition: 0.2s;
         }
-
         .news-card img {
             width: 100%;
             height: 155px;
             object-fit: cover;
             border-radius: 6px;
         }
-
         .news-card:hover {
             transform: translateY(-3px);
         }
 
-        /* Luetuimmat - kaikkein oikealla */
         .popular {
             grid-column: 4;
             grid-row: span 2;
@@ -143,18 +125,15 @@
             border-radius: 6px;
             align-self: start;
         }
-
         .popular h3 {
             margin-top: 0;
         }
-
         .popular a {
             display: block;
             margin-bottom: 12px;
             text-decoration: none;
             color: black;
         }
-
         .popular a:hover {
             text-decoration: underline;
         }
@@ -169,28 +148,20 @@
                 grid-row: span 2;
             }
         }
-
         @media (max-width: 768px) {
             .news-layout {
                 grid-template-columns: 1fr;
             }
-            
-            .main-article,
-            .small-news,
-            .popular {
+            .main-article, .small-news, .popular {
                 grid-column: 1;
                 grid-row: auto;
             }
-
             .main-article img {
                 height: 280px;
             }
-
-            /* Hamburger menu */
             .menu {
                 display: block;
             }
-
             .nav-links {
                 position: absolute;
                 top: 70px;
@@ -202,28 +173,22 @@
                 overflow: hidden;
                 transition: max-height 0.3s ease;
             }
-
             .nav-links.active {
                 max-height: 500px;
             }
-
             .nav-links a {
                 padding: 15px 20px;
             }
         }
     </style>
 </head>
-
 <body>
-
     <nav class="navbar">
         <div class="navbar-container">
             <div class="logo">
                 <img src="/assets/LOGO2.png" alt="Logo">
             </div>
-
             <div class="menu" onclick="toggleMenu()">☰</div>
-
             <div class="nav-links" id="navLinks">
                 <a href="#" onclick="closeMenu()">Etusivu</a>
                 <a href="#" onclick="closeMenu()">Uutiset</a>
@@ -234,54 +199,8 @@
     </nav>
 
     <section class="news-wrapper">
-        <section class="news-wrapper">
-    <div class="news-layout" id="newsContainer">
-        <!-- Kaikki uutiset generoidaan tähän JavaScriptillä -->
-    </div>
-</section>
-
-            <!-- PÄÄUUTINEN VASEN -->
-            <a href="uutinen1.html" class="main-article">
-                <img src="https://picsum.photos/800/500" alt="Pääuutinen">
-                <div class="main-text">
-                    <h2>Pääuutinen: Suuri tapahtuma maailmalla</h2>
-                    <p>Lyhyt ingressi joka kertoo uutisen tärkeimmän asian.</p>
-                </div>
-            </a>
-
-            <!-- PIENET UUTISET - 2 saraketta, 2 riviä pääuutisen oikealla -->
-            <div class="small-news">
-                <a href="uutinen2.html" class="news-card">
-                    <img src="https://picsum.photos/400/250" alt="">
-                    <h3>Uutinen otsikko</h3>
-                </a>
-
-                <a href="uutinen3.html" class="news-card">
-                    <img src="https://picsum.photos/401/250" alt="">
-                    <h3>Toinen uutinen</h3>
-                </a>
-
-                <a href="uutinen4.html" class="news-card">
-                    <img src="https://picsum.photos/402/250" alt="">
-                    <h3>Kolmas uutinen</h3>
-                </a>
-
-                <a href="uutinen5.html" class="news-card">
-                    <img src="https://picsum.photos/403/250" alt="">
-                    <h3>Neljäs uutinen</h3>
-                </a>
-            </div>
-
-            <!-- LUETUIMMAT - pienten uutisten oikealla -->
-            <aside class="popular">
-                <h3>Luetuimmat</h3>
-                <a href="#">1. Tämä uutinen kiinnostaa kaikkia</a>
-                <a href="#">2. Toinen suosittu uutinen</a>
-                <a href="#">3. Kolmas uutinen</a>
-                <a href="#">4. Neljäs uutinen</a>
-                <a href="#">5. Viides uutinen</a>
-            </aside>
-
+        <div class="news-layout" id="newsContainer">
+            <!-- Kaikki uutiset generoidaan tähän JavaScriptillä -->
         </div>
     </section>
 
@@ -301,71 +220,71 @@
         }
 
         window.addEventListener("resize", () => {
-            if (window.innerWidth > 768) {
-                closeMenu();
-            }
+            if (window.innerWidth > 768) closeMenu();
         });
-    </script>
-    <script>
-// Hae uutiset JSON-tiedostosta ja renderöi ne automaattisesti
-async function loadNews() {
-    try {
-        const response = await fetch('news.json');
-        const data = await response.json();
-        
-        const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date)); // Uusin ensin
-        
-        const container = document.getElementById('newsContainer');
-        container.innerHTML = '';
 
-        // Pääuutinen = aina ensimmäinen (uusin)
-        if (articles.length > 0) {
-            const main = articles[0];
-            container.innerHTML += `
-                <a href="uutinen${main.id}.html" class="main-article">
-                    <img src="${main.image}" alt="${main.title}">
-                    <div class="main-text">
-                        <h2>${main.title}</h2>
-                        <p>${main.excerpt}</p>
-                    </div>
-                </a>
-            `;
+        // Uutisten lataus
+        async function loadNews() {
+            try {
+                const response = await fetch('news.json');
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                const container = document.getElementById('newsContainer');
+                container.innerHTML = '';
+
+                if (articles.length === 0) {
+                    container.innerHTML = '<p>Ei uutisia saatavilla.</p>';
+                    return;
+                }
+
+                // Pääuutinen
+                const main = articles[0];
+                container.innerHTML += `
+                    <a href="uutinen${main.id}.html" class="main-article">
+                        <img src="${main.image}" alt="${main.title}">
+                        <div class="main-text">
+                            <h2>${main.title}</h2>
+                            <p>${main.excerpt}</p>
+                        </div>
+                    </a>
+                `;
+
+                // Pienet uutiset (seuraavat 4)
+                const smallNewsHTML = articles.slice(1, 5).map(article => `
+                    <a href="uutinen${article.id}.html" class="news-card">
+                        <img src="${article.image}" alt="${article.title}">
+                        <h3>${article.title}</h3>
+                    </a>
+                `).join('');
+
+                container.innerHTML += `<div class="small-news">${smallNewsHTML}</div>`;
+
+                // Luetuimmat (seuraavat 5)
+                const popularHTML = articles.slice(1, 6).map((article, index) => `
+                    <a href="uutinen${article.id}.html">${index+1}. ${article.title}</a>
+                `).join('');
+
+                container.innerHTML += `
+                    <aside class="popular">
+                        <h3>Luetuimmat</h3>
+                        ${popularHTML}
+                    </aside>
+                `;
+
+            } catch (error) {
+                console.error("Uutisten lataus epäonnistui:", error);
+                document.getElementById('newsContainer').innerHTML = `
+                    <p style="grid-column: 1 / -1; text-align: center; color: #c00;">
+                        Virhe uutisten latauksessa. Tarkista, että news.json-tiedosto on olemassa.
+                    </p>`;
+            }
         }
 
-        // Pienet uutiset (seuraavat 4)
-        const smallNewsHTML = articles.slice(1, 5).map(article => `
-            <a href="uutinen${article.id}.html" class="news-card">
-                <img src="${article.image}" alt="${article.title}">
-                <h3>${article.title}</h3>
-            </a>
-        `).join('');
-
-        container.innerHTML += `
-            <div class="small-news">
-                ${smallNewsHTML}
-            </div>
-        `;
-
-        // Luetuimmat (esim. seuraavat 5)
-        const popularHTML = articles.slice(1, 6).map((article, index) => `
-            <a href="uutinen${article.id}.html">${index+1}. ${article.title}</a>
-        `).join('');
-
-        container.innerHTML += `
-            <aside class="popular">
-                <h3>Luetuimmat</h3>
-                ${popularHTML}
-            </aside>
-        `;
-
-    } catch (error) {
-        console.error("Uutisten lataus epäonnistui", error);
-    }
-}
-
-// Lataa uutiset sivun avautuessa
-window.onload = loadNews;
-</script>
-
+        // Lataa uutiset sivun avautuessa
+        window.onload = loadNews;
+    </script>
 </body>
 </html>
