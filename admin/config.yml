@@ -1,0 +1,23 @@
+backend:
+  name: github
+  repo: israelkatsaus/israelkatsaus.github.io          # Esim. "sinun-github-nimi/uutissivusto"
+  branch: main                         # tai "master"
+
+# Media (kuvat)
+media_folder: "assets/images/uploads"
+public_folder: "/assets/images/uploads"
+
+collections:
+  - name: "articles"                   # Sisäisesti käytettävä nimi
+    label: "Uutiset"
+    folder: "content/articles"         # Minne Markdown-tiedostot tallennetaan
+    create: true                       # Sallii uusien uutisten luomisen
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Otsikko", name: "title", widget: "string", required: true }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Ingressi", name: "excerpt", widget: "text" }
+      - { label: "Pääkuva", name: "image", widget: "image", required: true }
+      - { label: "Julkaisupäivä", name: "date", widget: "datetime", default: "now", required: true }
+      - { label: "Sisältö", name: "body", widget: "markdown" }
+      - { label: "Kategoria", name: "category", widget: "select", options: ["Uutiset", "Analyysit", "Maailma"] }
