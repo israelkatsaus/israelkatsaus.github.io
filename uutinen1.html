@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Uutisen lyhyt kuvaus somessa ja hakukoneille">
+    
+    <title>Suuri talousuudistus etenee eduskunnassa – näin se vaikuttaa sinuun</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap">
+
+    <style>
+        :root {
+            --primary: #0038b8;
+        }
+        body {
+            margin: 0;
+            font-family: "Gelasio", serif;
+            line-height: 1.75;
+            color: #222;
+            background: #f8f9fa;
+        }
+        .navbar {
+            background: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .navbar-container {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .logo img {
+            height: 60px;
+        }
+        .menu {
+            font-size: 32px;
+            color: white;
+            cursor: pointer;
+            display: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+        }
+
+        .article-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2.2fr 1fr;
+            gap: 40px;
+        }
+
+        .main-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .article-header {
+            margin-bottom: 30px;
+        }
+        .article-header img {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        .category {
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+        .article-title {
+            font-size: 2.4rem;
+            line-height: 1.15;
+            margin: 15px 0 12px;
+        }
+        .article-meta {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+        .article-meta span {
+            margin-right: 20px;
+        }
+
+        .article-content {
+            font-size: 1.15rem;
+            line-height: 1.85;
+        }
+        .article-content p {
+            margin-bottom: 1.4em;
+        }
+        .article-content h2 {
+            font-size: 1.6rem;
+            margin: 2em 0 1em;
+            color: #111;
+        }
+
+        /* Sivupalkki */
+        .sidebar {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            color: #111;
+        }
+        .sidebar a {
+            display: block;
+            margin-bottom: 18px;
+            color: #222;
+            text-decoration: none;
+            line-height: 1.4;
+        }
+        .sidebar a:hover {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: #111;
+            color: #ccc;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 900px) {
+            .article-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .article-header img {
+                height: 340px;
+            }
+            .main-content {
+                padding: 30px 20px;
+            }
+        }
+        @media (max-width: 768px) {
+            .menu {
+                display: block;
+            }
+            .nav-links {
+                position: absolute;
+                top: 78px;
+                left: 0;
+                width: 100%;
+                background: var(--primary);
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease;
+            }
+            .nav-links.active {
+                max-height: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar (sama kuin etusivulla) -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="/assets/LOGO2.png" alt="Uutissivuston logo">
+            </div>
+            <div class="menu" onclick="toggleMenu()">☰</div>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" onclick="closeMenu()">Etusivu</a>
+                <a href="#" onclick="closeMenu()">Uutiset</a>
+                <a href="#" onclick="closeMenu()">Analyysit</a>
+                <a href="#" onclick="closeMenu()">Yhteystiedot</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="article-container">
+        
+        <!-- Pääsisältö -->
+        <article class="main-content">
+            <div class="article-header">
+                <span class="category">Talous</span>
+                <h1 class="article-title">Suuri talousuudistus etenee eduskunnassa – näin se vaikuttaa sinuun</h1>
+                <div class="article-meta">
+                    <span>14. huhtikuuta 2026</span>
+                    <span>kirjoittanut: Anna Virtanen</span>
+                    <span>4 min lukuaika</span>
+                </div>
+                <img src="https://picsum.photos/id/1015/1200/700" alt="Talousuudistus eduskunnassa">
+            </div>
+
+            <div class="article-content">
+                <p>Hallitus on tuonut eduskuntaan pitkään valmistellun talousuudistuksen, joka sisältää merkittäviä muutoksia sekä verotukseen että sosiaaliturvaan. Uudistuksen tavoitteena on parantaa työllisyyttä ja hillitä julkisen talouden velkaantumista.</p>
+                
+                <p>Asiantuntijat ovat jakautuneet arvioissaan uudistuksen vaikutuksista. Osa ekonomisteista kiittää mallia rohkeana ja tarpeellisena, kun taas toiset pelkäävät, että muutokset voivat heikentää erityisesti pienituloisten asemaa.</p>
+
+                <h2>Mitä uudistus tarkoittaa tavalliselle kansalaiselle?</h2>
+                <p>Uudistuksen keskeisimpiä kohtia ovat ansioverotuksen keventäminen, perustulokokeilun laajentaminen sekä asumistuen uudistaminen. Erityisesti keskiluokan palkansaajien verotus kevenisi noin 200–400 eurolla vuodessa.</p>
+
+                <p>Toisaalta esimerkiksi opiskelijat ja työttömät voivat menettää osan tuistaan, jos eivät osallistu aktiivisesti työvoimapoliittisiin toimiin.</p>
+
+                <h2>Opposition kritiikki</h2>
+                <p>Vasemmistoliitto ja vihreät ovat kritisoineet uudistusta liian markkinalähtöiseksi. Heidän mukaansa uudistus suosii suurituloisia ja heikentää yhteiskunnan tasa-arvoa.</p>
+
+                <p>Eduskunnan käsittely jatkuu seuraavina viikkoina. Lopullinen äänestys on odotettavissa toukokuun lopulla.</p>
+            </div>
+        </article>
+
+        <!-- Sivupalkki -->
+        <aside class="sidebar">
+            <h3>Luetuimmat juuri nyt</h3>
+            <a href="uutinen2.html">1. Sää muuttuu rajusti – lumimyrsky tulossa pohjoiseen</a>
+            <a href="uutinen3.html">2. Tekoäly muuttaa työmarkkinoita – näin valmistautua</a>
+            <a href="uutinen4.html">3. Suomi jälleen onnellisimpien maiden kärjessä</a>
+            <a href="uutinen5.html">4. Jalkapallomaajoukkueen EM-karsinnat alkoivat vahvasti</a>
+
+            <h3 style="margin-top: 50px;">Aiheeseen liittyvää</h3>
+            <a href="#">Verotuksen keventäminen – kenelle se todella hyödyttää?</a>
+            <a href="#">Perustulokokeilu laajenee – mitä se muuttaa?</a>
+            <a href="#">Asumistuki uudistuu – näin se vaikuttaa vuokralaisiin</a>
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Uutissivusto. Kaikki oikeudet pidetään.</p>
+    </footer>
+
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById("navLinks");
+            const overlay = document.getElementById("overlay");
+            const isActive = nav.classList.toggle("active");
+            overlay.classList.toggle("active", isActive);
+        }
+
+        function closeMenu() {
+            document.getElementById("navLinks").classList.remove("active");
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 768) closeMenu();
+        });
+    </script>
+</body>
+</html>
