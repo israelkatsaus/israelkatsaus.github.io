@@ -1,333 +1,399 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Suomalainen uutissivusto – ajankohtaiset uutiset, analyysit ja syväluotaukset.">
-    <title>Uutissivusto</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Suomalainen uutissivusto – ajankohtaiset uutiset, analyysit ja syväluotaukset.">
+<title>Uutissivusto</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap">
 
-    <style>
-        :root {
-            --primary: #0038b8;
-        }
-        body {
-            margin: 0;
-            font-family: "Gelasio", serif;
-            line-height: 1.7;
-            color: #222;
-            background: #f8f9fa;
-            overflow-x: hidden;
-        }
-        .navbar {
-            background: var(--primary);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .navbar-container {
-            max-width: 1100px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-        }
-        .logo img {
-            height: 60px;
-        }
-        .menu {
-            font-size: 32px;
-            color: white;
-            cursor: pointer;
-            display: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 14px;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-        .nav-links a:hover {
-            background: rgba(255,255,255,0.15);
-            border-radius: 4px;
-        }
+<style>
 
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s;
-            z-index: 900;
-        }
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+*{
+box-sizing:border-box;
+}
 
-        /* News */
-        .news-wrapper {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .news-layout {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 320px;
-            gap: 24px;
-        }
-        .main-article {
-            grid-column: 1;
-            grid-row: span 2;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .main-article img {
-            width: 100%;
-            height: 420px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        .main-text h2 {
-            margin: 16px 0 10px;
-            font-size: 2.1rem;
-            line-height: 1.25;
-        }
-        .main-text p {
-            color: #444;
-            font-size: 1.05rem;
-        }
+:root{
+--primary:#0038b8;
+}
 
-        .small-news {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            grid-column: 2 / 4;
-            grid-row: span 2;
-        }
-        .news-card {
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.25s ease;
-        }
-        .news-card:hover {
-            transform: translateY(-6px);
-        }
-        .news-card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .news-card h3 {
-            margin: 12px 0 6px;
-            font-size: 1.15rem;
-            line-height: 1.3;
-        }
+body{
+margin:0;
+font-family:"Gelasio",serif;
+line-height:1.7;
+color:#222;
+background:#f8f9fa;
+overflow-x:hidden;
+}
 
-        .popular {
-            grid-column: 4;
-            grid-row: span 2;
-            background: #f3f3f3;
-            padding: 24px;
-            border-radius: 8px;
-            align-self: start;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .popular h3 {
-            margin-top: 0;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-        }
-        .popular a {
-            display: block;
-            margin-bottom: 14px;
-            color: #222;
-            text-decoration: none;
-            line-height: 1.35;
-        }
-        .popular a:hover {
-            color: var(--primary);
-            text-decoration: underline;
-        }
+img{
+max-width:100%;
+display:block;
+}
 
-        /* Responsiveness */
-        @media (max-width: 1024px) {
-            .news-layout {
-                grid-template-columns: 2fr 1fr 300px;
-            }
-            .small-news {
-                grid-column: 2;
-            }
-        }
-        @media (max-width: 768px) {
+.navbar{
+background:var(--primary);
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
 
-    .news-wrapper {
-        padding: 0 16px;
-    }
+.navbar-container{
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 20px;
+}
 
-    .news-layout {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        width: 100%;
-    }
+.logo img{
+height:60px;
+}
 
-    .small-news {
-        grid-template-columns: 1fr;
-    }
+.menu{
+font-size:32px;
+color:white;
+cursor:pointer;
+display:none;
+background:none;
+border:none;
+}
 
-    .news-card img {
-        height: 200px;
-    }
+.nav-links{
+display:flex;
+gap:25px;
+}
+
+.nav-links a{
+color:white;
+text-decoration:none;
+padding:8px 14px;
+font-weight:500;
+transition:0.2s;
+}
+
+.nav-links a:hover{
+background:rgba(255,255,255,0.15);
+border-radius:4px;
+}
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+opacity:0;
+visibility:hidden;
+transition:0.3s;
+z-index:900;
+}
+
+.overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+.news-wrapper{
+max-width:1200px;
+margin:40px auto;
+padding:0 20px;
+}
+
+.news-layout{
+display:grid;
+grid-template-columns:2fr 1fr 1fr 320px;
+gap:24px;
+}
+
+.main-article{
+grid-column:1;
+grid-row:span 2;
+text-decoration:none;
+color:inherit;
+display:block;
+}
+
+.main-article img{
+width:100%;
+height:420px;
+object-fit:cover;
+border-radius:8px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.main-text h2{
+margin:16px 0 10px;
+font-size:2.1rem;
+line-height:1.25;
+}
+
+.main-text p{
+color:#444;
+font-size:1.05rem;
+}
+
+.small-news{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:24px;
+grid-column:2 / 4;
+grid-row:span 2;
+}
+
+.news-card{
+text-decoration:none;
+color:inherit;
+transition:transform 0.25s ease;
+}
+
+.news-card:hover{
+transform:translateY(-6px);
+}
+
+.news-card img{
+width:100%;
+height:160px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.news-card h3{
+margin:12px 0 6px;
+font-size:1.15rem;
+line-height:1.3;
+}
+
+.popular{
+grid-column:4;
+grid-row:span 2;
+background:#f3f3f3;
+padding:24px;
+border-radius:8px;
+align-self:start;
+box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+.popular h3{
+margin-top:0;
+border-bottom:2px solid var(--primary);
+padding-bottom:10px;
+}
+
+.popular a{
+display:block;
+margin-bottom:14px;
+color:#222;
+text-decoration:none;
+line-height:1.35;
+}
+
+.popular a:hover{
+color:var(--primary);
+text-decoration:underline;
+}
+
+/* tablet */
+
+@media (max-width:1024px){
+
+.news-layout{
+grid-template-columns:2fr 1fr 300px;
+}
+
+.small-news{
+grid-column:2;
+}
 
 }
-            }
-            .main-article, .small-news, .popular {
-                grid-column: 1;
-                grid-row: auto;
-            }
-            .main-article img {
-                height: 300px;
-            }
-            .menu {
-                display: block;
-            }
-            .nav-links {
-                position: absolute;
-                top: 78px;
-                left: 0;
-                width: 100%;
-                background: var(--primary);
-                flex-direction: column;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.4s ease;
-            }
-            .nav-links.active {
-                max-height: 600px;
-            }
-            .nav-links a {
-                padding: 16px 25px;
-                font-size: 1.1rem;
-            }
-        }
-    </style>
+
+/* mobile */
+
+@media (max-width:768px){
+
+.news-wrapper{
+padding:0 16px;
+width:100%;
+}
+
+.news-layout{
+grid-template-columns:1fr;
+gap:20px;
+width:100%;
+}
+
+.main-article,
+.small-news,
+.popular{
+grid-column:1;
+grid-row:auto;
+width:100%;
+}
+
+.main-article img{
+height:300px;
+}
+
+.small-news{
+grid-template-columns:1fr;
+}
+
+.news-card img{
+height:200px;
+}
+
+.menu{
+display:block;
+}
+
+.nav-links{
+position:absolute;
+top:78px;
+left:0;
+width:100%;
+background:var(--primary);
+flex-direction:column;
+max-height:0;
+overflow:hidden;
+transition:max-height 0.4s ease;
+}
+
+.nav-links.active{
+max-height:600px;
+}
+
+.nav-links a{
+padding:16px 25px;
+font-size:1.1rem;
+}
+
+}
+
+</style>
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="logo">
-                <img src="/assets/LOGO2.png" alt="Uutissivuston logo">
-            </div>
-            <div class="menu" onclick="toggleMenu()">☰</div>
-            <div class="nav-links" id="navLinks">
-                <a href="#" onclick="closeMenu()">Etusivu</a>
-                <a href="#" onclick="closeMenu()">Uutiset</a>
-                <a href="#" onclick="closeMenu()">Analyysit</a>
-                <a href="#" onclick="closeMenu()">Yhteystiedot</a>
-            </div>
-        </div>
-    </nav>
 
-    <section class="news-wrapper">
-        <div class="news-layout" id="newsContainer">
-            <!-- JavaScript generoi sisällön tähän -->
-        </div>
-    </section>
+<nav class="navbar">
+<div class="navbar-container">
 
-    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+<div class="logo">
+<img src="/assets/LOGO2.png" alt="Uutissivuston logo">
+</div>
 
-    <script>
-        function toggleMenu() {
-            const nav = document.getElementById("navLinks");
-            const overlay = document.getElementById("overlay");
-            const isActive = nav.classList.toggle("active");
-            overlay.classList.toggle("active", isActive);
-        }
+<button class="menu" onclick="toggleMenu()">☰</button>
 
-        function closeMenu() {
-            document.getElementById("navLinks").classList.remove("active");
-            document.getElementById("overlay").classList.remove("active");
-        }
+<div class="nav-links" id="navLinks">
+<a href="#" onclick="closeMenu()">Etusivu</a>
+<a href="#" onclick="closeMenu()">Uutiset</a>
+<a href="#" onclick="closeMenu()">Analyysit</a>
+<a href="#" onclick="closeMenu()">Yhteystiedot</a>
+</div>
 
-        window.addEventListener("resize", () => {
-            if (window.innerWidth > 768) closeMenu();
-        });
+</div>
+</nav>
 
-        async function loadNews() {
-            try {
-                const response = await fetch('news.json');
-                if (!response.ok) throw new Error('Verkkovirhe');
+<section class="news-wrapper">
+<div class="news-layout" id="newsContainer">
+</div>
+</section>
 
-                const data = await response.json();
-                const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
-                const container = document.getElementById('newsContainer');
-                container.innerHTML = '';
+<script>
 
-                if (articles.length === 0) {
-                    container.innerHTML = '<p style="grid-column:1/-1;text-align:center;">Ei uutisia saatavilla.</p>';
-                    return;
-                }
+function toggleMenu(){
+const nav=document.getElementById("navLinks");
+const overlay=document.getElementById("overlay");
+const isActive=nav.classList.toggle("active");
+overlay.classList.toggle("active",isActive);
+}
 
-                // Pääuutinen
-                const main = articles[0];
-                container.innerHTML += `
-                    <a href="uutinen${main.id}.html" class="main-article">
-                        <img src="${main.image}" alt="${main.title}">
-                        <div class="main-text">
-                            <h2>${main.title}</h2>
-                            <p>${main.excerpt}</p>
-                        </div>
-                    </a>
-                `;
+function closeMenu(){
+document.getElementById("navLinks").classList.remove("active");
+document.getElementById("overlay").classList.remove("active");
+}
 
-                // Pienet uutiset (seuraavat 4)
-                const smallHTML = articles.slice(1, 5).map(article => `
-                    <a href="uutinen${article.id}.html" class="news-card">
-                        <img src="${article.image}" alt="${article.title}">
-                        <h3>${article.title}</h3>
-                    </a>
-                `).join('');
+window.addEventListener("resize",()=>{
+if(window.innerWidth>768) closeMenu();
+});
 
-                container.innerHTML += `<div class="small-news">${smallHTML}</div>`;
+async function loadNews(){
 
-                // Luetuimmat (seuraavat 5)
-                const popularHTML = articles.slice(1, 6).map((article, i) => `
-                    <a href="uutinen${article.id}.html">${i+1}. ${article.title}</a>
-                `).join('');
+try{
 
-                container.innerHTML += `
-                    <aside class="popular">
-                        <h3>Luetuimmat</h3>
-                        ${popularHTML}
-                    </aside>
-                `;
+const response=await fetch('news.json');
+if(!response.ok) throw new Error('Verkkovirhe');
 
-            } catch (err) {
-                console.error(err);
-                document.getElementById('newsContainer').innerHTML = `
-                    <p style="grid-column:1/-1;text-align:center;color:#c00;">
-                        Virhe uutisten latauksessa. Varmista, että <strong>news.json</strong> on olemassa.
-                    </p>`;
-            }
-        }
+const data=await response.json();
 
-        window.onload = loadNews;
-    </script>
+const articles=(data.articles||[]).sort(
+(a,b)=>new Date(b.date)-new Date(a.date)
+);
+
+const container=document.getElementById('newsContainer');
+container.innerHTML='';
+
+if(articles.length===0){
+container.innerHTML='<p style="grid-column:1/-1;text-align:center;">Ei uutisia saatavilla.</p>';
+return;
+}
+
+const main=articles[0];
+
+let html=`
+<a href="uutinen${main.id}.html" class="main-article">
+<img src="${main.image}" alt="${main.title}" loading="lazy">
+<div class="main-text">
+<h2>${main.title}</h2>
+<p>${main.excerpt}</p>
+</div>
+</a>
+`;
+
+const smallHTML=articles.slice(1,5).map(article=>`
+<a href="uutinen${article.id}.html" class="news-card">
+<img src="${article.image}" alt="${article.title}" loading="lazy">
+<h3>${article.title}</h3>
+</a>
+`).join('');
+
+html+=`<div class="small-news">${smallHTML}</div>`;
+
+const popularHTML=articles.slice(1,6).map((article,i)=>`
+<a href="uutinen${article.id}.html">${i+1}. ${article.title}</a>
+`).join('');
+
+html+=`
+<aside class="popular">
+<h3>Luetuimmat</h3>
+${popularHTML}
+</aside>
+`;
+
+container.innerHTML=html;
+
+}
+
+catch(err){
+
+console.error(err);
+
+document.getElementById('newsContainer').innerHTML=`
+<p style="grid-column:1/-1;text-align:center;color:#c00;">
+Virhe uutisten latauksessa. Varmista että <strong>news.json</strong> on olemassa.
+</p>`;
+
+}
+
+}
+
+window.onload=loadNews;
+
+</script>
+
 </body>
 </html>
