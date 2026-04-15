@@ -1,1 +1,293 @@
+/* =========================
+   GLOBAL
+========================= */
 
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #0038b8;
+  --dark: #0b0f14;
+  --text: #222;
+  --muted: #555;
+}
+
+body {
+  margin: 0;
+  font-family: "Gelasio", serif;
+  line-height: 1.7;
+  color: var(--text);
+  background: #f8f9fa;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.navbar-container {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.menu {
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+  display: none;
+  background: none;
+  border: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 14px;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+}
+
+/* =========================
+   ARTICLE LAYOUT
+========================= */
+
+.article-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 40px;
+}
+
+.main-content {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.article-header img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.category {
+  color: var(--primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.article-title {
+  font-size: 2.4rem;
+  line-height: 1.15;
+  margin: 15px 0 12px;
+}
+
+.article-meta {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+.article-meta span {
+  margin-right: 20px;
+}
+
+.article-content {
+  font-size: 1.15rem;
+  line-height: 1.85;
+}
+
+.article-content p {
+  margin-bottom: 1.4em;
+}
+
+.article-content h2 {
+  font-size: 1.6rem;
+  margin: 2em 0 1em;
+  color: #111;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  height: fit-content;
+  position: sticky;
+  top: 90px;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 10px;
+}
+
+.sidebar a {
+  display: block;
+  margin-bottom: 18px;
+  color: #222;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  color: var(--primary);
+}
+
+/* =========================
+   FOOTER (MODERNI TUMMA)
+========================= */
+
+.site-footer {
+  background: var(--dark);
+  color: #cfd6dd;
+  margin-top: 80px;
+  padding: 50px 20px 25px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.footer-left h3 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.footer-left p {
+  margin: 0;
+  color: #aab4be;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  color: #cfd6dd;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+  transform: translateX(4px);
+}
+
+.footer-bottom {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+  font-size: 0.9rem;
+  color: #8b97a3;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+  .article-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .article-header img {
+    height: 340px;
+  }
+
+  .main-content {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .menu {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 78px;
+    left: 0;
+    width: 100%;
+    background: var(--primary);
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .nav-links.active {
+    max-height: 600px;
+  }
+
+  .nav-links a {
+    padding: 16px 25px;
+    font-size: 1.1rem;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-links {
+    align-items: center;
+  }
+}
