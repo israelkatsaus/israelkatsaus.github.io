@@ -1,6 +1,13 @@
 {
   "articles": [
     {
+  "id": 6,
+  "title": "Uusi uutinen tänään",
+  "excerpt": "Uuuutinen, Uuuutinen, Uuuutinen, Uuuutinen, Uuuutinen",
+  "image": "assets/logo5.png",
+  "date": "2026-04-15"
+}
+    {
       "id": 1,
       "title": "Suuri talousuudistus etenee eduskunnassa",
       "excerpt": "Hallitus esittää merkittäviä muutoksia verotukseen ja sosiaaliturvaan. Asiantuntijat jakautuneet arvioissaan.",
