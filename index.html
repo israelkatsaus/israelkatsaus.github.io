@@ -175,8 +175,26 @@
             }
         }
         @media (max-width: 768px) {
-            .news-layout {
-                grid-template-columns: 1fr;
+
+    .news-wrapper {
+        padding: 0 16px;
+    }
+
+    .news-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .small-news {
+        grid-template-columns: 1fr;
+    }
+
+    .news-card img {
+        height: 200px;
+    }
+
+}
             }
             .main-article, .small-news, .popular {
                 grid-column: 1;
