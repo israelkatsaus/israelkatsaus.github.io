@@ -49,18 +49,20 @@ document.getElementById("footer").innerHTML = await res.text();
 }
 
 
-/* MENU */
+/* MENU - KORJATTU (POISTETTU OVERLAY BUGI) */
 
 function toggleMenu(){
 const nav=document.getElementById("navLinks");
-const overlay=document.getElementById("overlay");
-const active=nav.classList.toggle("active");
-overlay.classList.toggle("active",active);
+if(nav){
+nav.classList.toggle("active");
+}
 }
 
 function closeMenu(){
-document.getElementById("navLinks").classList.remove("active");
-document.getElementById("overlay").classList.remove("active");
+const nav=document.getElementById("navLinks");
+if(nav){
+nav.classList.remove("active");
+}
 }
 
 
