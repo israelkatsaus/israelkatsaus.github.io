@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uutinen</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="navbar"></div>
+
+<main id="article"></main>
+
+<div id="footer"></div>
+
+<script>
+async function loadNavbar(){
+  document.getElementById("navbar").innerHTML =
+    await (await fetch("navbar.html")).text();
+}
+
+async function loadFooter(){
+  document.getElementById("footer").innerHTML =
+    await (await fetch("footer.html")).text();
+}
+
+async function loadArticle(){
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const res = await fetch("news.json");
+  const data = await res.json();
+
+  const article = data.articles.find(a => a.id == id);
+
+  if(!article){
+    document.getElementById("article").innerHTML = "<p>Uutista ei löydy.</p>";
+    return;
+  }
+
+  document.getElementById("article").innerHTML = `
+    <article class="main-content">
+      <h1>${article.title}</h1>
+      <img src="${article.image}" style="width:100%; border-radius:10px;">
+      <div class="article-content">
+        ${article.content}
+      </div>
+    </article>
+  `;
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  loadNavbar();
+  loadFooter();
+  loadArticle();
+});
+</script>
+
+</body>
+</html>
