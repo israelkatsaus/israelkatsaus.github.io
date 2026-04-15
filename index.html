@@ -112,7 +112,7 @@ html += `
 
 ${articles.slice(1,5).map(article => `
 
-<a href="uutinen${article.id}.html" class="news-card">
+<a href="uutinen.html?id=${article.id}" class="news-card">
 
 <img src="${article.image}" alt="${article.title}" loading="lazy">
 
