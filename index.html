@@ -79,8 +79,11 @@ throw new Error("Uutisten lataus epäonnistui");
 
 const data = await response.json();
 
-const articles = (data.articles || [])
-.sort((a,b)=> new Date(b.date) - new Date(a.date));
+const articles = (data && Array.isArray(data.articles))
+  ? data.articles
+      .filter(a => a.date)
+      .sort((a,b)=> new Date(b.date) - new Date(a.date))
+  : [];
 
 const container = document.getElementById("newsContainer");
 
