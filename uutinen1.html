@@ -26,10 +26,7 @@ background:#f8f9fa;
 overflow-x:hidden;
 }
 
-img{
-max-width:100%;
-display:block;
-}
+img{max-width:100%;display:block;}
 
 /* NAVBAR */
 
@@ -78,22 +75,7 @@ background:rgba(255,255,255,0.15);
 border-radius:4px;
 }
 
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.6);
-opacity:0;
-visibility:hidden;
-transition:0.3s;
-z-index:900;
-}
-
-.overlay.active{
-opacity:1;
-visibility:visible;
-}
-
-/* ARTICLE */
+/* LAYOUT */
 
 .article-container{
 max-width:1100px;
@@ -187,7 +169,7 @@ text-decoration:none;
 color:var(--primary);
 }
 
-/* FOOTER */
+/* FOOTER MODUULI */
 
 footer{
 background:#111;
@@ -248,14 +230,16 @@ font-size:1.1rem;
 
 <body>
 
-<!-- Navbar ladataan ulkoisesta tiedostosta -->
+<!-- NAVBAR -->
 <div id="navbar"></div>
 
+<!-- ARTICLE -->
 <div class="article-container">
 
 <article class="main-content">
 
 <div class="article-header">
+
 <span class="category">Talous</span>
 
 <h1 class="article-title">
@@ -307,35 +291,48 @@ Suuri talousuudistus etenee eduskunnassa – näin se vaikuttaa sinuun
 
 </div>
 
-<footer>
-<p>&copy; 2026 Uutissivusto. Kaikki oikeudet pidetään.</p>
-</footer>
+<!-- FOOTER -->
+<div id="footer"></div>
 
 <script>
 
-/* Ladataan navbar yhdestä tiedostosta */
-
+/* NAVBAR + FOOTER LOAD */
 async function loadNavbar(){
-const response=await fetch("navbar.html");
-const data=await response.text();
-document.getElementById("navbar").innerHTML=data;
+try{
+const res = await fetch("navbar.html");
+document.getElementById("navbar").innerHTML = await res.text();
+}catch(e){
+console.error("Navbar error",e);
+}
 }
 
-loadNavbar();
+async function loadFooter(){
+try{
+const res = await fetch("footer.html");
+document.getElementById("footer").innerHTML = await res.text();
+}catch(e){
+console.error("Footer error",e);
+}
+}
 
 /* MENU */
-
 function toggleMenu(){
 const nav=document.getElementById("navLinks");
 const overlay=document.getElementById("overlay");
-const isActive=nav.classList.toggle("active");
-overlay.classList.toggle("active",isActive);
+const active=nav.classList.toggle("active");
+overlay.classList.toggle("active",active);
 }
 
 function closeMenu(){
 document.getElementById("navLinks").classList.remove("active");
 document.getElementById("overlay").classList.remove("active");
 }
+
+/* INIT */
+document.addEventListener("DOMContentLoaded",()=>{
+loadNavbar();
+loadFooter();
+});
 
 window.addEventListener("resize",()=>{
 if(window.innerWidth>768) closeMenu();
