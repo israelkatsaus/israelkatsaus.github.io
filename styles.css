@@ -97,8 +97,6 @@ grid-template-columns:2fr 1fr 1fr;
 gap:24px;
 }
 
-/* MAIN ARTICLE */
-
 .main-article{
 grid-column:1;
 grid-row:span 2;
@@ -124,8 +122,6 @@ line-height:1.2;
 color:#444;
 font-size:1.05rem;
 }
-
-/* SMALL NEWS */
 
 .small-news{
 display:grid;
@@ -292,7 +288,7 @@ text-decoration:none;
 }
 
 .footer-links a:hover{
-color:white;
+color:#fff;
 }
 
 .footer-bottom{
@@ -338,8 +334,6 @@ height:45px;
 
 .navbar-container{
 padding:8px 16px;
-}
-
 }
 
 .menu{
