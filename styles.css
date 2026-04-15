@@ -332,6 +332,16 @@ MOBILE
 
 @media(max-width:768px){
 
+.logo img{
+height:45px;
+}
+
+.navbar-container{
+padding:8px 16px;
+}
+
+}
+
 .menu{
 display:block;
 }
