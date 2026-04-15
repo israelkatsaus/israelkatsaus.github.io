@@ -12,13 +12,9 @@
 
 <style>
 
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
-:root{
---primary:#0038b8;
-}
+:root{--primary:#0038b8;}
 
 body{
 margin:0;
@@ -33,6 +29,8 @@ img{
 max-width:100%;
 display:block;
 }
+
+/* NAVBAR */
 
 .navbar{
 background:var(--primary);
@@ -51,9 +49,7 @@ align-items:center;
 padding:10px 20px;
 }
 
-.logo img{
-height:60px;
-}
+.logo img{height:60px;}
 
 .menu{
 font-size:32px;
@@ -96,6 +92,8 @@ z-index:900;
 opacity:1;
 visibility:visible;
 }
+
+/* NEWS */
 
 .news-wrapper{
 max-width:1200px;
@@ -196,41 +194,17 @@ color:var(--primary);
 text-decoration:underline;
 }
 
-/* tablet */
-
-@media (max-width:1024px){
-
-.news-layout{
-grid-template-columns:2fr 1fr 300px;
-}
-
-.small-news{
-grid-column:2;
-}
-
-}
-
-/* mobile */
+/* MOBILE */
 
 @media (max-width:768px){
 
 .news-wrapper{
 padding:0 16px;
-width:100%;
 }
 
 .news-layout{
 grid-template-columns:1fr;
 gap:20px;
-width:100%;
-}
-
-.main-article,
-.small-news,
-.popular{
-grid-column:1;
-grid-row:auto;
-width:100%;
 }
 
 .main-article img{
@@ -245,9 +219,7 @@ grid-template-columns:1fr;
 height:200px;
 }
 
-.menu{
-display:block;
-}
+.menu{display:block;}
 
 .nav-links{
 position:absolute;
@@ -277,33 +249,25 @@ font-size:1.1rem;
 
 <body>
 
-<nav class="navbar">
-<div class="navbar-container">
-
-<div class="logo">
-<img src="/assets/LOGO2.png" alt="Uutissivuston logo">
-</div>
-
-<button class="menu" onclick="toggleMenu()">☰</button>
-
-<div class="nav-links" id="navLinks">
-<a href="#" onclick="closeMenu()">Etusivu</a>
-<a href="#" onclick="closeMenu()">Uutiset</a>
-<a href="#" onclick="closeMenu()">Analyysit</a>
-<a href="#" onclick="closeMenu()">Yhteystiedot</a>
-</div>
-
-</div>
-</nav>
+<div id="navbar"></div>
 
 <section class="news-wrapper">
-<div class="news-layout" id="newsContainer">
-</div>
+<div class="news-layout" id="newsContainer"></div>
 </section>
 
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
-
 <script>
+
+/* NAVBAR LATAUS */
+
+async function loadNavbar(){
+const response=await fetch("navbar.html");
+const data=await response.text();
+document.getElementById("navbar").innerHTML=data;
+}
+
+loadNavbar();
+
+/* MENU */
 
 function toggleMenu(){
 const nav=document.getElementById("navLinks");
@@ -317,17 +281,13 @@ document.getElementById("navLinks").classList.remove("active");
 document.getElementById("overlay").classList.remove("active");
 }
 
-window.addEventListener("resize",()=>{
-if(window.innerWidth>768) closeMenu();
-});
+/* NEWS */
 
 async function loadNews(){
 
 try{
 
 const response=await fetch('news.json');
-if(!response.ok) throw new Error('Verkkovirhe');
-
 const data=await response.json();
 
 const articles=(data.articles||[]).sort(
@@ -335,12 +295,6 @@ const articles=(data.articles||[]).sort(
 );
 
 const container=document.getElementById('newsContainer');
-container.innerHTML='';
-
-if(articles.length===0){
-container.innerHTML='<p style="grid-column:1/-1;text-align:center;">Ei uutisia saatavilla.</p>';
-return;
-}
 
 const main=articles[0];
 
@@ -363,30 +317,10 @@ const smallHTML=articles.slice(1,5).map(article=>`
 
 html+=`<div class="small-news">${smallHTML}</div>`;
 
-const popularHTML=articles.slice(1,6).map((article,i)=>`
-<a href="uutinen${article.id}.html">${i+1}. ${article.title}</a>
-`).join('');
-
-html+=`
-<aside class="popular">
-<h3>Luetuimmat</h3>
-${popularHTML}
-</aside>
-`;
-
 container.innerHTML=html;
 
-}
-
-catch(err){
-
-console.error(err);
-
-document.getElementById('newsContainer').innerHTML=`
-<p style="grid-column:1/-1;text-align:center;color:#c00;">
-Virhe uutisten latauksessa. Varmista että <strong>news.json</strong> on olemassa.
-</p>`;
-
+}catch(e){
+console.error(e);
 }
 
 }
