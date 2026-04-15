@@ -1,120 +1,23 @@
 <nav class="navbar">
     <div class="navbar-container">
-        <!-- Logo + nimi -->
-        <a href="/" class="navbar-logo">
-            <img src="/assets/logo.png" alt="Israel Katsaus logo">
-            Israel Katsaus
-        </a>
 
-        <!-- Navigaatiolinkit -->
-        <div class="navbar-links" id="navLinks">
-            <a href="/">Etusivu</a>
-            <a href="/uutiset.html">Uutiset</a>
-            <a href="/analyysit.html">Analyysit</a>
-            <a href="/yhteystiedot.html">Yhteystiedot</a>
+        <div class="logo">
+            <img src="/assets/LOGO2.png" alt="Uutissivuston logo">
         </div>
 
-        <!-- Mobiilivalikko (hampurilainen) -->
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <button class="menu" onclick="toggleMenu()">☰</button>
+
+        <div class="nav-links" id="navLinks">
+            <a href="/index.html" onclick="closeMenu()">Etusivu</a>
+            <a href="#" onclick="closeMenu()">Uutiset</a>
+            <a href="#" onclick="closeMenu()">Analyysit</a>
+            <a href="#" onclick="closeMenu()">Yhteystiedot</a>
+        </div>
+
     </div>
 </nav>
 
-<!-- Navbarin tyylit -->
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-    }
-
-    .navbar {
-        background-color: #0038b8;
-        position: sticky;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        z-index: 1000;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-        margin: 0;
-        padding: 0;
-    }
-
-    .navbar-container {
-        max-width: none;
-        margin: 0;
-        padding: 0 40px 0 50px;
-        height: 110px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 55px;
-    }
-
-    .navbar-logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: white;
-        font-size: 1.55rem;
-        font-weight: bold;
-    }
-
-    .navbar-logo img {
-        height: 82px;
-        margin-right: 16px;
-    }
-
-    .navbar-links {
-        display: flex;
-        gap: 38px;
-    }
-
-    .navbar-links a {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 1.12rem;
-        transition: all 0.3s ease;
-    }
-
-    .navbar-links a:hover {
-        color: #ffdd00;
-        text-shadow: 0 0 8px rgba(255, 221, 0, 0.5);
-    }
-
-    /* Mobiilivalikko */
-    .menu-icon {
-        display: none;
-        font-size: 2rem;
-        color: white;
-        cursor: pointer;
-        padding: 10px;
-    }
-
-    @media screen and (max-width: 768px) {
-        .navbar-container {
-            padding: 0 25px 0 30px;
-            gap: 20px;
-        }
-
-        .navbar-links {
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            top: 110px;
-            left: 0;
-            width: 100%;
-            background-color: #0038b8;
-            padding: 20px 0;
-            gap: 15px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .navbar-links.active {
-            display: flex;
-        }
-
-        .menu-icon {
-            display: block;
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
         }
     }
 </style>
