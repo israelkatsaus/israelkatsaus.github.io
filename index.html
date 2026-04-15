@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Suomalainen uutissivusto – ajankohtaiset uutiset, analyysit ja syväluotaukset.">
+
 <title>Uutissivusto</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -25,12 +26,9 @@ background:#f8f9fa;
 overflow-x:hidden;
 }
 
-img{
-max-width:100%;
-display:block;
-}
+img{max-width:100%;display:block;}
 
-/* NAVBAR */
+/* NAVBAR (moduuli) */
 
 .navbar{
 background:var(--primary);
@@ -78,21 +76,6 @@ background:rgba(255,255,255,0.15);
 border-radius:4px;
 }
 
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.6);
-opacity:0;
-visibility:hidden;
-transition:0.3s;
-z-index:900;
-}
-
-.overlay.active{
-opacity:1;
-visibility:visible;
-}
-
 /* NEWS */
 
 .news-wrapper{
@@ -120,13 +103,11 @@ width:100%;
 height:420px;
 object-fit:cover;
 border-radius:8px;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 .main-text h2{
 margin:16px 0 10px;
 font-size:2.1rem;
-line-height:1.25;
 }
 
 .main-text p{
@@ -139,7 +120,6 @@ display:grid;
 grid-template-columns:1fr 1fr;
 gap:24px;
 grid-column:2 / 4;
-grid-row:span 2;
 }
 
 .news-card{
@@ -148,9 +128,7 @@ color:inherit;
 transition:transform 0.25s ease;
 }
 
-.news-card:hover{
-transform:translateY(-6px);
-}
+.news-card:hover{transform:translateY(-6px);}
 
 .news-card img{
 width:100%;
@@ -162,62 +140,24 @@ border-radius:8px;
 .news-card h3{
 margin:12px 0 6px;
 font-size:1.15rem;
-line-height:1.3;
-}
-
-.popular{
-grid-column:4;
-grid-row:span 2;
-background:#f3f3f3;
-padding:24px;
-border-radius:8px;
-align-self:start;
-box-shadow:0 2px 8px rgba(0,0,0,0.05);
-}
-
-.popular h3{
-margin-top:0;
-border-bottom:2px solid var(--primary);
-padding-bottom:10px;
-}
-
-.popular a{
-display:block;
-margin-bottom:14px;
-color:#222;
-text-decoration:none;
-line-height:1.35;
-}
-
-.popular a:hover{
-color:var(--primary);
-text-decoration:underline;
 }
 
 /* MOBILE */
 
 @media (max-width:768px){
 
-.news-wrapper{
-padding:0 16px;
-}
+.news-wrapper{padding:0 16px;}
 
 .news-layout{
 grid-template-columns:1fr;
 gap:20px;
 }
 
-.main-article img{
-height:300px;
-}
+.main-article img{height:300px;}
 
-.small-news{
-grid-template-columns:1fr;
-}
+.small-news{grid-template-columns:1fr;}
 
-.news-card img{
-height:200px;
-}
+.news-card img{height:200px;}
 
 .menu{display:block;}
 
@@ -233,9 +173,7 @@ overflow:hidden;
 transition:max-height 0.4s ease;
 }
 
-.nav-links.active{
-max-height:600px;
-}
+.nav-links.active{max-height:600px;}
 
 .nav-links a{
 padding:16px 25px;
@@ -249,31 +187,35 @@ font-size:1.1rem;
 
 <body>
 
+<!-- NAVBAR -->
 <div id="navbar"></div>
 
 <section class="news-wrapper">
 <div class="news-layout" id="newsContainer"></div>
 </section>
 
+<!-- FOOTER -->
+<div id="footer"></div>
+
 <script>
 
-/* NAVBAR LATAUS */
-
+/* LOAD MODUULEINA */
 async function loadNavbar(){
-const response=await fetch("navbar.html");
-const data=await response.text();
-document.getElementById("navbar").innerHTML=data;
+const res = await fetch("navbar.html");
+document.getElementById("navbar").innerHTML = await res.text();
 }
 
-loadNavbar();
+async function loadFooter(){
+const res = await fetch("footer.html");
+document.getElementById("footer").innerHTML = await res.text();
+}
 
 /* MENU */
-
 function toggleMenu(){
 const nav=document.getElementById("navLinks");
 const overlay=document.getElementById("overlay");
-const isActive=nav.classList.toggle("active");
-overlay.classList.toggle("active",isActive);
+const active=nav.classList.toggle("active");
+overlay.classList.toggle("active",active);
 }
 
 function closeMenu(){
@@ -282,23 +224,28 @@ document.getElementById("overlay").classList.remove("active");
 }
 
 /* NEWS */
-
 async function loadNews(){
 
 try{
 
-const response=await fetch('news.json');
-const data=await response.json();
+const response = await fetch("news.json");
+if(!response.ok) throw new Error("Uutisten lataus epäonnistui");
 
-const articles=(data.articles||[]).sort(
-(a,b)=>new Date(b.date)-new Date(a.date)
-);
+const data = await response.json();
 
-const container=document.getElementById('newsContainer');
+const articles = (data.articles || [])
+.sort((a,b)=> new Date(b.date) - new Date(a.date));
 
-const main=articles[0];
+const container = document.getElementById("newsContainer");
 
-let html=`
+if(!articles.length){
+container.innerHTML = "<p>Ei uutisia saatavilla.</p>";
+return;
+}
+
+const main = articles[0];
+
+let html = `
 <a href="uutinen${main.id}.html" class="main-article">
 <img src="${main.image}" alt="${main.title}" loading="lazy">
 <div class="main-text">
@@ -308,24 +255,33 @@ let html=`
 </a>
 `;
 
-const smallHTML=articles.slice(1,5).map(article=>`
+html += `
+<div class="small-news">
+${articles.slice(1,5).map(article => `
 <a href="uutinen${article.id}.html" class="news-card">
 <img src="${article.image}" alt="${article.title}" loading="lazy">
 <h3>${article.title}</h3>
 </a>
-`).join('');
+`).join("")}
+</div>
+`;
 
-html+=`<div class="small-news">${smallHTML}</div>`;
+container.innerHTML = html;
 
-container.innerHTML=html;
-
-}catch(e){
-console.error(e);
+}catch(err){
+console.error(err);
+document.getElementById("newsContainer").innerHTML =
+"<p>Virhe uutisten latauksessa.</p>";
 }
 
 }
 
-window.onload=loadNews;
+/* INIT */
+document.addEventListener("DOMContentLoaded",()=>{
+loadNavbar();
+loadFooter();
+loadNews();
+});
 
 </script>
 
