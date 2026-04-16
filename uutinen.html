@@ -1,162 +1,126 @@
-/* =================================
-CONTAINER + YLEISET
-================================= */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Uutinen</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="navbar"></div>
+
+<main class="article-container">
+
+<div class="main-content" id="article"></div>
+
+<aside class="sidebar">
+<h3>Uusimmat uutiset</h3>
+<div id="latest"></div>
+</aside>
+
+</main>
+
+<div id="footer"></div>
+
+<script src="script.js"></script>
+
+<script>
+/* ==============================
+LOAD ARTICLE
+============================== */
+
+async function loadArticle(){
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+if(!id){
+document.getElementById("article").innerHTML =
+"<p>Uutista ei löytynyt.</p>";
+return;
 }
 
-/* =================================
-NAVBAR
-================================= */
-.navbar {
-  background: var(--primary);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+try{
+
+const res = await fetch("news.json");
+const data = await res.json();
+
+const article = data.articles.find(a => a.id == id);
+
+if(!article){
+document.getElementById("article").innerHTML =
+"<p>Uutista ei löytynyt.</p>";
+return;
 }
 
-.navbar-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 78px;           /* tasainen korkeus kaikilla sivuilla */
+document.getElementById("article").innerHTML = `
+
+<div class="article-header">
+
+<img src="${article.image}" alt="${article.title}">
+
+<p class="category">${article.category || "Uutinen"}</p>
+
+<h1 class="article-title">${article.title}</h1>
+
+<p class="article-meta">${article.date || ""}</p>
+
+</div>
+
+<div class="article-content">
+<p>${article.content}</p>
+</div>
+
+`;
+
+}catch(err){
+console.error(err);
+document.getElementById("article").innerHTML =
+"<p>Virhe uutisen latauksessa.</p>";
 }
 
-/* LOGO */
-.logo img {
-  height: 58px;
-  width: auto;
-  display: block;
 }
 
-/* NAV LINKS */
-.nav-links {
-  display: flex;
-  gap: 32px;                  /* hieman suurempi gap → parempi ilme */
-  align-items: center;
+/* ==============================
+LATEST NEWS SIDEBAR
+============================== */
+
+async function loadLatest(){
+
+try{
+
+const res = await fetch("news.json");
+const data = await res.json();
+
+const latest = data.articles.slice(0,5);
+
+document.getElementById("latest").innerHTML =
+latest.map(a => `
+<a href="uutinen.html?id=${a.id}">${a.title}</a>
+`).join("");
+
+}catch(err){
+console.error(err);
 }
 
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  padding: 10px 16px;
-  font-weight: 600;
-  font-size: 1.02rem;
-  border-radius: 4px;
-  transition: all 0.25s ease;
-  white-space: nowrap;        /* estää rivinvaihdon */
 }
 
-.nav-links a:hover {
-  background: rgba(255,255,255,0.18);
-}
+/* INIT */
 
-.nav-links a.active {
-  background: rgba(255,255,255,0.25);
-}
+document.addEventListener("DOMContentLoaded",()=>{
 
-/* MENU BUTTON (hamburger) */
-.menu {
-  font-size: 32px;
-  color: white;
-  cursor: pointer;
-  background: none;
-  border: none;
-  display: none;              /* näkyy vain mobilella */
-}
+loadNavbar();
+loadFooter();
+loadArticle();
+loadLatest();
 
-/* =================================
-FRONT PAGE NEWS
-================================= */
-.news-wrapper {
-  padding: 50px 0 70px;
-}
+});
+</script>
 
-.news-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 28px;
-}
-
-/* =================================
-TABLET (1000px)
-================================= */
-@media (max-width: 1000px) {
-  .news-layout {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  .small-news {
-    grid-column: auto;        /* tärkeä! */
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =================================
-MOBILE (768px)
-================================= */
-@media (max-width: 768px) {
-  .logo img {
-    height: 48px;
-  }
-
-  .menu {
-    display: block;
-  }
-
-  .nav-links {
-    position: absolute;
-    top: 78px;
-    left: 0;
-    width: 100%;
-    background: var(--primary);
-    flex-direction: column;
-    gap: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease;
-    padding: 0 20px;
-  }
-
-  .nav-links.active {
-    max-height: 500px;        /* riittävä korkeus */
-  }
-
-  .nav-links a {
-    padding: 16px 10px;
-    font-size: 1.08rem;
-    width: 100%;
-    text-align: left;
-  }
-
-  /* News */
-  .news-layout {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .main-article img {
-    height: 260px;
-  }
-
-  .news-card {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-
-  .news-card img {
-    width: 110px;
-    height: 78px;
-    flex-shrink: 0;
-  }
-
-  .news-card h3 {
-    margin: 0;
-    font-size: 0.97rem;
-    line-height: 1.35;
-  }
-}
+</body>
+</html>
