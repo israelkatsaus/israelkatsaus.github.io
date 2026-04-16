@@ -79,6 +79,11 @@ NAVBAR (PIXEL-STABLE)
 }
 
 .nav-links a {
+  font-size: 16px;   /* EI rem */
+  font-family: inherit;
+}
+
+.nav-links a {
   color: white;
   text-decoration: none;
   padding: 10px 16px;
