@@ -14,7 +14,7 @@
 
 <div id="navbar"></div>
 
-<main class="article-container">
+<main class="article-container container">
 
 <div class="main-content" id="article"></div>
 
@@ -73,7 +73,7 @@ document.getElementById("article").innerHTML = `
 </div>
 
 <div class="article-content">
-<p>${article.content}</p>
+${article.content}
 </div>
 
 `;
@@ -101,7 +101,9 @@ const latest = data.articles.slice(0,5);
 
 document.getElementById("latest").innerHTML =
 latest.map(a => `
-<a href="uutinen.html?id=${a.id}">${a.title}</a>
+<a class="sidebar-link" href="uutinen.html?id=${a.id}">
+${a.title}
+</a>
 `).join("");
 
 }catch(err){
@@ -110,12 +112,14 @@ console.error(err);
 
 }
 
-/* INIT */
+/* ==============================
+INIT (FIXED ORDER)
+============================== */
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded", async () => {
 
-loadNavbar();
-loadFooter();
+await loadNavbar();
+await loadFooter();
 loadArticle();
 loadLatest();
 
