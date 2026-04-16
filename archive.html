@@ -1,0 +1,14 @@
+<div id="news"></div>
+
+<script>
+fetch("posts.json")
+  .then(res => res.json())
+  .then(posts => {
+    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    document.getElementById("news").innerHTML =
+      posts.map(p =>
+        `<p><a href="${p.url}">${p.title}</a> - ${p.date}</p>`
+      ).join("");
+  });
+</script>
