@@ -2,168 +2,161 @@
 CONTAINER + YLEISET
 ================================= */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 /* =================================
 NAVBAR
 ================================= */
 .navbar {
-    background: var(--primary);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .navbar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 78px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 78px;           /* tasainen korkeus kaikilla sivuilla */
 }
 
 /* LOGO */
 .logo img {
-    height: 58px;
-    width: auto;
-    display: block;
+  height: 58px;
+  width: auto;
+  display: block;
 }
 
 /* NAV LINKS */
 .nav-links {
-    display: flex;
-    gap: 32px;
-    align-items: center;
-    margin-left: auto;
+  display: flex;
+  gap: 32px;                  /* hieman suurempi gap → parempi ilme */
+  align-items: center;
 }
 
 .nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 16px;
-    font-weight: 600;
-    font-size: 1.02rem;
-    border-radius: 4px;
-    transition: all 0.25s ease;
-    white-space: nowrap;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 1.02rem;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  white-space: nowrap;        /* estää rivinvaihdon */
 }
 
 .nav-links a:hover {
-    background: rgba(255, 255, 255, 0.18);
+  background: rgba(255,255,255,0.18);
 }
 
 .nav-links a.active {
-    background: rgba(255, 255, 255, 0.25);
+  background: rgba(255,255,255,0.25);
 }
 
-/* MENU BUTTON (Hamburger) */
+/* MENU BUTTON (hamburger) */
 .menu {
-    font-size: 32px;
-    color: white;
-    cursor: pointer;
-    background: none;
-    border: none;
-    display: none;
-    padding: 0;
-    line-height: 1;
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: none;              /* näkyy vain mobilella */
 }
 
 /* =================================
 FRONT PAGE NEWS
 ================================= */
 .news-wrapper {
-    padding: 50px 0 70px;
+  padding: 50px 0 70px;
 }
 
 .news-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 28px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 28px;
 }
 
 /* =================================
-TABLET
+TABLET (1000px)
 ================================= */
 @media (max-width: 1000px) {
-    .news-layout {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    /* If you have a .small-news container */
-    .small-news {
-        grid-column: auto;
-    }
+  .news-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .small-news {
+    grid-column: auto;        /* tärkeä! */
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =================================
-MOBILE
+MOBILE (768px)
 ================================= */
 @media (max-width: 768px) {
-    .logo img {
-        height: 48px;
-    }
+  .logo img {
+    height: 48px;
+  }
 
-    .menu {
-        display: block;
-    }
+  .menu {
+    display: block;
+  }
 
-    .nav-links {
-        position: absolute;
-        top: 78px;
-        left: 0;
-        width: 100%;
-        background: var(--primary);
-        flex-direction: column;
-        gap: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease;
-        padding: 0 20px;
-        z-index: 999;
-    }
+  .nav-links {
+    position: absolute;
+    top: 78px;
+    left: 0;
+    width: 100%;
+    background: var(--primary);
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0 20px;
+  }
 
-    .nav-links.active {
-        max-height: 500px;
-    }
+  .nav-links.active {
+    max-height: 500px;        /* riittävä korkeus */
+  }
 
-    .nav-links a {
-        padding: 16px 10px;
-        font-size: 1.08rem;
-        width: 100%;
-        text-align: left;
-    }
+  .nav-links a {
+    padding: 16px 10px;
+    font-size: 1.08rem;
+    width: 100%;
+    text-align: left;
+  }
 
-    /* NEWS */
-    .news-layout {
-        grid-template-columns: 1fr;
-        gap: 22px;
-    }
+  /* News */
+  .news-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
 
-    .main-article img {
-        height: 260px;
-        object-fit: cover;        /* Added - better image cropping */
-        width: 100%;
-    }
+  .main-article img {
+    height: 260px;
+  }
 
-    .news-card {
-        display: flex;
-        gap: 14px;
-        align-items: flex-start;
-    }
+  .news-card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
 
-    .news-card img {
-        width: 110px;
-        height: 78px;
-        flex-shrink: 0;
-        object-fit: cover;        /* Added */
-    }
+  .news-card img {
+    width: 110px;
+    height: 78px;
+    flex-shrink: 0;
+  }
 
-    .news-card h3 {
-        margin: 0;
-        font-size: 0.97rem;
-        line-height: 1.35;
-    }
+  .news-card h3 {
+    margin: 0;
+    font-size: 0.97rem;
+    line-height: 1.35;
+  }
 }
