@@ -110,20 +110,25 @@ async function loadNews() {
 
 
 /* ==============================
-INIT (FIXED - NO LAYOUT SHIFT)
+INIT (FONT SAFE)
 ============================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  // 1. NAVBAR ENSIN JA ODOTA
-  await loadNavbar();
+  // odota että fontit ovat ladattu
+  await document.fonts.ready;
 
-  // 2. FOOTER
+  // lataa moduulit
+  await loadNavbar();
   await loadFooter();
 
-  // 3. ODOTA 1 FRAME → ESTÄÄ CHROME/FIREFOX SHIFT
+  // odota yksi render frame
   requestAnimationFrame(() => {
-    loadNews();
+
+    if (typeof loadNews === "function") loadNews();
+    if (typeof loadArticle === "function") loadArticle();
+    if (typeof loadLatest === "function") loadLatest();
+
   });
 
 });
