@@ -1,64 +1,162 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uutinen</title>
-
-<link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-
-<div id="navbar"></div>
-
-<main id="article"></main>
-
-<div id="footer"></div>
-
-<script>
-async function loadNavbar(){
-  document.getElementById("navbar").innerHTML =
-    await (await fetch("navbar.html")).text();
+/* =================================
+CONTAINER + YLEISET
+================================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-async function loadFooter(){
-  document.getElementById("footer").innerHTML =
-    await (await fetch("footer.html")).text();
+/* =================================
+NAVBAR
+================================= */
+.navbar {
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-async function loadArticle(){
+.navbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 78px;           /* tasainen korkeus kaikilla sivuilla */
+}
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+/* LOGO */
+.logo img {
+  height: 58px;
+  width: auto;
+  display: block;
+}
 
-  const res = await fetch("news.json");
-  const data = await res.json();
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+  gap: 32px;                  /* hieman suurempi gap → parempi ilme */
+  align-items: center;
+}
 
-  const article = data.articles.find(a => a.id == id);
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 1.02rem;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  white-space: nowrap;        /* estää rivinvaihdon */
+}
 
-  if(!article){
-    document.getElementById("article").innerHTML = "<p>Uutista ei löydy.</p>";
-    return;
+.nav-links a:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+.nav-links a.active {
+  background: rgba(255,255,255,0.25);
+}
+
+/* MENU BUTTON (hamburger) */
+.menu {
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: none;              /* näkyy vain mobilella */
+}
+
+/* =================================
+FRONT PAGE NEWS
+================================= */
+.news-wrapper {
+  padding: 50px 0 70px;
+}
+
+.news-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 28px;
+}
+
+/* =================================
+TABLET (1000px)
+================================= */
+@media (max-width: 1000px) {
+  .news-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .small-news {
+    grid-column: auto;        /* tärkeä! */
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =================================
+MOBILE (768px)
+================================= */
+@media (max-width: 768px) {
+  .logo img {
+    height: 48px;
   }
 
-  document.getElementById("article").innerHTML = `
-    <article class="main-content">
-      <h1>${article.title}</h1>
-      <img src="${article.image}" style="width:100%; border-radius:10px;">
-      <div class="article-content">
-        ${article.content}
-      </div>
-    </article>
-  `;
+  .menu {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 78px;
+    left: 0;
+    width: 100%;
+    background: var(--primary);
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0 20px;
+  }
+
+  .nav-links.active {
+    max-height: 500px;        /* riittävä korkeus */
+  }
+
+  .nav-links a {
+    padding: 16px 10px;
+    font-size: 1.08rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  /* News */
+  .news-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .main-article img {
+    height: 260px;
+  }
+
+  .news-card {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .news-card img {
+    width: 110px;
+    height: 78px;
+    flex-shrink: 0;
+  }
+
+  .news-card h3 {
+    margin: 0;
+    font-size: 0.97rem;
+    line-height: 1.35;
+  }
 }
-
-document.addEventListener("DOMContentLoaded", ()=>{
-  loadNavbar();
-  loadFooter();
-  loadArticle();
-});
-</script>
-
-</body>
-</html>
