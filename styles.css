@@ -41,54 +41,61 @@ margin:auto;
 padding:0 20px;
 }
 
-/* =================================
-NAVBAR
-================================= */
+/* =========================
+NAVBAR (PIXEL-STABLE)
+========================= */
 
-.navbar{
-background:var(--primary);
-position:sticky;
-top:0;
-z-index:1000;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
+.navbar {
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.navbar-inner{
-display:flex;
-justify-content:space-between;
-align-items:center;
-min-height:78px;
+/* GRID POISTAA FLEX-HEILAHTELUN */
+.navbar-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  min-height: 78px;
 }
 
-.logo img{
-height:58px;
+/* LOGO */
+.logo img {
+  height: 58px;
+  display: block;
 }
 
-.menu{
-font-size:32px;
-color:white;
-cursor:pointer;
-background:none;
-border:none;
-display:none;
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+  justify-content: center; /* keskittää aina */
+  gap: 32px;
 }
 
-.nav-links{
-display:flex;
-gap:28px;
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: 0.25s;
+  white-space: nowrap;
 }
 
-.nav-links a{
-color:white;
-text-decoration:none;
-padding:10px 14px;
-font-weight:600;
-border-radius:4px;
-transition:.2s;
+.nav-links a:hover {
+  background: rgba(255,255,255,0.18);
 }
 
-.nav-links a:hover{
-background:rgba(255,255,255,0.18);
+/* MENU */
+.menu {
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: none;
 }
 
 /* =================================
