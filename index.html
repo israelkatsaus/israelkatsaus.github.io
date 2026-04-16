@@ -20,14 +20,35 @@
 <div id="navbar"></div>
 
 <section class="news-wrapper">
-<div class="container">
-<div class="news-layout" id="newsContainer"></div>
-</div>
+  <div class="container">
+    <div class="news-layout" id="newsContainer"></div>
+  </div>
 </section>
 
 <div id="footer"></div>
 
 <script src="script.js"></script>
+
+<script>
+/* ============================
+STABLE INIT (FIX NAV SHIFT)
+============================ */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  // 1. NAVBAR ENSIN (pakottaa layoutin vakautumaan)
+  await loadNavbar();
+
+  // 2. FOOTER
+  await loadFooter();
+
+  // 3. ODOTA YKSI RENDER CYCLE (tärkeä Chrome/Firefox fix)
+  requestAnimationFrame(() => {
+    loadNews();
+  });
+
+});
+</script>
 
 </body>
 </html>
