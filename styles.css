@@ -1,10 +1,11 @@
 /* =================================
-GLOBAL
+GLOBAL (LOCKED)
 ================================= */
 
 html {
   font-size: 16px;
   overflow-y: scroll;
+  scrollbar-gutter: stable; /* 🔒 estää layout shiftin */
 }
 
 * {
@@ -12,7 +13,6 @@ html {
   margin: 0;
   padding: 0;
 
-  /* renderöinnin yhtenäistäminen */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -27,9 +27,9 @@ html {
 html, body {
   font-family: "Gelasio", serif;
   font-size: 16px;
+  line-height: 1.7;
   color: var(--text);
   background: #f8f9fa;
-  line-height: 1.7;
 }
 
 img {
@@ -38,17 +38,18 @@ img {
 }
 
 /* =================================
-CONTAINER
+CONTAINER (LOCKED SINGLE SOURCE)
 ================================= */
 
 .container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
 /* =================================
-NAVBAR (STABLE)
+NAVBAR (PIXEL STABLE)
 ================================= */
 
 .navbar {
@@ -98,7 +99,7 @@ NAVBAR (STABLE)
   background: rgba(255,255,255,0.18);
 }
 
-/* MENU BUTTON */
+/* MENU */
 .menu {
   font-size: 32px;
   color: white;
