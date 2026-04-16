@@ -8,6 +8,10 @@ margin:0;
 padding:0;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 :root{
 --primary:#0038b8;
 --dark:#0b0f14;
