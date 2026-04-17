@@ -67,7 +67,7 @@ fetch("news.json")
 
     document.getElementById("news").innerHTML =
       news.map(item => `
-        <a href="article.html?id=${item.id}" class="card">
+        <a href="uutinen.html?id=${item.id}" class="card">
           <img src="${item.image}" alt="">
           <h2>${item.title}</h2>
           <p>${item.date}</p>
