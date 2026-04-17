@@ -185,6 +185,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadNavbar();
   await loadFooter();
 
+  await initSearch();
+
   // 🔍 käynnistä haku
   await initSearch();
 
