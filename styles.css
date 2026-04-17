@@ -345,4 +345,9 @@ MOBILE
     grid-template-columns: 1fr;
     text-align: center;
   }
+
+  .card h2 {
+  font-size: 15px;
+  line-height: 1.3;
+}
 }
