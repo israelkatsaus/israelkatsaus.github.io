@@ -123,6 +123,18 @@ NEWS FRONT PAGE
   gap: 28px;
 }
 
+.news-card h3 {
+  font-size: 14px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.main-text p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #444;
+}
+
 .main-article {
   grid-column: 1;
   grid-row: span 2;
