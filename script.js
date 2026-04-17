@@ -37,9 +37,7 @@ function closeMenu() {
   if (nav) nav.classList.remove("active");
 }
 
-
 /* sulje menu kun klikataan linkkiä */
-
 document.addEventListener("click", (e) => {
   if (e.target.closest(".nav-links a")) {
     closeMenu();
@@ -48,7 +46,7 @@ document.addEventListener("click", (e) => {
 
 
 /* ==============================
-NEWS (UNCHANGED BUT SAFER)
+NEWS (FRONT PAGE)
 ============================== */
 
 async function loadNews() {
@@ -74,30 +72,7 @@ async function loadNews() {
       return;
     }
 
-    const main = articles[0];
-
-    let html = `
-      <a href="uutinen.html?id=${main.id}" class="main-article">
-        <img src="${main.image}" alt="${main.title}" loading="lazy">
-        <div class="main-text">
-          <h2>${main.title}</h2>
-          <p>${main.excerpt}</p>
-        </div>
-      </a>
-    `;
-
-    html += `
-      <div class="small-news">
-        ${articles.slice(1, 5).map(article => `
-          <a href="uutinen.html?id=${article.id}" class="news-card">
-            <img src="${article.image}" alt="${article.title}" loading="lazy">
-            <h3>${article.title}</h3>
-          </a>
-        `).join("")}
-      </div>
-    `;
-
-    container.innerHTML = html;
+    renderNewsLayout(articles);
 
   } catch (err) {
     console.error(err);
@@ -110,6 +85,94 @@ async function loadNews() {
 
 
 /* ==============================
+RENDER (YHTEINEN LAYOUT)
+============================== */
+
+function renderNewsLayout(articles) {
+  const container = document.getElementById("newsContainer");
+  if (!container) return;
+
+  const main = articles[0];
+
+  let html = `
+    <a href="uutinen.html?id=${main.id}" class="main-article">
+      <img src="${main.image}" alt="${main.title}" loading="lazy">
+      <div class="main-text">
+        <h2>${main.title}</h2>
+        <p>${main.excerpt || ""}</p>
+      </div>
+    </a>
+  `;
+
+  html += `
+    <div class="small-news">
+      ${articles.slice(1, 5).map(article => `
+        <a href="uutinen.html?id=${article.id}" class="news-card">
+          <img src="${article.image}" alt="${article.title}" loading="lazy">
+          <h3>${article.title}</h3>
+        </a>
+      `).join("")}
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+
+/* ==============================
+SEARCH (LIVE FILTER)
+============================== */
+
+async function initSearch() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+
+  try {
+    const res = await fetch("news.json");
+    const data = await res.json();
+    const articles = data.articles || [];
+
+    input.addEventListener("input", () => {
+      const query = input.value.toLowerCase();
+
+      // 🔄 jos tyhjä → palauta normaalit uutiset
+      if (!query) {
+        loadNews();
+        return;
+      }
+
+      const filtered = articles.filter(a =>
+        a.title.toLowerCase().includes(query) ||
+        (a.excerpt && a.excerpt.toLowerCase().includes(query))
+      );
+
+      renderSearchResults(filtered);
+    });
+
+  } catch (err) {
+    console.error("Search error:", err);
+  }
+}
+
+
+/* ==============================
+SEARCH RENDER
+============================== */
+
+function renderSearchResults(results) {
+  const container = document.getElementById("newsContainer");
+  if (!container) return;
+
+  if (results.length === 0) {
+    container.innerHTML = "<p>Ei hakutuloksia.</p>";
+    return;
+  }
+
+  renderNewsLayout(results);
+}
+
+
+/* ==============================
 INIT (FONT SAFE)
 ============================== */
 
@@ -118,17 +181,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   // odota että fontit ovat ladattu
   await document.fonts.ready;
 
-  // lataa moduulit
+  // lataa navbar + footer
   await loadNavbar();
   await loadFooter();
 
-  // odota yksi render frame
-  requestAnimationFrame(() => {
+  // 🔍 käynnistä haku
+  await initSearch();
 
+  // renderöi sisältö
+  requestAnimationFrame(() => {
     if (typeof loadNews === "function") loadNews();
     if (typeof loadArticle === "function") loadArticle();
     if (typeof loadLatest === "function") loadLatest();
-
   });
 
 });
