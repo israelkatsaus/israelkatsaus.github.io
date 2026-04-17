@@ -109,6 +109,19 @@ NAVBAR (PIXEL STABLE)
   display: none;
 }
 
+.search-box input {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 180px;
+}
+
+.search-box input:focus {
+  width: 220px;
+}
+
 /* =================================
 NEWS FRONT PAGE (PRO VERSION)
 ================================= */
