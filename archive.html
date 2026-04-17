@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="fi">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Uutisarkisto</title>
+
+  <link rel="stylesheet" href="styles.css">
 
   <style>
     .grid {
@@ -34,30 +37,53 @@
 
 <body>
 
+<!-- NAVBAR -->
+<div id="navbar"></div>
+
+<div class="container">
   <h1>Uutisarkisto</h1>
 
-  <!-- TÄHÄN uutiset tulevat -->
+  <!-- Uutiset -->
   <div id="news" class="grid"></div>
+</div>
 
-  <script>
-    fetch("news.json")
-      .then(res => res.json())
-      .then(data => {
-        const news = data.articles;
+<!-- FOOTER -->
+<div id="footer"></div>
 
-        news.sort((a, b) => new Date(b.date) - new Date(a.date));
+<script src="script.js"></script>
 
-        document.getElementById("news").innerHTML =
-          news.map(item => `
-            <a href="article.html?id=${item.id}" class="card">
-              <img src="${item.image}" alt="">
-              <h2>${item.title}</h2>
-              <p>${item.date}</p>
-              <p>${item.excerpt || ""}</p>
-            </a>
-          `).join("");
-      });
-  </script>
+<script>
+/* ==============================
+LOAD NEWS
+============================== */
+
+fetch("news.json")
+  .then(res => res.json())
+  .then(data => {
+    const news = data.articles;
+
+    news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    document.getElementById("news").innerHTML =
+      news.map(item => `
+        <a href="article.html?id=${item.id}" class="card">
+          <img src="${item.image}" alt="">
+          <h2>${item.title}</h2>
+          <p>${item.date}</p>
+          <p>${item.excerpt || ""}</p>
+        </a>
+      `).join("");
+  });
+
+/* ==============================
+INIT
+============================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadNavbar();
+  await loadFooter();
+});
+</script>
 
 </body>
 </html>
