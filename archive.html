@@ -1,18 +1,63 @@
-<div id="news"></div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Uutisarkisto</title>
 
-<script>
-fetch("news.json")
-  .then(res => res.json())
-  .then(news => {
-    // järjestetään uusimmat ensin
-    news.sort((a, b) => new Date(b.date) - new Date(a.date));
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
 
-    document.getElementById("news").innerHTML =
-      news.map(item => `
-        <article>
-          <h2><a href="${item.url}">${item.title}</a></h2>
-          <p>${item.date}</p>
-        </article>
-      `).join("");
-  });
-</script>
+    .card {
+      display: block;
+      text-decoration: none;
+      color: black;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Uutisarkisto</h1>
+
+  <!-- TÄHÄN uutiset tulevat -->
+  <div id="news" class="grid"></div>
+
+  <script>
+    fetch("news.json")
+      .then(res => res.json())
+      .then(data => {
+        const news = data.articles;
+
+        news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        document.getElementById("news").innerHTML =
+          news.map(item => `
+            <a href="article.html?id=${item.id}" class="card">
+              <img src="${item.image}" alt="">
+              <h2>${item.title}</h2>
+              <p>${item.date}</p>
+              <p>${item.excerpt || ""}</p>
+            </a>
+          `).join("");
+      });
+  </script>
+
+</body>
+</html>
