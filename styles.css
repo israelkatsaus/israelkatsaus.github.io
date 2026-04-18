@@ -385,6 +385,7 @@ MOBILE
   .search-box input {
   width: 80%;
   max-width: 100px;
+  margin-right: -20px;
 }
 
 }
