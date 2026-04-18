@@ -382,4 +382,9 @@ MOBILE
     text-align: center;
   }
 
+  .search-box input {
+  width: 100%;
+  max-width: 140px;
+}
+
 }
