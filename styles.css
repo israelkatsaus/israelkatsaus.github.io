@@ -326,7 +326,7 @@ ARTICLE SOURCE
 }
 
 .article-source img {
-  width: 50px;
+  width: 80px;
   height: auto;
   object-fit: contain;
 }
