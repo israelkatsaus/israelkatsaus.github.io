@@ -338,6 +338,28 @@ ARTICLE SOURCE
 }
 
 /* =================================
+SHARE BUTTONS
+================================= */
+
+.share-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.share-buttons a img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.share-buttons a img:hover {
+  transform: scale(1.15);
+  opacity: 0.8;
+}
+
+/* =================================
 TABLET
 ================================= */
 
