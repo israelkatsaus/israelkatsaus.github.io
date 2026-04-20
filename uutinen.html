@@ -83,6 +83,22 @@ document.getElementById("article").innerHTML = `
 ${article.content}
 </div>
 
+<div class="share-buttons">
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=${window.location.href}" target="_blank">
+    <img src="images/facebook.png" alt="Facebook">
+  </a>
+
+  <a href="https://twitter.com/intent/tweet?url=${window.location.href}&text=${article.title}" target="_blank">
+    <img src="images/x.png" alt="X">
+  </a>
+
+  <a href="https://api.whatsapp.com/send?text=${article.title} ${window.location.href}" target="_blank">
+    <img src="images/whatsapp.png" alt="WhatsApp">
+  </a>
+
+</div>
+
 <div class="article-source">
   <img src="assets/LOGO3.png" alt="Israel-katsaus">
   <span>Israel-katsaus</span>
