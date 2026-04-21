@@ -460,4 +460,8 @@ MOBILE
   .main-content h1 {
     font-size: 1.8rem;
   }
+
+  .logo img {
+    height: 42px;
+  }
 }
