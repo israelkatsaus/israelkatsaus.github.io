@@ -20,7 +20,7 @@
       "id": 6,
       "title": "Uusi uutinen tänään",
       "excerpt": "Uuuutinen, Uuuutinen, Uuuutinen, Uuuutinen, Uuuutinen",
-      "image": "assets/logo5.png",
+      "image": "https://picsum.photos/id/1016/800/600",
       "date": "2026-04-15",
       "content": "<p>Tämä on koko uutisen ensimmäinen kappale.</p><p>Tässä toinen kappale.</p><h2>Otsikko</h2><p>Lisää sisältöä...</p>"
     },
