@@ -418,7 +418,10 @@ MOBILE
   }
 
   .article-container {
-    grid-template-columns: 1fr; /* 🔒 sidebar alle mobiilissa */
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
   .main-article img {
