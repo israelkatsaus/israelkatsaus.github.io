@@ -240,6 +240,8 @@ ARTICLE PAGE LAYOUT (KORJAUS)
 }
 .main-content p {
   margin-bottom: 1em;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .sidebar {
