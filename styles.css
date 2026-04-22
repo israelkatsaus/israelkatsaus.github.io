@@ -292,6 +292,14 @@ FOOTER
   margin-bottom: 10px;
 }
 
+.footer-right a {
+  color: white;
+  background: #2a7fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
 .footer-links {
   display: flex;
   flex-direction: column;
