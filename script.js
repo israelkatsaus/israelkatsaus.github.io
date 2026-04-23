@@ -5,6 +5,7 @@ LOAD MODULES
 async function loadNavbar() {
   const res = await fetch("navbar.html");
   const html = await res.text();
+
   const container = document.getElementById("navbar");
   if (container) container.innerHTML = html;
 }
@@ -12,13 +13,14 @@ async function loadNavbar() {
 async function loadFooter() {
   const res = await fetch("footer.html");
   const html = await res.text();
+
   const container = document.getElementById("footer");
   if (container) container.innerHTML = html;
 }
 
 
 /* ==============================
-MENU
+MENU (MOBILE SAFE)
 ============================== */
 
 function toggleMenu() {
@@ -31,8 +33,18 @@ function closeMenu() {
   if (nav) nav.classList.remove("active");
 }
 
+/* sulje menu turvallisesti */
 document.addEventListener("click", (e) => {
-  if (e.target.closest(".nav-links a")) closeMenu();
+  const nav = document.getElementById("navLinks");
+
+  if (!nav) return;
+
+  if (
+    e.target.closest(".nav-links a") ||
+    (!e.target.closest(".nav-links") && !e.target.closest(".menu"))
+  ) {
+    closeMenu();
+  }
 });
 
 
@@ -47,13 +59,15 @@ function stripHtml(html) {
 }
 
 function getContainer() {
-  return document.getElementById("newsContainer") ||
-         document.getElementById("archiveContainer");
+  const archive = document.getElementById("archiveContainer");
+  const news = document.getElementById("newsContainer");
+
+  return archive || news;
 }
 
 
 /* ==============================
-LOAD NEWS (YHTEINEN)
+LOAD NEWS
 ============================== */
 
 async function loadNews() {
@@ -68,7 +82,7 @@ async function loadNews() {
     renderArticles(articles);
 
   } catch (err) {
-    console.error(err);
+    console.error("News load error:", err);
   }
 }
 
@@ -140,7 +154,7 @@ function renderArticles(articles) {
 
 
 /* ==============================
-GOOGLE-STYLE SEARCH
+GOOGLE-STYLE SCORING
 ============================== */
 
 function scoreArticle(a, q) {
@@ -159,7 +173,7 @@ function scoreArticle(a, q) {
 
 
 /* ==============================
-SEARCH
+SEARCH (STABLE + MOBILE SAFE)
 ============================== */
 
 async function initSearch() {
@@ -189,19 +203,19 @@ async function initSearch() {
 
 
 /* ==============================
-INIT
+INIT (FIXED - NO TIMEOUT HACKS)
 ============================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+  // 1. load UI
   await loadNavbar();
   await loadFooter();
 
-  // tärkeä: odota että navbar (hakukenttä) renderöityy
-  setTimeout(() => {
-    initSearch();
-  }, 50);
-
-  loadNews();
+  // 2. wait safe DOM paint cycle
+  requestAnimationFrame(async () => {
+    await initSearch();
+    await loadNews();
+  });
 
 });
