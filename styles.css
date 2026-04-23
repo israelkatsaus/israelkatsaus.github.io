@@ -376,6 +376,28 @@ SHARE BUTTONS
 }
 
 /* =================================
+ARCHIVE TITLE
+================================= */
+
+.archive-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.archive-title::after {
+  content: "";
+  width: 60px;
+  height: 3px;
+  background: #111;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+/* =================================
 TABLET
 ================================= */
 
