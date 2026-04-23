@@ -31,6 +31,12 @@ html, body {
   background: #f8f9fa;
 }
 
+/* 🔥 FIX: linkkien alleviivaukset pois (TÄRKEÄ) */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -48,7 +54,7 @@ CONTAINER
 }
 
 /* =================================
-NAVBAR (FIXED MOBILE STABILITY)
+NAVBAR
 ================================= */
 
 #navbar {
@@ -71,12 +77,10 @@ NAVBAR (FIXED MOBILE STABILITY)
   gap: 16px;
 }
 
-/* LOGO */
 .logo img {
   height: 58px;
 }
 
-/* NAV LINKS */
 .nav-links {
   display: flex;
   justify-content: center;
@@ -87,7 +91,6 @@ NAVBAR (FIXED MOBILE STABILITY)
   font-size: 14px;
   font-weight: 700;
   color: white;
-  text-decoration: none;
   padding: 10px 16px;
   border-radius: 4px;
   white-space: nowrap;
@@ -97,7 +100,6 @@ NAVBAR (FIXED MOBILE STABILITY)
   background: rgba(255,255,255,0.18);
 }
 
-/* MENU */
 .menu {
   font-size: 32px;
   color: white;
@@ -107,7 +109,6 @@ NAVBAR (FIXED MOBILE STABILITY)
   cursor: pointer;
 }
 
-/* SEARCH */
 .search-box input {
   padding: 8px 12px;
   border-radius: 20px;
@@ -193,13 +194,12 @@ TABLET
   }
 
   .small-news {
-    grid-column: auto;
     grid-template-columns: 1fr;
   }
 }
 
 /* =================================
-MOBILE (FIXED COMPLETELY)
+MOBILE
 ================================= */
 
 @media (max-width: 768px) {
@@ -212,7 +212,6 @@ MOBILE (FIXED COMPLETELY)
     display: block;
   }
 
-  /* NAV MENU FULL WIDTH FIX */
   .nav-links {
     position: absolute;
     top: 78px;
@@ -242,12 +241,10 @@ MOBILE (FIXED COMPLETELY)
     padding: 16px 20px;
   }
 
-  /* SEARCH FIX */
   .search-box input {
     width: 120px;
   }
 
-  /* NEWS STACK */
   .news-layout {
     grid-template-columns: 1fr;
   }
@@ -270,7 +267,6 @@ MOBILE (FIXED COMPLETELY)
     font-size: 0.95rem;
   }
 
-  /* ARTICLE FIX */
   .article-container {
     grid-template-columns: 1fr;
     margin: 0;
