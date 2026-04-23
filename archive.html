@@ -35,23 +35,23 @@
     }
 
     .card h2 {
-  font-size: 19px;
-  line-height: 1.2;
-  margin: 8px 0;
-}
+      font-size: 19px;
+      line-height: 1.2;
+      margin: 8px 0;
+    }
 
     .card p:nth-of-type(1) {
-  font-size: 12px;
-  color: var(--muted);
-  font-style: italic;
-  opacity: 0.8;
-}
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      opacity: 0.8;
+    }
 
     .card p:nth-of-type(2) {
-  font-size: 16px;
-  line-height: 1.2;
-  color: #444;
-}
+      font-size: 16px;
+      line-height: 1.2;
+      color: #444;
+    }
   </style>
 </head>
 
@@ -63,47 +63,15 @@
 <div class="container">
   <h1>Uutisarkisto</h1>
 
-  <!-- Uutiset -->
-  <div id="news" class="grid"></div>
+  <!-- 🔥 TÄRKEÄ: oikea container hakua varten -->
+  <div id="archiveContainer"></div>
 </div>
 
 <!-- FOOTER -->
 <div id="footer"></div>
 
+<!-- 🔥 VAIN YKSI SCRIPT -->
 <script src="script.js"></script>
-
-<script>
-/* ==============================
-LOAD NEWS
-============================== */
-
-fetch("news.json")
-  .then(res => res.json())
-  .then(data => {
-    const news = data.articles;
-
-    news.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    document.getElementById("news").innerHTML =
-      news.map(item => `
-        <a href="uutinen.html?id=${item.id}" class="card">
-          <img src="${item.image}" alt="">
-          <h2>${item.title}</h2>
-          <p>${item.date}</p>
-          <p>${item.excerpt || ""}</p>
-        </a>
-      `).join("");
-  });
-
-/* ==============================
-INIT
-============================== */
-
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadNavbar();
-  await loadFooter();
-});
-</script>
 
 </body>
 </html>
