@@ -32,9 +32,7 @@ function closeMenu() {
 }
 
 document.addEventListener("click", (e) => {
-  if (e.target.closest(".nav-links a")) {
-    closeMenu();
-  }
+  if (e.target.closest(".nav-links a")) closeMenu();
 });
 
 
@@ -48,19 +46,14 @@ function stripHtml(html) {
   return div.textContent || div.innerText || "";
 }
 
-
-/* ==============================
-CONTAINER (INDEX + ARCHIVE)
-============================== */
-
-function getNewsContainer() {
+function getContainer() {
   return document.getElementById("newsContainer") ||
          document.getElementById("archiveContainer");
 }
 
 
 /* ==============================
-NEWS LOAD
+LOAD NEWS (YHTEINEN)
 ============================== */
 
 async function loadNews() {
@@ -68,14 +61,11 @@ async function loadNews() {
     const res = await fetch("news.json");
     const data = await res.json();
 
-    const articles = (data?.articles || [])
+    const articles = (data.articles || [])
       .filter(a => a.date)
       .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    const container = getNewsContainer();
-    if (!container) return;
-
-    renderNewsLayout(articles);
+    renderArticles(articles);
 
   } catch (err) {
     console.error(err);
@@ -84,18 +74,15 @@ async function loadNews() {
 
 
 /* ==============================
-RENDER
+RENDER FRONT PAGE
 ============================== */
 
-function renderNewsLayout(articles) {
-  const container = getNewsContainer();
-  if (!container || !articles.length) return;
-
+function renderFrontPage(articles, container) {
   const main = articles[0];
 
   let html = `
     <a href="uutinen.html?id=${main.id}" class="main-article">
-      <img src="${main.image}" alt="${main.title}" loading="lazy">
+      <img src="${main.image}" alt="${main.title}">
       <div class="main-text">
         <h2>${main.title}</h2>
         <p>${main.excerpt || ""}</p>
@@ -105,7 +92,7 @@ function renderNewsLayout(articles) {
     <div class="small-news">
       ${articles.slice(1, 5).map(a => `
         <a href="uutinen.html?id=${a.id}" class="news-card">
-          <img src="${a.image}" alt="${a.title}" loading="lazy">
+          <img src="${a.image}" alt="${a.title}">
           <h3>${a.title}</h3>
         </a>
       `).join("")}
@@ -117,25 +104,54 @@ function renderNewsLayout(articles) {
 
 
 /* ==============================
+RENDER ARCHIVE
+============================== */
+
+function renderArchive(articles, container) {
+  container.innerHTML = `
+    <div class="grid">
+      ${articles.map(a => `
+        <a href="uutinen.html?id=${a.id}" class="card">
+          <img src="${a.image}" alt="">
+          <h2>${a.title}</h2>
+          <p>${a.date}</p>
+          <p>${a.excerpt || ""}</p>
+        </a>
+      `).join("")}
+    </div>
+  `;
+}
+
+
+/* ==============================
+RENDER SWITCH
+============================== */
+
+function renderArticles(articles) {
+  const container = getContainer();
+  if (!container || !articles.length) return;
+
+  if (container.id === "archiveContainer") {
+    renderArchive(articles, container);
+  } else {
+    renderFrontPage(articles, container);
+  }
+}
+
+
+/* ==============================
 GOOGLE-STYLE SEARCH
 ============================== */
 
-function scoreArticle(article, query) {
-  const q = query.toLowerCase();
-
-  const title = (article.title || "").toLowerCase();
-  const excerpt = (article.excerpt || "").toLowerCase();
-  const content = stripHtml(article.content || "").toLowerCase();
+function scoreArticle(a, q) {
+  const title = (a.title || "").toLowerCase();
+  const excerpt = (a.excerpt || "").toLowerCase();
+  const content = stripHtml(a.content || "").toLowerCase();
 
   let score = 0;
 
-  // 🔥 OTSIKKO = 5x paino
   if (title.includes(q)) score += 50;
-
-  // 🟡 INGRESSI = 3x paino
   if (excerpt.includes(q)) score += 30;
-
-  // 🔵 LEIPÄTEKSTI = 1x paino
   if (content.includes(q)) score += 10;
 
   return score;
@@ -143,57 +159,32 @@ function scoreArticle(article, query) {
 
 
 /* ==============================
-SEARCH INIT
+SEARCH
 ============================== */
 
 async function initSearch() {
   const input = document.getElementById("searchInput");
   if (!input) return;
 
-  try {
-    const res = await fetch("news.json");
-    const data = await res.json();
-    const articles = data.articles || [];
+  const res = await fetch("news.json");
+  const data = await res.json();
+  const articles = data.articles || [];
 
-    input.addEventListener("input", () => {
-      const query = input.value.toLowerCase().trim();
+  input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
 
-      if (!query) {
-        loadNews();
-        return;
-      }
+    if (!q) {
+      loadNews();
+      return;
+    }
 
-      const results = articles
-        .map(a => ({
-          ...a,
-          score: scoreArticle(a, query)
-        }))
-        .filter(a => a.score > 0)
-        .sort((a, b) => b.score - a.score);
+    const results = articles
+      .map(a => ({ ...a, score: scoreArticle(a, q) }))
+      .filter(a => a.score > 0)
+      .sort((a, b) => b.score - a.score);
 
-      renderSearchResults(results);
-    });
-
-  } catch (err) {
-    console.error("Search error:", err);
-  }
-}
-
-
-/* ==============================
-SEARCH RENDER
-============================== */
-
-function renderSearchResults(results) {
-  const container = getNewsContainer();
-  if (!container) return;
-
-  if (!results.length) {
-    container.innerHTML = "<p>Ei hakutuloksia.</p>";
-    return;
-  }
-
-  renderNewsLayout(results);
+    renderArticles(results);
+  });
 }
 
 
@@ -203,15 +194,14 @@ INIT
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  await document.fonts.ready;
-
   await loadNavbar();
   await loadFooter();
 
-  await initSearch();
+  // tärkeä: odota että navbar (hakukenttä) renderöityy
+  setTimeout(() => {
+    initSearch();
+  }, 50);
 
-  requestAnimationFrame(() => {
-    loadNews();
-  });
+  loadNews();
 
 });
