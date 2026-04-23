@@ -147,10 +147,15 @@ async function initSearch() {
         return;
       }
 
-      const filtered = articles.filter(a =>
-        a.title.toLowerCase().includes(query) ||
-        (a.excerpt && a.excerpt.toLowerCase().includes(query))
-      );
+      const filtered = articles.filter(a => {
+  const fullText = (
+    (a.title || "") + " " +
+    (a.excerpt || "") + " " +
+    stripHtml(a.content || "")
+  ).toLowerCase();
+
+  return fullText.includes(query);
+});
 
       renderSearchResults(filtered);
     });
