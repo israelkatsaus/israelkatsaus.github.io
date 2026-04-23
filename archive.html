@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="fi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <h1 class="archive-title">Uutisarkisto</h1>
-  
+  <meta name="description" content="Uutisarkisto – kaikki artikkelit ja ajankohtaiset uutiset">
+
+  <title>Uutisarkisto</title>
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 
@@ -19,10 +22,11 @@
       display: block;
       text-decoration: none;
       color: black;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       padding: 10px;
       border-radius: 10px;
       transition: transform 0.2s;
+      background: #fff;
     }
 
     .card:hover {
@@ -42,14 +46,14 @@
 
     .card p:nth-of-type(1) {
       font-size: 12px;
-      color: var(--muted);
+      color: #666;
       font-style: italic;
       opacity: 0.8;
     }
 
     .card p:nth-of-type(2) {
-      font-size: 16px;
-      line-height: 1.2;
+      font-size: 15px;
+      line-height: 1.4;
       color: #444;
     }
   </style>
@@ -60,17 +64,20 @@
 <!-- NAVBAR -->
 <div id="navbar"></div>
 
+<!-- 🔥 OTSIKKO OIKEASSA PAIKASSA -->
 <div class="container">
-  <h1>Uutisarkisto</h1>
 
-  <!-- 🔥 TÄRKEÄ: oikea container hakua varten -->
-  <div id="archiveContainer"></div>
+  <h1 class="archive-title">Uutisarkisto</h1>
+
+  <!-- UUTISET -->
+  <div id="archiveContainer" class="grid"></div>
+
 </div>
 
 <!-- FOOTER -->
 <div id="footer"></div>
 
-<!-- 🔥 VAIN YKSI SCRIPT -->
+<!-- SCRIPT -->
 <script src="script.js"></script>
 
 </body>
