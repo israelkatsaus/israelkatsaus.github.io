@@ -1,4 +1,3 @@
-
 /* =================================
 GLOBAL (LOCKED)
 ================================= */
@@ -39,20 +38,11 @@ img {
 }
 
 /* =================================
-🔧 FIX: LINKKIALLEVIIVAUS (TÄRKEIN KORJAUS)
-================================= */
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* =================================
-🧠 NAVBAR SHIFT FIX
+🧠 FIX: NAVBAR LAYOUT SHIFT (TÄRKEÄ)
 ================================= */
 
 #navbar {
-  min-height: 78px;
+  min-height: 78px; /* estää sisällön nousun navbarin päälle */
 }
 
 /* =================================
@@ -99,9 +89,9 @@ NAVBAR
   font-size: 14px;
   font-weight: 700;
   color: white;
+  text-decoration: none;
   padding: 10px 16px;
   border-radius: 4px;
-  transition: background 0.2s ease;
 }
 
 .nav-links a:hover {
@@ -192,7 +182,7 @@ FOOTER
 }
 
 /* =================================
-ARCHIVE TITLE (MINIMALISTINEN)
+ARCHIVE TITLE (PARANNETTU)
 ================================= */
 
 .archive-title {
@@ -207,6 +197,7 @@ ARCHIVE TITLE (MINIMALISTINEN)
   position: relative;
 }
 
+/* hyvin kevyt “editoriaalinen” viiva */
 .archive-title::after {
   content: "";
   display: block;
