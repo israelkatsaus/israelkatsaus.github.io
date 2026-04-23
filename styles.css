@@ -178,6 +178,19 @@ ARTICLE
   white-space: normal;
 }
 
+/* SHARE BUTTONS */
+.share-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.share-buttons img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
 /* =================================
 FOOTER
 ================================= */
