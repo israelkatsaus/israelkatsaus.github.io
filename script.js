@@ -46,6 +46,17 @@ document.addEventListener("click", (e) => {
 
 
 /* ==============================
+UTIL: HTML STRIP
+============================== */
+
+function stripHtml(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html || "";
+  return div.textContent || div.innerText || "";
+}
+
+
+/* ==============================
 NEWS (FRONT PAGE)
 ============================== */
 
@@ -85,12 +96,12 @@ async function loadNews() {
 
 
 /* ==============================
-RENDER (YHTEINEN LAYOUT)
+RENDER (FRONT PAGE LAYOUT)
 ============================== */
 
 function renderNewsLayout(articles) {
   const container = document.getElementById("newsContainer");
-  if (!container) return;
+  if (!container || !articles.length) return;
 
   const main = articles[0];
 
@@ -118,12 +129,6 @@ function renderNewsLayout(articles) {
   container.innerHTML = html;
 }
 
-function stripHtml(html) {
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  return div.textContent || div.innerText || "";
-}
-
 
 /* ==============================
 SEARCH (LIVE FILTER)
@@ -139,23 +144,23 @@ async function initSearch() {
     const articles = data.articles || [];
 
     input.addEventListener("input", () => {
-      const query = input.value.toLowerCase();
+      const query = input.value.toLowerCase().trim();
 
-      // 🔄 jos tyhjä → palauta normaalit uutiset
+      // tyhjä haku → normaalinäkymä
       if (!query) {
         loadNews();
         return;
       }
 
       const filtered = articles.filter(a => {
-  const fullText = (
-    (a.title || "") + " " +
-    (a.excerpt || "") + " " +
-    stripHtml(a.content || "")
-  ).toLowerCase();
+        const fullText = (
+          (a.title || "") + " " +
+          (a.excerpt || "") + " " +
+          stripHtml(a.content || "")
+        ).toLowerCase();
 
-  return fullText.includes(query);
-});
+        return fullText.includes(query);
+      });
 
       renderSearchResults(filtered);
     });
@@ -174,7 +179,7 @@ function renderSearchResults(results) {
   const container = document.getElementById("newsContainer");
   if (!container) return;
 
-  if (results.length === 0) {
+  if (!results.length) {
     container.innerHTML = "<p>Ei hakutuloksia.</p>";
     return;
   }
@@ -184,26 +189,20 @@ function renderSearchResults(results) {
 
 
 /* ==============================
-INIT (FONT SAFE)
+INIT (SAFE + CLEAN)
 ============================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  // odota että fontit ovat ladattu
   await document.fonts.ready;
 
-  // lataa navbar + footer
   await loadNavbar();
   await loadFooter();
 
   await initSearch();
 
-  // 🔍 käynnistä haku
-  await initSearch();
-
-  // renderöi sisältö
   requestAnimationFrame(() => {
-    if (typeof loadNews === "function") loadNews();
+    loadNews();
     if (typeof loadArticle === "function") loadArticle();
     if (typeof loadLatest === "function") loadLatest();
   });
