@@ -173,6 +173,10 @@ ARTICLE
   margin: 40px auto;
 }
 
+.article-content {
+  white-space: normal;
+}
+
 /* =================================
 FOOTER
 ================================= */
