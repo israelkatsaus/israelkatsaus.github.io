@@ -118,6 +118,12 @@ function renderNewsLayout(articles) {
   container.innerHTML = html;
 }
 
+function stripHtml(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent || div.innerText || "";
+}
+
 
 /* ==============================
 SEARCH (LIVE FILTER)
