@@ -271,8 +271,11 @@ async function loadArticle() {
       </div>
 
       <div class="article-content">
-        ${article.content}
-      </div>
+        ${article.content
+          .split("\n\n")
+          .map(p => `<p>${p}</p>`)
+          .join("")}
+</div>
 
       <div class="share-buttons">
         <a href="https://www.facebook.com/sharer/sharer.php?u=${window.location.href}" target="_blank">
