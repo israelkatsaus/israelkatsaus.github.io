@@ -173,30 +173,6 @@ ARTICLE
 }
 
 /* =================================
-ARCHIVE TITLE (CLEAN MINIMAL)
-================================= */
-
-.archive-title {
-  font-size: 26px;
-  font-weight: 600;
-  letter-spacing: -0.4px;
-  margin: 24px 0 20px;
-  color: #111;
-  position: relative;
-}
-
-/* erittäin kevyt viiva */
-.archive-title::after {
-  content: "";
-  display: block;
-  width: 34px;
-  height: 2px;
-  background: #111;
-  margin-top: 8px;
-  opacity: 0.6;
-}
-
-/* =================================
 FOOTER
 ================================= */
 
