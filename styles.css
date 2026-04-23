@@ -5,7 +5,7 @@ GLOBAL (LOCKED)
 html {
   font-size: 16px;
   overflow-y: scroll;
-  scrollbar-gutter: stable; /* 🔒 estää layout shiftin */
+  scrollbar-gutter: stable;
 }
 
 * {
@@ -26,7 +26,6 @@ html {
 
 html, body {
   font-family: "DM Sans", serif;
-  font-size: 16px;
   line-height: 1.7;
   color: var(--text);
   background: #f8f9fa;
@@ -38,7 +37,7 @@ img {
 }
 
 /* =================================
-CONTAINER (LOCKED SINGLE SOURCE)
+CONTAINER
 ================================= */
 
 .container {
@@ -49,8 +48,12 @@ CONTAINER (LOCKED SINGLE SOURCE)
 }
 
 /* =================================
-NAVBAR (PIXEL STABLE)
+NAVBAR (FIXED MOBILE STABILITY)
 ================================= */
+
+#navbar {
+  min-height: 78px;
+}
 
 .navbar {
   background: var(--primary);
@@ -65,12 +68,12 @@ NAVBAR (PIXEL STABLE)
   grid-template-columns: auto 1fr auto;
   align-items: center;
   min-height: 78px;
+  gap: 16px;
 }
 
 /* LOGO */
 .logo img {
   height: 58px;
-  display: block;
 }
 
 /* NAV LINKS */
@@ -81,18 +84,13 @@ NAVBAR (PIXEL STABLE)
 }
 
 .nav-links a {
-  font-family: "DM Sans", serif;
   font-size: 14px;
   font-weight: 700;
-
   color: white;
   text-decoration: none;
-
   padding: 10px 16px;
   border-radius: 4px;
-
   white-space: nowrap;
-  transition: 0.25s;
 }
 
 .nav-links a:hover {
@@ -103,12 +101,13 @@ NAVBAR (PIXEL STABLE)
 .menu {
   font-size: 32px;
   color: white;
-  cursor: pointer;
   background: none;
   border: none;
   display: none;
+  cursor: pointer;
 }
 
+/* SEARCH */
 .search-box input {
   padding: 8px 12px;
   border-radius: 20px;
@@ -118,35 +117,18 @@ NAVBAR (PIXEL STABLE)
   width: 180px;
 }
 
-.search-box input:focus {
-  width: 220px;
-}
-
 /* =================================
-NEWS FRONT PAGE (PRO VERSION)
+NEWS
 ================================= */
 
 .news-wrapper {
   margin: 50px 0 70px;
 }
 
-/* 🔲 PÄÄLAYOUT */
 .news-layout {
   display: grid;
   grid-template-columns: 2.2fr 1fr 1fr;
   gap: 28px;
-  align-items: start;
-}
-
-/* 🟦 PÄÄUUTINEN */
-.main-article {
-  grid-column: 1;
-  grid-row: span 2;
-
-  text-decoration: none;
-  color: inherit;
-
-  display: block;
 }
 
 .main-article img {
@@ -156,118 +138,62 @@ NEWS FRONT PAGE (PRO VERSION)
   border-radius: 10px;
 }
 
-/* 📰 PÄÄUUTISEN TEKSTI */
 .main-text h2 {
-  margin: 14px 0 8px;
   font-size: 2rem;
-  line-height: 1.15;
   font-weight: 800;
-  letter-spacing: -0.5px;
 }
 
 .main-text p {
   font-size: 15px;
-  line-height: 1.65;
   color: #444;
 }
 
-/* 🟩 PIENUUTISET */
 .small-news {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
-
-  grid-column: 2 / 4;
-}
-
-/* 🗞️ UUTISKORTTI */
-.news-card {
-  text-decoration: none;
-  color: inherit;
-
-  display: block;
-  transition: transform 0.2s ease;
-}
-
-.news-card:hover {
-  transform: translateY(-4px);
 }
 
 .news-card img {
-  width: 100%;
   height: 140px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-/* 📰 OTSIKKO PIENUUTISISSA */
-.news-card h3 {
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.3;
-  font-weight: 700;
-  color: #111;
-}
-
 /* =================================
-ARTICLE PAGE LAYOUT (KORJAUS)
+ARTICLE
 ================================= */
-
-.main-content h1 {
-  font-size: 2.5rem;
-  line-height: 1.2;           
-  font-weight: 800;
-  letter-spacing: -0.7px;
-  margin: 0 0 24px 0;
-  color: #111;
-}
 
 .article-container {
   display: grid;
   grid-template-columns: 2.2fr 1fr;
   gap: 40px;
-
   max-width: 1100px;
   margin: 40px auto;
-  padding: 0 20px;
 }
 
-.main-content {
-  background: white;
-  padding: 35px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-}
-.main-content p {
-  margin-bottom: 1em;
-  overflow-wrap: break-word;
-  word-break: break-word;
+/* =================================
+ARCHIVE TITLE (CLEAN MINIMAL)
+================================= */
+
+.archive-title {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin: 24px 0 20px;
+  color: #111;
+  position: relative;
 }
 
-.sidebar {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-  height: fit-content;
-}
-
-.sidebar h3 {
-  margin-bottom: 16px;
-  border-bottom: 2px solid var(--primary);
-  padding-bottom: 8px;
-}
-
-.sidebar-link {
+/* erittäin kevyt viiva */
+.archive-title::after {
+  content: "";
   display: block;
-  margin-bottom: 12px;
-  text-decoration: none;
-  color: #222;
-  font-weight: 500;
-}
-
-.sidebar-link:hover {
-  color: var(--primary);
+  width: 34px;
+  height: 2px;
+  background: #111;
+  margin-top: 8px;
+  opacity: 0.6;
 }
 
 /* =================================
@@ -279,122 +205,6 @@ FOOTER
   color: #cfd6dd;
   margin-top: 80px;
   padding: 50px 0 25px;
-}
-
-.footer-container {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 30px;
-}
-
-.footer-left h3 {
-  color: #fff;
-  margin-bottom: 2px;
-}
-
-.footer-left p {
-  margin-top: 0;
-}
-
-.footer-right a {
-  color: #2a7fff;
-  text-decoration: none;
-}
-
-.footer-right a:hover {
-  color: #1a5fcc;
-  text-decoration: underline;
-}
-
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-links a {
-  color: #cfd6dd;
-  text-decoration: none;
-}
-
-.footer-bottom {
-  grid-column: 1 / -1;
-  text-align: center;
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  font-size: .9rem;
-}
-
-/* =================================
-ARTICLE SOURCE 
-================================= */
-
-.article-source {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  margin-top: 20px;
-  padding-top: 12px;
-
-  border-top: 1px solid #eee;
-}
-
-.article-source img {
-  width: 80px;
-  height: auto;
-  object-fit: contain;
-}
-
-.article-source span {
-  font-size: 14px;
-  color: #555;
-  font-weight: 500;
-}
-
-/* =================================
-SHARE BUTTONS
-================================= */
-
-.share-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.share-buttons a img {
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.share-buttons a img:hover {
-  transform: scale(1.15);
-  opacity: 0.8;
-}
-
-/* =================================
-ARCHIVE TITLE
-================================= */
-
-.archive-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.archive-title::after {
-  content: "";
-  width: 60px;
-  height: 3px;
-  background: #111;
-  position: absolute;
-  left: 0;
-  bottom: 0;
 }
 
 /* =================================
@@ -413,30 +223,37 @@ TABLET
 }
 
 /* =================================
-MOBILE
+MOBILE (FIXED COMPLETELY)
 ================================= */
 
 @media (max-width: 768px) {
+
+  .navbar-inner {
+    grid-template-columns: auto auto auto;
+  }
 
   .menu {
     display: block;
   }
 
+  /* NAV MENU FULL WIDTH FIX */
   .nav-links {
     position: absolute;
     top: 78px;
     left: 0;
     width: 100%;
+
     background: var(--primary);
 
     flex-direction: column;
+    align-items: flex-start;
+
     gap: 0;
 
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease;
+    transition: max-height 0.35s ease;
 
-    padding: 0 20px;
     z-index: 999;
   }
 
@@ -445,29 +262,27 @@ MOBILE
   }
 
   .nav-links a {
-    padding: 16px 25px;
-    text-align: left;
+    width: 100%;
+    padding: 16px 20px;
   }
 
+  /* SEARCH FIX */
+  .search-box input {
+    width: 120px;
+  }
+
+  /* NEWS STACK */
   .news-layout {
     grid-template-columns: 1fr;
   }
 
-  .article-container {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    margin-top: 24px;
-  }
-
   .main-article img {
-    height: 260px;
+    height: 240px;
   }
 
   .news-card {
     display: flex;
-    gap: 14px;
+    gap: 12px;
   }
 
   .news-card img {
@@ -476,32 +291,17 @@ MOBILE
   }
 
   .news-card h3 {
-    margin: 0;
-    font-size: .95rem;
+    font-size: 0.95rem;
   }
 
-  .footer-container {
+  /* ARTICLE FIX */
+  .article-container {
     grid-template-columns: 1fr;
-    text-align: center;
+    margin: 0;
+    padding: 0 15px;
   }
 
-  .search-box input {
-    width: 80%;
-    max-width: 100px;
-    margin-left: 40px;
-  }
-  
   .main-content {
-    padding: 12px 14px;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  .main-content h1 {
-    font-size: 1.8rem;
-  }
-
-  .logo img {
-    height: 45px;
+    padding: 14px;
   }
 }
