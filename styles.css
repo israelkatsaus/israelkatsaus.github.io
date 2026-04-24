@@ -178,6 +178,38 @@ ARTICLE
   margin: 40px auto;
 }
 
+/* HEADER (kuva + kategoria + otsikko + meta) */
+.article-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.article-header img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* KATEGORIA */
+.category {
+  font-size: 13px;
+  color: #666;
+}
+
+/* OTSIKKO */
+.article-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+/* META (päivämäärä jne) */
+.article-meta {
+  font-size: 13px;
+  color: #666;
+}
+
+/* SISÄLTÖ */
 .article-content {
   white-space: normal;
 }
@@ -187,11 +219,32 @@ ARTICLE
   line-height: 1.7;
 }
 
-.article-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 10px;
+/* SHARE BUTTONS */
+.share-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.share-buttons img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* SOURCE */
+.article-source {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #444;
+}
+
+.article-source img {
+  height: 28px;
 }
 
 /* SHARE BUTTONS */
