@@ -178,6 +178,11 @@ ARTICLE
   white-space: normal;
 }
 
+.article-content p {
+  margin-bottom: 1.2em;
+  line-height: 1.7;
+}
+
 /* SHARE BUTTONS */
 .share-buttons {
   display: flex;
