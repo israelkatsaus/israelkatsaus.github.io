@@ -1,268 +1,131 @@
-/* ==============================
-GLOBAL GUARD (ESTÄ TUPLAINIT)
-============================== */
+/* =========================================
+APP CORE (SINGLE ENTRY)
+========================================= */
 
-if (!window.__appInitialized) {
-  window.__appInitialized = true;
+const App = {
+  data: null,
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    await loadNavbar();
-    await loadFooter();
+  async init() {
+    await this.loadGlobalUI();
+    this.data = await this.fetchNews();
 
-    // odota render cycle
-    requestAnimationFrame(async () => {
-      await initSearch();
-      await loadNews();
-      await loadArticle();
-      await loadLatest();
-    });
-  });
-}
+    this.route();
+  },
 
+  /* =========================
+  GLOBAL UI
+  ========================= */
 
-/* ==============================
-LOAD MODULES
-============================== */
+  async loadGlobalUI() {
+    await this.loadNavbar();
+    await this.loadFooter();
+  },
 
-async function loadNavbar() {
-  const container = document.getElementById("navbar");
-  if (!container || container.innerHTML.trim() !== "") return;
+  async loadNavbar() {
+    const el = document.getElementById("navbar");
+    if (!el) return;
 
-  try {
     const res = await fetch("navbar.html");
-    const html = await res.text();
-    container.innerHTML = html;
-  } catch (err) {
-    console.error("Navbar load error:", err);
-  }
-}
+    el.innerHTML = await res.text();
+  },
 
-async function loadFooter() {
-  const container = document.getElementById("footer");
-  if (!container || container.innerHTML.trim() !== "") return;
+  async loadFooter() {
+    const el = document.getElementById("footer");
+    if (!el) return;
 
-  try {
     const res = await fetch("footer.html");
-    const html = await res.text();
-    container.innerHTML = html;
-  } catch (err) {
-    console.error("Footer load error:", err);
-  }
-}
+    el.innerHTML = await res.text();
+  },
 
+  /* =========================
+  DATA
+  ========================= */
 
-/* ==============================
-MENU (MOBILE SAFE)
-============================== */
+  async fetchNews() {
+    try {
+      const res = await fetch("news.json");
+      const data = await res.json();
 
-function toggleMenu() {
-  const nav = document.getElementById("navLinks");
-  if (nav) nav.classList.toggle("active");
-}
+      return (data.articles || [])
+        .filter(a => a.date)
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-function closeMenu() {
-  const nav = document.getElementById("navLinks");
-  if (nav) nav.classList.remove("active");
-}
+    } catch (err) {
+      console.error("News fetch error:", err);
+      return [];
+    }
+  },
 
-document.addEventListener("click", (e) => {
-  const nav = document.getElementById("navLinks");
-  if (!nav) return;
+  /* =========================
+  ROUTER
+  ========================= */
 
-  if (
-    e.target.closest(".nav-links a") ||
-    (!e.target.closest(".nav-links") && !e.target.closest(".menu"))
-  ) {
-    closeMenu();
-  }
-});
+  route() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
+    if (id) {
+      this.renderArticle(id);
+    } else {
+      const archive = document.getElementById("archiveContainer");
 
-/* ==============================
-UTIL
-============================== */
-
-function stripHtml(html) {
-  const div = document.createElement("div");
-  div.innerHTML = html || "";
-  return div.textContent || div.innerText || "";
-}
-
-function getContainer() {
-  return document.getElementById("archiveContainer")
-    || document.getElementById("newsContainer");
-}
-
-
-/* ==============================
-NEWS
-============================== */
-
-async function loadNews() {
-  const container = getContainer();
-  if (!container) return; // ei etusivulla
-
-  try {
-    const res = await fetch("news.json");
-    const data = await res.json();
-
-    const articles = (data.articles || [])
-      .filter(a => a.date)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    renderArticles(articles);
-
-  } catch (err) {
-    console.error("News load error:", err);
-  }
-}
-
-
-/* ==============================
-RENDER FRONT PAGE
-============================== */
-
-function renderFrontPage(articles, container) {
-  if (!articles.length) return;
-
-  const main = articles[0];
-
-  container.innerHTML = `
-    <a href="uutinen.html?id=${main.id}" class="main-article">
-      <img src="${main.image}" alt="${main.title}">
-      <div class="main-text">
-        <h2>${main.title}</h2>
-        <p>${main.excerpt || ""}</p>
-      </div>
-    </a>
-
-    <div class="small-news">
-      ${articles.slice(1, 5).map(a => `
-        <a href="uutinen.html?id=${a.id}" class="news-card">
-          <img src="${a.image}" alt="${a.title}">
-          <h3>${a.title}</h3>
-        </a>
-      `).join("")}
-    </div>
-  `;
-}
-
-
-/* ==============================
-RENDER ARCHIVE
-============================== */
-
-function renderArchive(articles, container) {
-  container.innerHTML = `
-    <div class="grid">
-      ${articles.map(a => `
-        <a href="uutinen.html?id=${a.id}" class="card">
-          <img src="${a.image}" alt="">
-          <h2>${a.title}</h2>
-          <p>${a.date}</p>
-          <p>${a.excerpt || ""}</p>
-        </a>
-      `).join("")}
-    </div>
-  `;
-}
-
-
-/* ==============================
-SWITCH
-============================== */
-
-function renderArticles(articles) {
-  const container = getContainer();
-  if (!container) return;
-
-  if (container.id === "archiveContainer") {
-    renderArchive(articles, container);
-  } else {
-    renderFrontPage(articles, container);
-  }
-}
-
-
-/* ==============================
-SEARCH
-============================== */
-
-function scoreArticle(a, q) {
-  const title = (a.title || "").toLowerCase();
-  const excerpt = (a.excerpt || "").toLowerCase();
-  const content = stripHtml(a.content || "").toLowerCase();
-
-  let score = 0;
-
-  if (title.includes(q)) score += 50;
-  if (excerpt.includes(q)) score += 30;
-  if (content.includes(q)) score += 10;
-
-  return score;
-}
-
-async function initSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return; // ei etusivulla
-
-  try {
-    const res = await fetch("news.json");
-    const data = await res.json();
-    const articles = data.articles || [];
-
-    input.addEventListener("input", () => {
-      const q = input.value.toLowerCase().trim();
-
-      if (!q) {
-        loadNews();
-        return;
+      if (archive) {
+        this.renderArchive();
+      } else {
+        this.renderHome();
       }
+    }
+  },
 
-      const results = articles
-        .map(a => ({ ...a, score: scoreArticle(a, q) }))
-        .filter(a => a.score > 0)
-        .sort((a, b) => b.score - a.score);
+  /* =========================
+  HOME
+  ========================= */
 
-      renderArticles(results);
-    });
+  renderHome() {
+    const container = document.getElementById("newsContainer");
+    if (!container || !this.data.length) return;
 
-  } catch (err) {
-    console.error("Search error:", err);
-  }
-}
+    const main = this.data[0];
+    const rest = this.data.slice(1, 5);
 
+    container.innerHTML = `
+      <a class="main-article" href="uutinen.html?id=${main.id}">
+        <img src="${main.image}" alt="${main.title}">
+        <div class="main-text">
+          <h2>${main.title}</h2>
+          <p>${main.excerpt || ""}</p>
+        </div>
+      </a>
 
-/* ==============================
-ARTICLE PAGE
-============================== */
+      <div class="small-news">
+        ${rest.map(a => `
+          <a class="news-card" href="uutinen.html?id=${a.id}">
+            <img src="${a.image}" alt="${a.title}">
+            <h3>${a.title}</h3>
+          </a>
+        `).join("")}
+      </div>
+    `;
+  },
 
-async function loadArticle() {
-  const articleContainer = document.getElementById("article");
-  if (!articleContainer) return; // ei article-sivulla
+  /* =========================
+  ARTICLE
+  ========================= */
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  renderArticle(id) {
+    const container = document.getElementById("article");
+    if (!container) return;
 
-  if (!id) {
-    articleContainer.innerHTML = "<p>Uutista ei löytynyt.</p>";
-    return;
-  }
-
-  try {
-    const res = await fetch("news.json");
-    const data = await res.json();
-
-    const article = data.articles.find(a => a.id == id);
+    const article = this.data.find(a => a.id == id);
 
     if (!article) {
-      articleContainer.innerHTML = "<p>Uutista ei löytynyt.</p>";
+      container.innerHTML = "<p>Uutista ei löytynyt.</p>";
       return;
     }
 
     document.title = article.title;
 
-    articleContainer.innerHTML = `
+    container.innerHTML = `
       <div class="article-header">
         <img src="${article.image}" alt="${article.title}">
         <p class="category">${article.category || ""}</p>
@@ -271,59 +134,38 @@ async function loadArticle() {
       </div>
 
       <div class="article-content">
-        ${article.content
-          .split("\n\n")
-          .map(p => `<p>${p}</p>`)
-          .join("")}
-</div>
-
-      <div class="share-buttons">
-        <a href="https://www.facebook.com/sharer/sharer.php?u=${window.location.href}" target="_blank">
-          <img src="images/facebook.png" alt="Facebook">
-        </a>
-
-        <a href="https://twitter.com/intent/tweet?url=${window.location.href}&text=${article.title}" target="_blank">
-          <img src="images/x.png" alt="X">
-        </a>
-
-        <a href="https://api.whatsapp.com/send?text=${article.title} ${window.location.href}" target="_blank">
-          <img src="images/whatsapp.png" alt="WhatsApp">
-        </a>
-      </div>
-
-      <div class="article-source">
-        <img src="assets/LOGO3.png" alt="Israel-katsaus">
-        <span>Israel-katsaus</span>
+        ${article.content}
       </div>
     `;
+  },
 
-  } catch (err) {
-    console.error("Article load error:", err);
+  /* =========================
+  ARCHIVE
+  ========================= */
+
+  renderArchive() {
+    const container = document.getElementById("archiveContainer");
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="grid">
+        ${this.data.map(a => `
+          <a class="card" href="uutinen.html?id=${a.id}">
+            <img src="${a.image}" alt="${a.title}">
+            <h2>${a.title}</h2>
+            <p>${a.date}</p>
+            <p>${a.excerpt || ""}</p>
+          </a>
+        `).join("")}
+      </div>
+    `;
   }
-}
+};
 
+/* =========================================
+START (ONLY ONE ENTRY POINT)
+========================================= */
 
-/* ==============================
-LATEST SIDEBAR
-============================== */
-
-async function loadLatest() {
-  const latestContainer = document.getElementById("latest");
-  if (!latestContainer) return; // ei article-sivulla
-
-  try {
-    const res = await fetch("news.json");
-    const data = await res.json();
-
-    const latest = data.articles.slice(0, 5);
-
-    latestContainer.innerHTML = latest.map(a => `
-      <a class="sidebar-link" href="uutinen.html?id=${a.id}">
-        ${a.title}
-      </a>
-    `).join("");
-
-  } catch (err) {
-    console.error("Latest load error:", err);
-  }
-}
+document.addEventListener("DOMContentLoaded", () => {
+  App.init();
+});
