@@ -1,5 +1,5 @@
 /* =================================
-GLOBAL (LOCKED)
+GLOBAL
 ================================= */
 
 html {
@@ -12,7 +12,6 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -25,13 +24,13 @@ html {
 }
 
 html, body {
-  font-family: "DM Sans", serif;
+  font-family: "DM Sans", sans-serif;
   line-height: 1.7;
   color: var(--text);
   background: #f8f9fa;
 }
 
-/* LINKS */
+/* linkit */
 a {
   text-decoration: none;
   color: inherit;
@@ -43,7 +42,21 @@ img {
 }
 
 /* =================================
-LAYOUT
+LAYOUT FIX (FOOTER EI KATOA)
+================================= */
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+/* =================================
+CONTAINER
 ================================= */
 
 .container {
@@ -51,13 +64,6 @@ LAYOUT
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-}
-
-/* BODY FLEX (FOOTER ALAS) */
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 /* =================================
@@ -73,12 +79,11 @@ NAVBAR
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .navbar-inner {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   min-height: 78px;
   gap: 16px;
@@ -91,29 +96,19 @@ NAVBAR
 .nav-links {
   display: flex;
   justify-content: center;
-  gap: 32px;
+  gap: 24px;
 }
 
 .nav-links a {
   font-size: 14px;
   font-weight: 700;
   color: white;
-  padding: 10px 16px;
+  padding: 10px 14px;
   border-radius: 4px;
-  white-space: nowrap;
 }
 
 .nav-links a:hover {
-  background: rgba(255,255,255,0.18);
-}
-
-.menu {
-  font-size: 32px;
-  color: white;
-  background: none;
-  border: none;
-  display: none;
-  cursor: pointer;
+  background: rgba(255,255,255,0.15);
 }
 
 .search-box input {
@@ -121,12 +116,19 @@ NAVBAR
   border-radius: 20px;
   border: none;
   outline: none;
-  font-size: 14px;
   width: 180px;
 }
 
+.menu {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+}
+
 /* =================================
-NEWS (FRONT PAGE)
+NEWS FRONT PAGE
 ================================= */
 
 .news-wrapper {
@@ -139,7 +141,7 @@ NEWS (FRONT PAGE)
   gap: 28px;
 }
 
-/* MAIN ARTICLE */
+/* PÄÄUUTINEN */
 .main-article img {
   width: 100%;
   height: 420px;
@@ -148,13 +150,14 @@ NEWS (FRONT PAGE)
 }
 
 .main-text {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .main-text h2 {
   font-size: 2rem;
   font-weight: 800;
   line-height: 1.1;
+  margin-bottom: 8px;
 }
 
 .main-text p {
@@ -162,23 +165,16 @@ NEWS (FRONT PAGE)
   color: #444;
 }
 
-/* SMALL NEWS (2 COLUMNS) */
+/* PIENET UUTISET */
 .small-news {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-/* CARD */
-.news-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .news-card img {
+  height: 120px;
   width: 100%;
-  height: 110px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -186,6 +182,7 @@ NEWS (FRONT PAGE)
 .news-card h3 {
   font-size: 0.95rem;
   line-height: 1.2;
+  margin-top: 6px;
 }
 
 /* =================================
@@ -200,29 +197,26 @@ ARTICLE PAGE
   margin: 40px auto;
 }
 
-.article-header {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .article-header img {
   width: 100%;
   border-radius: 10px;
-}
-
-.category {
-  font-size: 13px;
-  color: var(--muted);
+  margin-bottom: 12px;
 }
 
 .article-title {
   font-size: 2.2rem;
   font-weight: 800;
   line-height: 1.1;
+  margin-bottom: 10px;
 }
 
 .article-meta {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.category {
   font-size: 13px;
   color: var(--muted);
 }
@@ -236,17 +230,17 @@ ARTICLE PAGE
   line-height: 1.7;
 }
 
-/* SHARE */
+/* SHARE BUTTONS (KORJATTU KOKO PROBLEEMA) */
 .share-buttons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   margin-top: 20px;
 }
 
 .share-buttons img {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
 }
 
@@ -257,11 +251,6 @@ ARTICLE PAGE
   gap: 10px;
   margin-top: 20px;
   font-size: 14px;
-  color: #444;
-}
-
-.article-source img {
-  height: 28px;
 }
 
 /* =================================
@@ -271,8 +260,8 @@ FOOTER
 .site-footer {
   background: var(--dark);
   color: #cfd6dd;
-  margin-top: auto;
   padding: 50px 0 25px;
+  margin-top: auto;
 }
 
 /* =================================
@@ -296,11 +285,7 @@ MOBILE
 @media (max-width: 768px) {
 
   .logo img {
-    height: 45px;
-  }
-
-  .navbar-inner {
-    grid-template-columns: auto auto auto;
+    height: 42px;
   }
 
   .menu {
@@ -314,28 +299,24 @@ MOBILE
     width: 100%;
     background: var(--primary);
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s ease;
-    z-index: 999;
+    transition: 0.3s;
   }
 
   .nav-links.active {
-    max-height: 500px;
+    max-height: 400px;
   }
 
   .nav-links a {
-    width: 100%;
-    padding: 16px 20px;
+    padding: 16px;
   }
 
   .search-box input {
     width: 120px;
   }
 
-  .news-layout {
+  .small-news {
     grid-template-columns: 1fr;
   }
 
@@ -343,31 +324,8 @@ MOBILE
     height: 240px;
   }
 
-  .small-news {
-    grid-template-columns: 1fr;
-  }
-
-  .news-card {
-    display: flex;
-    gap: 12px;
-  }
-
-  .news-card img {
-    width: 110px;
-    height: 78px;
-  }
-
-  .news-card h3 {
-    font-size: 0.95rem;
-  }
-
   .article-container {
     grid-template-columns: 1fr;
-    margin: 0;
     padding: 0 15px;
-  }
-
-  .main-content {
-    padding: 14px;
   }
 }
