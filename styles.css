@@ -183,6 +183,13 @@ ARTICLE
   line-height: 1.7;
 }
 
+.article-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
 /* SHARE BUTTONS */
 .share-buttons {
   display: flex;
