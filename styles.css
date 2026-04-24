@@ -128,7 +128,7 @@ NEWS
 
 .news-layout {
   display: grid;
-  grid-template-columns: 2.2fr 1fr 1fr;
+  grid-template-columns: 2.3fr 1fr;
   gap: 28px;
 }
 
@@ -152,7 +152,7 @@ NEWS
 
 .small-news {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 18px;
 }
 
