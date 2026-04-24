@@ -83,7 +83,10 @@ document.getElementById("article").innerHTML = `
 </div>
 
 <div class="article-content">
-${article.content}
+${article.content
+  .split("\n\n")
+  .map(p => `<p>${p}</p>`)
+  .join("")}
 </div>
 
 <div class="share-buttons">
