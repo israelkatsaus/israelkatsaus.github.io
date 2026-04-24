@@ -304,10 +304,16 @@ ARTICLE
 FOOTER
 ================================= */
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+  
 .site-footer {
   background: var(--dark);
   color: #cfd6dd;
-  margin-top: 80px;
+  margin-top: auto;
   padding: 50px 0 25px;
 }
 
