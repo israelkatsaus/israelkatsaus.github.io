@@ -1,193 +1,233 @@
-/**
- * LATAA ULKOISET KOMPONENTIT (NAVBAR & FOOTER)
- * Ladattava kaikilla sivuilla window.onload-funktiossa.
- */
-function loadLayout(callback) {
-    // Ladataan yläpalkki
-    fetch('navbar.html')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('navbar-placeholder').innerHTML = html;
-            
-            // Valmistellaan mobiilivalikon sulkeminen klikatessa ulkopuolelle
-            window.addEventListener('click', function(event) {
-                const navLinks = document.getElementById('nav-links');
-                if (!event.target.matches('.hamburger') && navLinks && navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                }
-            });
-        });
-
-    // Ladataan alapalkki
-    fetch('footer.html')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('footer-placeholder').innerHTML = html;
-            // Kun asettelu on ladattu, suoritetaan sivukohtainen renderöinti
-            if (callback) callback();
-        });
+/* Perusasetukset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/**
- * MOBIILIVALIKON HALLINTA
- */
-function toggleMenu() {
-    const navLinks = document.getElementById('nav-links');
-    if (navLinks) {
-        navLinks.classList.toggle('active');
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Yläpalkki */
+.navbar {
+    background-color: #005b96;
+    height: 80px; /* Korkeampi kuin normaali */
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.main-logo {
+    height: 50px;
+    width: auto;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 20px;
+    font-weight: 400;
+}
+
+.search-container input {
+    padding: 8px;
+    border-radius: 4px;
+    border: none;
+    width: 200px;
+}
+
+/* Etusivu Ruudukko */
+.home-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.main-feature {
+    background: white;
+    padding: 0;
+}
+
+.side-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Arkisto */
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Kortit */
+.news-card {
+    background: white;
+    margin-bottom: 10px;
+}
+
+.news-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px; /* Väli kuvaan */
+}
+
+.news-card h3 {
+    padding: 0 10px;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+/* Uutissivu */
+.article-layout {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.article-header-img {
+    width: 100%;
+    margin-top: 15px; /* Ei liimaudu yläpalkkiin */
+    margin-bottom: 20px;
+}
+
+.excerpt {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1.6rem; /* Tyhjä rivi */
+}
+
+.content p {
+    margin-bottom: 1.6rem; /* Tyhjä rivi kappaleiden väliin */
+}
+
+/* Jakolinkit */
+.share-links {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.share-links img {
+    width: 30px;
+    height: 30px;
+}
+
+.share-divider {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+    width: 100px;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+/* Alapalkki */
+.footer {
+    background-color: #222;
+    color: white;
+    padding: 30px 0;
+    margin-top: 50px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.footer-logo {
+    height: 40px;
+}
+
+/* Mobiili */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    margin: 2px 0;
+}
+
+@media (max-width: 768px) {
+    .home-grid, .article-layout, .archive-grid {
+        grid-template-columns: 1fr;
     }
-}
-
-/**
- * HAKUTOIMINNALLISUUS
- * Aktivoituu, kun hakukentässä painetaan Enteriä.
- */
-function handleSearch(event) {
-    if (event.key === 'Enter') {
-        const query = event.target.value.toLowerCase().trim();
-        if (query !== "") {
-            // Ohjataan arkistosivulle hakuparametrin kanssa
-            window.location.href = `archive.html?search=${encodeURIComponent(query)}`;
-        }
-    }
-}
-
-/**
- * DATAN HAKU JSON-TIEDOSTOSTA
- */
-async function getArticles() {
-    try {
-        const response = await fetch('news.json');
-        const data = await response.json();
-        // Palautetaan uutiset uusimmasta alkaen (date-kentän perusteella)
-        return data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } catch (error) {
-        console.error("Virhe ladattaessa uutisia:", error);
-        return [];
-    }
-}
-
-/**
- * ETUSIVUN RENDERÖINTI (1 PÄÄUUTINEN + 6 PIENTÄ)
- */
-async function renderFrontPage() {
-    const articles = await getArticles();
-    const container = document.getElementById('front-page-layout');
-    if (!container || articles.length === 0) return;
-
-    const main = articles[0];
-    const subs = articles.slice(1, 7); // Haetaan max 6 pientä uutista
-
-    container.innerHTML = `
-        <div class="main-news">
-            <a href="uutinen.html?id=${main.id}">
-                <img src="${main.image}" alt="${main.title}">
-                <h2>${main.title}</h2>
-                <p>${main.excerpt}</p>
-            </a>
-        </div>
-        <div class="sub-news-grid">
-            ${subs.map(a => `
-                <div class="sub-card">
-                    <a href="uutinen.html?id=${a.id}">
-                        <img src="${a.image}" alt="${a.title}">
-                        <h3>${a.title}</h3>
-                    </a>
-                </div>
-            `).join('')}
-        </div>
-    `;
-}
-
-/**
- * ARKISTON JA HAKUTULOSTEN RENDERÖINTI (4 SARAKETTA)
- */
-async function renderArchive() {
-    const articles = await getArticles();
-    const grid = document.getElementById('archive-grid');
-    const titleElement = document.getElementById('archive-title');
-    if (!grid) return;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get('search');
-
-    let filtered = articles;
-
-    // Jos kyseessä on haku, suodatetaan tärkeysjärjestyksessä
-    if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        if (titleElement) titleElement.innerText = `Hakutulokset: "${searchQuery}"`;
-
-        filtered = articles.filter(a => {
-            // 1. Otsikko, 2. Ingressi, 3. Leipäteksti
-            return a.title.toLowerCase().includes(query) || 
-                   a.excerpt.toLowerCase().includes(query) || 
-                   a.content.toLowerCase().includes(query);
-        });
-        
-        if (filtered.length === 0 && titleElement) {
-            titleElement.innerText = `Ei tuloksia haulle: "${searchQuery}"`;
-        }
+    
+    .side-grid {
+        grid-template-columns: 1fr 1fr;
     }
 
-    grid.innerHTML = filtered.map(a => `
-        <div class="archive-card">
-            <a href="uutinen.html?id=${a.id}">
-                <img src="${a.image}" alt="${a.title}">
-                <h3>${a.title}</h3>
-            </a>
-        </div>
-    `).join('');
-}
-
-/**
- * YKSITTÄISEN UUTISEN RENDERÖINTI
- */
-async function renderArticle() {
-    const articles = await getArticles();
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = parseInt(urlParams.get('id'));
-    const article = articles.find(a => a.id === id);
-
-    if (!article) {
-        document.getElementById('article-content').innerHTML = "<p>Uutista ei löytynyt.</p>";
-        return;
+    .nav-links {
+        display: none; /* Piilotetaan mobiilissa, avataan JS:llä */
+        position: absolute;
+        top: 80px;
+        right: 0;
+        background: #005b96;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
     }
 
-    // Päivitetään sivun otsikko
-    document.title = `${article.title} - Israel-katsaus`;
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+    }
 
-    const content = document.getElementById('article-content');
-    content.innerHTML = `
-        <img src="${article.image}" alt="${article.title}">
-        <h1>${article.title}</h1>
-        <p><strong>${article.excerpt}</strong></p>
-        <div class="article-body">
-            ${article.content}
-        </div>
-        <div class="share-links">
-            <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
-            <a href="#"><img src="images/x.png" alt="X"></a>
-            <a href="#"><img src="images/whatsapp.png" alt="WhatsApp"></a>
-        </div>
-        <hr class="share-divider">
-        <div class="brand-footer">
-            <img src="assets/LOGO3.png" alt="Pieni logo">
-            <span>Israel-katsaus</span>
-        </div>
-    `;
+    .nav-links a {
+        margin: 10px 0;
+    }
 
-    // Renderöidään sivupalkkiin muut uusimmat uutiset
-    const sidebar = document.getElementById('sidebar-list');
-    if (sidebar) {
-        const latest = articles.filter(a => a.id !== id).slice(0, 5);
-        sidebar.innerHTML = latest.map(a => `
-            <div class="sub-card" style="margin-bottom: 20px;">
-                <a href="uutinen.html?id=${a.id}">
-                    <img src="${a.image}" alt="${a.title}">
-                    <h4 style="margin-top:5px; line-height:1.2;">${a.title}</h4>
-                </a>
-            </div>
-        `).join('');
+    .hamburger {
+        display: flex;
+    }
+
+    .search-container input {
+        width: 150px;
     }
 }
