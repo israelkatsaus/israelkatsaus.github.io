@@ -10,21 +10,17 @@
 </head>
 <body>
     <div id="navbar-placeholder"></div>
-
-    <main class="container page-content">
-        <h1>Arkisto</h1>
-        <div id="archive-container" class="archive-list"></div>
+    <main class="container content-wrapper">
+        <h1 id="archive-title">Uutisarkisto</h1>
+        <div id="archive-grid" class="archive-grid">
+            </div>
     </main>
-
     <div id="footer-placeholder"></div>
-
     <script src="script.js"></script>
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            loadComponent('navbar-placeholder', 'navbar.html', initSearch);
-            loadComponent('footer-placeholder', 'footer.html');
-            renderArchive();
-        });
+        window.onload = () => {
+            loadLayout(() => { renderArchive(); });
+        };
     </script>
 </body>
 </html>
