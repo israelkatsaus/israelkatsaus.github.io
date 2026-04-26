@@ -253,11 +253,11 @@ ARTICLE PAGE
   font-size: 14px;
   padding-top: 14px;
   border-top: 1px solid #e5e5e5;
+}
 
-  .article-source img {
+.article-source img {
   height: 20px;
   width: auto;
-}
 }
 
 /* =================================
