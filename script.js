@@ -1,122 +1,240 @@
-/* =========================================
-APP CORE (SINGLE ENTRY)
-========================================= */
+/* ==============================
+INIT (YHTEINEN KAIKILLE SIVUILLE)
+============================== */
 
-const App = {
-  data: null,
+document.addEventListener("DOMContentLoaded", async () => {
 
-  async init() {
-    await this.loadGlobalUI();
-    this.data = await this.fetchNews();
+  await loadNavbar();
+  await loadFooter();
 
-    this.route();
-  },
+  requestAnimationFrame(async () => {
+    await initSearch();
+    await loadNews();     // etusivu / archive
+    await loadArticle();  // uutinen.html
+    await loadLatest();   // sidebar
+  });
 
-  /* =========================
-  GLOBAL UI
-  ========================= */
+});
 
-  async loadGlobalUI() {
-    await this.loadNavbar();
-    await this.loadFooter();
-  },
 
-  async loadNavbar() {
-    const el = document.getElementById("navbar");
-    if (!el) return;
+/* ==============================
+LOAD NAVBAR / FOOTER
+============================== */
 
-    const res = await fetch("navbar.html");
-    el.innerHTML = await res.text();
-  },
+async function loadNavbar() {
+  const el = document.getElementById("navbar");
+  if (!el) return;
 
-  async loadFooter() {
-    const el = document.getElementById("footer");
-    if (!el) return;
+  const res = await fetch("navbar.html");
+  el.innerHTML = await res.text();
+}
 
-    const res = await fetch("footer.html");
-    el.innerHTML = await res.text();
-  },
+async function loadFooter() {
+  const el = document.getElementById("footer");
+  if (!el) return;
 
-  /* =========================
-  DATA
-  ========================= */
+  const res = await fetch("footer.html");
+  el.innerHTML = await res.text();
+}
 
-  async fetchNews() {
-    try {
-      const res = await fetch("news.json");
-      const data = await res.json();
 
-      return (data.articles || [])
-        .filter(a => a.date)
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
+/* ==============================
+MENU
+============================== */
 
-    } catch (err) {
-      console.error("News fetch error:", err);
-      return [];
-    }
-  },
+function toggleMenu() {
+  const nav = document.getElementById("navLinks");
+  if (nav) nav.classList.toggle("active");
+}
 
-  /* =========================
-  ROUTER
-  ========================= */
+function closeMenu() {
+  const nav = document.getElementById("navLinks");
+  if (nav) nav.classList.remove("active");
+}
 
-  route() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+document.addEventListener("click", (e) => {
+  const nav = document.getElementById("navLinks");
+  if (!nav) return;
 
-    if (id) {
-      this.renderArticle(id);
-    } else {
-      const archive = document.getElementById("archiveContainer");
+  if (
+    e.target.closest(".nav-links a") ||
+    (!e.target.closest(".nav-links") && !e.target.closest(".menu"))
+  ) {
+    closeMenu();
+  }
+});
 
-      if (archive) {
-        this.renderArchive();
-      } else {
-        this.renderHome();
-      }
-    }
-  },
 
-  /* =========================
-  HOME
-  ========================= */
+/* ==============================
+UTIL
+============================== */
 
-  renderHome() {
-    const container = document.getElementById("newsContainer");
-    if (!container || !this.data.length) return;
+function getContainer() {
+  return document.getElementById("newsContainer")
+      || document.getElementById("archiveContainer");
+}
 
-    const main = this.data[0];
-    const rest = this.data.slice(1, 5);
+function stripHtml(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html || "";
+  return div.textContent || "";
+}
 
-    container.innerHTML = `
-      <a class="main-article" href="uutinen.html?id=${main.id}">
-        <img src="${main.image}" alt="${main.title}">
-        <div class="main-text">
-          <h2>${main.title}</h2>
-          <p>${main.excerpt || ""}</p>
-        </div>
-      </a>
 
-      <div class="small-news">
-        ${rest.map(a => `
-          <a class="news-card" href="uutinen.html?id=${a.id}">
-            <img src="${a.image}" alt="${a.title}">
-            <h3>${a.title}</h3>
-          </a>
-        `).join("")}
+/* ==============================
+LOAD NEWS (etusivu + archive)
+============================== */
+
+async function loadNews() {
+  const container = getContainer();
+  if (!container) return;
+
+  try {
+    const res = await fetch("news.json");
+    const data = await res.json();
+
+    const articles = (data.articles || [])
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    renderArticles(articles);
+
+  } catch (err) {
+    console.error("News load error:", err);
+  }
+}
+
+
+/* ==============================
+RENDER FRONT PAGE
+============================== */
+
+function renderFrontPage(articles, container) {
+  if (!articles.length) return;
+
+  const main = articles[0];
+
+  container.innerHTML = `
+    <a href="uutinen.html?id=${main.id}" class="main-article">
+      <img src="${main.image}" alt="${main.title}">
+      <div class="main-text">
+        <h2>${main.title}</h2>
+        <p>${main.excerpt || ""}</p>
       </div>
-    `;
-  },
+    </a>
 
-  /* =========================
-  ARTICLE
-  ========================= */
+    <div class="small-news">
+      ${articles.slice(1, 5).map(a => `
+        <a href="uutinen.html?id=${a.id}" class="news-card">
+          <img src="${a.image}" alt="${a.title}">
+          <h3>${a.title}</h3>
+        </a>
+      `).join("")}
+    </div>
+  `;
+}
 
-  renderArticle(id) {
-    const container = document.getElementById("article");
-    if (!container) return;
 
-    const article = this.data.find(a => a.id == id);
+/* ==============================
+RENDER ARCHIVE
+============================== */
+
+function renderArchive(articles, container) {
+  container.innerHTML = `
+    <div class="grid">
+      ${articles.map(a => `
+        <a href="uutinen.html?id=${a.id}" class="card">
+          <img src="${a.image}" alt="">
+          <h2>${a.title}</h2>
+          <p>${a.date}</p>
+          <p>${a.excerpt || ""}</p>
+        </a>
+      `).join("")}
+    </div>
+  `;
+}
+
+
+/* ==============================
+SWITCH
+============================== */
+
+function renderArticles(articles) {
+  const container = getContainer();
+  if (!container) return;
+
+  if (container.id === "archiveContainer") {
+    renderArchive(articles, container);
+  } else {
+    renderFrontPage(articles, container);
+  }
+}
+
+
+/* ==============================
+SEARCH
+============================== */
+
+function scoreArticle(a, q) {
+  const title = (a.title || "").toLowerCase();
+  const excerpt = (a.excerpt || "").toLowerCase();
+  const content = stripHtml(a.content || "").toLowerCase();
+
+  let score = 0;
+
+  if (title.includes(q)) score += 50;
+  if (excerpt.includes(q)) score += 30;
+  if (content.includes(q)) score += 10;
+
+  return score;
+}
+
+async function initSearch() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+
+  const res = await fetch("news.json");
+  const data = await res.json();
+  const articles = data.articles || [];
+
+  input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
+
+    if (!q) {
+      loadNews();
+      return;
+    }
+
+    const results = articles
+      .map(a => ({ ...a, score: scoreArticle(a, q) }))
+      .filter(a => a.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    renderArticles(results);
+  });
+}
+
+
+/* ==============================
+ARTICLE PAGE (🔥 KORJATTU)
+============================== */
+
+async function loadArticle() {
+  const container = document.getElementById("article");
+  if (!container) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (!id) {
+    container.innerHTML = "<p>Uutista ei löytynyt.</p>";
+    return;
+  }
+
+  try {
+    const res = await fetch("news.json");
+    const data = await res.json();
+
+    const article = data.articles.find(a => a.id == id);
 
     if (!article) {
       container.innerHTML = "<p>Uutista ei löytynyt.</p>";
@@ -136,36 +254,54 @@ const App = {
       <div class="article-content">
         ${article.content}
       </div>
-    `;
-  },
 
-  /* =========================
-  ARCHIVE
-  ========================= */
+      <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${window.location.href}" target="_blank">
+          <img src="images/facebook.png" alt="Facebook">
+        </a>
 
-  renderArchive() {
-    const container = document.getElementById("archiveContainer");
-    if (!container) return;
+        <a href="https://twitter.com/intent/tweet?url=${window.location.href}&text=${article.title}" target="_blank">
+          <img src="images/x.png" alt="X">
+        </a>
 
-    container.innerHTML = `
-      <div class="grid">
-        ${this.data.map(a => `
-          <a class="card" href="uutinen.html?id=${a.id}">
-            <img src="${a.image}" alt="${a.title}">
-            <h2>${a.title}</h2>
-            <p>${a.date}</p>
-            <p>${a.excerpt || ""}</p>
-          </a>
-        `).join("")}
+        <a href="https://api.whatsapp.com/send?text=${article.title} ${window.location.href}" target="_blank">
+          <img src="images/whatsapp.png" alt="WhatsApp">
+        </a>
+      </div>
+
+      <div class="article-source">
+        <img src="assets/LOGO3.png" alt="Israel-katsaus">
+        <span>Israel-katsaus</span>
       </div>
     `;
+
+  } catch (err) {
+    console.error("Article load error:", err);
   }
-};
+}
 
-/* =========================================
-START (ONLY ONE ENTRY POINT)
-========================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
-  App.init();
-});
+/* ==============================
+LATEST SIDEBAR
+============================== */
+
+async function loadLatest() {
+  const el = document.getElementById("latest");
+  if (!el) return;
+
+  try {
+    const res = await fetch("news.json");
+    const data = await res.json();
+
+    const latest = data.articles.slice(0, 5);
+
+    el.innerHTML = latest.map(a => `
+      <a class="sidebar-link" href="uutinen.html?id=${a.id}">
+        ${a.title}
+      </a>
+    `).join("");
+
+  } catch (err) {
+    console.error("Latest load error:", err);
+  }
+}
