@@ -1,141 +1,160 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadComponent('navbar-placeholder', 'navbar.html');
-    loadComponent('footer-placeholder', 'footer.html');
-    
-    const page = window.location.pathname;
-    if (page.includes('archive.html')) {
-        renderArchive();
-    } else if (page.includes('uutinen.html')) {
-        renderArticle();
-    } else {
-        renderFrontPage();
-    }
+    loadTemplate('navbar-placeholder', 'navbar.html', setupNavbar);
+    loadTemplate('footer-placeholder', 'footer.html');
+    fetchNews();
 });
 
-async function loadComponent(id, file) {
-    const res = await fetch(file);
-    const html = await res.text();
-    document.getElementById(id).innerHTML = html;
+function loadTemplate(id, file, callback) {
+    fetch(file)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById(id).innerHTML = data;
+            if (callback) callback();
+        });
 }
 
-async function getNews() {
-    const res = await fetch('news.json');
-    const data = await res.json();
-    // Järjestetään uusimmasta vanhimpaan
-    return data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+function setupNavbar() {
+    const hamburger = document.getElementById('hamburger');
+    const menu = document.getElementById('nav-menu');
+    const searchInput = document.getElementById('search-input');
+
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                window.location.href = `archive.html?search=${searchInput.value}`;
+            }
+        });
+    }
 }
 
-async function renderFrontPage() {
-    const articles = await getNews();
-    const mainContainer = document.getElementById('news-content');
-    
+async function fetchNews() {
+    try {
+        const response = await fetch('news.json');
+        const data = await response.json();
+        const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchId = urlParams.get('id');
+        const searchQuery = urlParams.get('search');
+
+        if (document.getElementById('news-grid')) {
+            renderFrontPage(articles);
+        } else if (document.getElementById('archive-grid')) {
+            renderArchive(articles, searchQuery);
+        } else if (document.getElementById('article-content')) {
+            renderArticle(articles, searchId);
+        }
+    } catch (error) {
+        console.error("Virhe ladattaessa uutisia:", error);
+    }
+}
+
+function renderFrontPage(articles) {
+    const grid = document.getElementById('news-grid');
     const main = articles[0];
-    const side = articles.slice(1, 7);
+    const smallOnes = articles.slice(1, 7);
 
-    let sideHtml = side.map(art => `
-        <div class="news-item">
-            <a href="uutinen.html?id=${art.id}">
-                <img src="${art.image}">
-                <h3>${art.title}</h3>
-            </a>
-        </div>
-    `).join('');
-
-    mainContainer.innerHTML = `
-        <div class="home-grid">
-            <div class="news-item main-feature">
-                <a href="uutinen.html?id=${art.id}">
-                    <img src="${main.image}">
+    let html = `
+        <div class="main-news">
+            <a href="uutinen.html?id=${main.id}">
+                <div class="news-card">
+                    <img src="${main.image}" alt="">
                     <h2>${main.title}</h2>
                     <p>${main.excerpt}</p>
+                </div>
+            </a>
+        </div>
+        <div class="small-news-container">
+    `;
+
+    smallOnes.forEach(art => {
+        html += `
+            <div class="small-news">
+                <a href="uutinen.html?id=${art.id}">
+                    <div class="news-card">
+                        <img src="${art.image}" alt="">
+                        <h3>${art.title}</h3>
+                    </div>
                 </a>
             </div>
-            <div class="secondary-grid">${sideHtml}</div>
-        </div>
-    `;
-}
-
-async function renderArticle() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    const articles = await getNews();
-    const article = articles.find(a => a.id == id);
-    const latest = articles.slice(0, 5);
-
-    if (article) {
-        document.title = article.title;
-        document.getElementById('article-area').innerHTML = `
-            <div class="article-content">
-                <h1>${article.title}</h1>
-                <img src="${article.image}">
-                <div class="excerpt">${article.excerpt}</div>
-                <div class="body-text">${article.content}</div>
-                <div class="share-area">
-                    <div class="share-links">
-                        <img src="images/facebook.png">
-                        <img src="images/x.png">
-                        <img src="images/whatsapp.png">
-                    </div>
-                    <hr class="small-divider">
-                    <div class="brand-footer-small">
-                        <img src="assets/LOGO3.png"> Israel-katsaus
-                    </div>
-                </div>
-            </div>
-            <aside class="sidebar">
-                <h4>Uusimmat uutiset</h4>
-                ${latest.map(l => `<p><a href="uutinen.html?id=${l.id}" style="color:#333; font-size:0.9rem;">${l.title}</a></p><hr>`).join('')}
-            </aside>
         `;
-    }
+    });
+
+    html += `</div>`;
+    grid.innerHTML = html;
 }
 
-async function renderArchive() {
-    const articles = await getNews();
-    const container = document.getElementById('archive-content');
-    container.innerHTML = articles.map(art => `
-        <div class="news-item">
+function renderArchive(articles, query) {
+    const grid = document.getElementById('archive-grid');
+    let filtered = articles;
+
+    if (query) {
+        const q = query.toLowerCase();
+        filtered = articles.sort((a, b) => {
+            // Tärkeysjärjestys hakuun
+            const score = (art) => {
+                if (art.title.toLowerCase().includes(q)) return 3;
+                if (art.excerpt.toLowerCase().includes(q)) return 2;
+                if (art.content.toLowerCase().includes(q)) return 1;
+                return 0;
+            };
+            return score(b) - score(a);
+        }).filter(art => art.title.toLowerCase().includes(q) || art.excerpt.toLowerCase().includes(q) || art.content.toLowerCase().includes(q));
+        
+        document.querySelector('h1').innerText = `Haun tulokset: "${query}"`;
+    }
+
+    grid.innerHTML = filtered.map(art => `
+        <div class="news-card">
             <a href="uutinen.html?id=${art.id}">
-                <img src="${art.image}">
+                <img src="${art.image}" alt="">
                 <h3>${art.title}</h3>
+                <p style="font-size: 0.8em">${art.date}</p>
             </a>
         </div>
     `).join('');
 }
 
-// Hakutoiminto tärkeysjärjestyksellä
-async function checkSearch(e) {
-    if (e.key === 'Enter') {
-        const query = e.target.value.toLowerCase();
-        const articles = await getNews();
-        
-        const results = articles.map(art => {
-            let priority = 0;
-            if (art.title.toLowerCase().includes(query)) priority = 3;
-            else if (art.excerpt.toLowerCase().includes(query)) priority = 2;
-            else if (art.content.toLowerCase().includes(query)) priority = 1;
-            return { ...art, priority };
-        })
-        .filter(a => a.priority > 0)
-        .sort((a, b) => b.priority - a.priority);
+function renderArticle(articles, id) {
+    const article = articles.find(a => a.id == id) || articles[0];
+    const contentDiv = document.getElementById('article-content');
+    const sidebarDiv = document.getElementById('latest-news-sidebar');
 
-        displaySearchResults(results, query);
-    }
-}
+    contentDiv.innerHTML = `
+        <div class="article-header">
+            <h1>${article.title}</h1>
+            <p class="excerpt">${article.excerpt}</p>
+        </div>
+        <img src="${article.image}" class="featured-image" alt="">
+        <div class="content">
+            ${article.content}
+        </div>
+        <div class="social-share">
+            <a href="#"><img src="images/facebook.png" alt="FB"></a>
+            <a href="#"><img src="images/x.png" alt="X"></a>
+            <a href="#"><img src="images/whatsapp.png" alt="WA"></a>
+        </div>
+        <hr class="separator">
+        <div class="author-info">
+            <img src="assets/LOGO3.png" alt="">
+            <span>Israel-katsaus</span>
+        </div>
+    `;
 
-function displaySearchResults(results, query) {
-    const container = document.querySelector('.main-container');
-    container.innerHTML = `<h1>Hakutulokset: ${query}</h1><div class="archive-grid">` + 
-        results.map(art => `
-            <div class="news-item">
-                <a href="uutinen.html?id=${art.id}">
-                    <img src="${art.image}">
-                    <h3>${art.title}</h3>
-                </a>
-            </div>
-        `).join('') + `</div>`;
-}
-
-function toggleMobileMenu() {
-    document.getElementById('navMenu').classList.toggle('active');
+    // Sivupalkki (uusimmat, poislukien nykyinen)
+    const latest = articles.filter(a => a.id != article.id).slice(0, 5);
+    sidebarDiv.innerHTML = latest.map(art => `
+        <div class="small-news" style="margin-bottom: 15px;">
+            <a href="uutinen.html?id=${art.id}">
+                <img src="${art.image}" alt="" style="width:100%">
+                <h3 style="font-size: 14px;">${art.title}</h3>
+            </a>
+        </div>
+    `).join('');
 }
