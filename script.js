@@ -213,8 +213,8 @@ async function loadLatest() {
 
     el.innerHTML = latest.map(a => `
       <a class="latest-item" href="uutinen.html?id=${a.id}">
-
-        <img src="${a.image}" alt="${a.title}" class="latest-img">
+        
+        <img class="latest-img" src="${a.image}" alt="${a.title}">
 
         <div class="latest-text">
           <div class="latest-title">${a.title}</div>
@@ -225,6 +225,6 @@ async function loadLatest() {
     `).join("");
 
   } catch (err) {
-    console.error("Latest error:", err);
+    console.error("Latest load error:", err);
   }
 }
