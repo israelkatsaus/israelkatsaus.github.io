@@ -23,18 +23,21 @@ async function getArticles() {
     return data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-// Etusivun rakentaminen
+// Etusivun rakentaminen (1 pääuutinen + 6 pientä uutista)
 async function renderFrontPage() {
     const articles = await getArticles();
     const container = document.getElementById('front-page-layout');
     
+    if (!container) return;
+
     const main = articles[0];
-    const subs = articles.slice(1, 5);
+    // Otetaan seuraavat 6 uutista (indeksit 1-6)
+    const subs = articles.slice(1, 7);
 
     container.innerHTML = `
         <div class="main-news">
             <a href="uutinen.html?id=${main.id}">
-                <img src="${main.image}">
+                <img src="${main.image}" alt="${main.title}">
                 <h2>${main.title}</h2>
                 <p>${main.excerpt}</p>
             </a>
@@ -43,7 +46,7 @@ async function renderFrontPage() {
             ${subs.map(a => `
                 <div class="sub-card">
                     <a href="uutinen.html?id=${a.id}">
-                        <img src="${a.image}">
+                        <img src="${a.image}" alt="${a.title}">
                         <h3>${a.title}</h3>
                     </a>
                 </div>
