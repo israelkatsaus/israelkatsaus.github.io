@@ -4,23 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arkisto - Israel-katsaus</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="navbar-placeholder"></div>
-    <main class="container content-wrapper">
-        <h1 id="archive-title">Uutisarkisto</h1>
+
+    <main class="container">
+        <h1>Uutisarkisto</h1>
         <div id="archive-grid" class="archive-grid">
             </div>
     </main>
+
     <div id="footer-placeholder"></div>
+
     <script src="script.js"></script>
     <script>
-        window.onload = () => {
-            loadLayout(() => { renderArchive(); });
-        };
+        window.addEventListener('DOMContentLoaded', () => {
+            loadComponent('navbar-placeholder', 'navbar.html');
+            loadComponent('footer-placeholder', 'footer.html');
+            renderArchive();
+        });
     </script>
 </body>
 </html>
