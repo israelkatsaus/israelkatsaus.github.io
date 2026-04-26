@@ -11,11 +11,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Layout load error:", e);
   }
 
-  // pieni viive varmistaa DOM-renderin
+  // SAFE START (ei kaada sivua jos yksi funktio puuttuu)
   setTimeout(async () => {
 
-    await initSearch();
+    // SEARCH (SAFE)
+    try {
+      if (typeof initSearch === "function") {
+        await initSearch();
+      }
+    } catch (e) {
+      console.warn("Search not loaded:", e);
+    }
 
+    // NEWS / ARCHIVE
     const hasNews = document.getElementById("newsContainer");
     const hasArchive = document.getElementById("archiveContainer");
 
@@ -23,10 +31,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadNews();
     }
 
+    // ARTICLE
     if (document.getElementById("article")) {
       loadArticle();
     }
 
+    // LATEST SIDEBAR
     if (document.getElementById("latest")) {
       loadLatest();
     }
@@ -113,11 +123,11 @@ async function loadNews() {
 
 
 /* ==============================
-RENDER
+RENDER ARTICLES
 ============================== */
 
 function renderArticles(articles, container) {
-  if (!articles.length) return;
+  if (!articles || !articles.length) return;
 
   // ARCHIVE
   if (container.id === "archiveContainer") {
@@ -138,6 +148,7 @@ function renderArticles(articles, container) {
 
   // FRONT PAGE
   const main = articles[0];
+  if (!main) return;
 
   container.innerHTML = `
     <a href="uutinen.html?id=${main.id}" class="main-article">
@@ -175,7 +186,7 @@ async function loadArticle() {
     const res = await fetch("news.json");
     const data = await res.json();
 
-    const article = data.articles.find(a => a.id == id);
+    const article = data.articles?.find(a => a.id == id);
     if (!article) return;
 
     document.title = article.title;
@@ -188,7 +199,7 @@ async function loadArticle() {
       </div>
 
       <div class="article-content">
-        ${article.content}
+        ${article.content || ""}
       </div>
 
       <div class="share-buttons">
