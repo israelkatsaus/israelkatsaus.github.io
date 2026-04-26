@@ -1,139 +1,170 @@
 let newsData = [];
 
 async function loadNews() {
-  const res = await fetch("news.json");
+  const res = await fetch('news.json');
   newsData = await res.json();
-  initPage();
+
+  renderHome();
+  renderArchive();
+  renderArticlePage();
+  bindSearch();
 }
 
-function initPage() {
-  loadNavbar();
-  loadFooter();
-  setupSearch();
+function renderHome() {
+  const main = document.getElementById('mainNews');
+  const side = document.getElementById('sideNews');
+  if (!main || !side) return;
 
-  if (document.getElementById("mainFeature")) loadIndex();
-  if (document.getElementById("archiveList")) loadArchive();
-  if (document.getElementById("articleContent")) loadArticle();
-}
+  const sorted = [...newsData].sort((a,b)=> new Date(b.date) - new Date(a.date));
 
-function loadNavbar() {
-  fetch("navbar.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("navbar").innerHTML = html;
-      setupSearch();
-    });
-}
+  const [mainNews, ...rest] = sorted;
 
-function loadFooter() {
-  fetch("footer.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("footer").innerHTML = html;
-    });
-}
-
-/* SEARCH (global) */
-function setupSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
-
-  input.addEventListener("input", (e) => {
-    const q = e.target.value.toLowerCase();
-    localStorage.setItem("search", q);
-    filterNews(q);
-  });
-}
-
-function filterNews(q) {
-  const filtered = newsData.filter(n =>
-    n.title.toLowerCase().includes(q) ||
-    n.excerpt.toLowerCase().includes(q) ||
-    n.content.toLowerCase().includes(q)
-  );
-
-  if (document.getElementById("archiveList")) {
-    renderArchive(filtered);
+  if (mainNews) {
+    main.innerHTML = `
+      <a class="main-card" href="uutinen.html?id=${mainNews.id}">
+        <img src="${mainNews.image}" />
+        <h2>${mainNews.title}</h2>
+        <p>${mainNews.excerpt}</p>
+      </a>
+    `;
   }
+
+  side.innerHTML = rest.slice(0,4).map(n => `
+    <a class="small-card" href="uutinen.html?id=${n.id}">
+      <img src="${n.image}" />
+      <div>
+        <h4>${n.title}</h4>
+      </div>
+    </a>
+  `).join('');
 }
 
-/* INDEX */
-function loadIndex() {
-  const sorted = [...newsData].sort((a,b)=> new Date(b.date)-new Date(a.date));
+function renderArchive() {
+  const el = document.getElementById('archiveList');
+  if (!el) return;
 
-  const main = sorted[0];
-  const rest = sorted.slice(1,5);
+  const sorted = [...newsData].sort((a,b)=> new Date(b.date) - new Date(a.date));
 
-  document.getElementById("mainFeature").innerHTML = `
-    <img src="${main.image}">
-    <h2><a href="uutinen.html?id=${main.id}">${main.title}</a></h2>
-    <p>${main.excerpt}</p>
-  `;
-
-  document.getElementById("sideNews").innerHTML = rest.map(n => `
-    <div class="small-news">
-      <img src="${n.image}">
-      <a href="uutinen.html?id=${n.id}">${n.title}</a>
-    </div>
-  `).join("");
+  el.innerHTML = sorted.map(n => `
+    <a class="archive-item" href="uutinen.html?id=${n.id}">
+      <img src="${n.image}" />
+      <div>
+        <h3>${n.title}</h3>
+        <p>${n.excerpt}</p>
+      </div>
+    </a>
+  `).join('');
 }
 
-/* ARCHIVE */
-function loadArchive() {
-  renderArchive(newsData.sort((a,b)=> new Date(b.date)-new Date(a.date)));
-}
+function renderArticlePage() {
+  const el = document.getElementById('articleContent');
+  if (!el) return;
 
-function renderArchive(list) {
-  document.getElementById("archiveList").innerHTML = list.map(n => `
-    <div class="small-news">
-      <img src="${n.image}">
-      <a href="uutinen.html?id=${n.id}">${n.title}</a>
-      <p>${n.date}</p>
-    </div>
-  `).join("");
-}
-
-/* ARTICLE */
-function loadArticle() {
   const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  const id = params.get('id');
 
   const article = newsData.find(n => n.id == id);
   if (!article) return;
 
-  const formatted = article.content.split("</p><p>").join("<br><br>");
+  const paragraphs = article.content.split('</p><p>').map(p => `<p>${p.replace('<p>','').replace('</p>','')}</p>`).join('\n\n');
 
-  document.getElementById("articleContent").innerHTML = `
-    <img src="${article.image}">
+  el.innerHTML = `
     <h1>${article.title}</h1>
-    <div class="article-text"><p>${formatted}</p></div>
+    <img class="article-img" src="${article.image}" />
+    <div class="article-text">${paragraphs}</div>
 
-    <div class="article-share">
-      <img src="images/facebook.png">
-      <img src="images/x.png">
-      <img src="images/whatsapp.png">
+    <div class="share">
+      <img src="images/facebook.png" />
+      <img src="images/x.png" />
+      <img src="images/whatsapp.png" />
     </div>
 
     <div class="divider"></div>
 
-    <div style="display:flex;align-items:center;gap:10px;">
-      <img src="assets/LOGO3.png" width="30">
+    <div class="brand">
+      <img src="assets/LOGO3.png" />
       <span>Israel-katsaus</span>
     </div>
   `;
 
-  const latest = [...newsData]
-    .sort((a,b)=> new Date(b.date)-new Date(a.date))
-    .slice(0,5);
-
-  document.getElementById("latestNews").innerHTML = `
-    <h3>Uusimmat uutiset</h3>
-    ${latest.map(n=>`
-      <div>
-        <a href="uutinen.html?id=${n.id}">${n.title}</a>
-      </div>
-    `).join("")}
-  `;
+  renderLatest();
 }
 
+function renderLatest() {
+  const el = document.getElementById('latestNews');
+  if (!el) return;
+
+  const sorted = [...newsData].sort((a,b)=> new Date(b.date) - new Date(a.date));
+
+  el.innerHTML = sorted.slice(0,5).map(n => `
+    <a href="uutinen.html?id=${n.id}" class="latest-item">${n.title}</a>
+  `).join('');
+}
+
+function bindSearch() {
+  const input = document.getElementById('searchInput');
+  if (!input) return;
+
+  input.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+
+    const filtered = newsData.filter(n =>
+      n.title.toLowerCase().includes(q) ||
+      n.excerpt.toLowerCase().includes(q) ||
+      n.content.toLowerCase().includes(q)
+    );
+
+    const main = document.getElementById('mainNews');
+    const side = document.getElementById('sideNews');
+    const archive = document.getElementById('archiveList');
+
+    if (main && side) {
+      renderFilteredHome(filtered);
+    }
+
+    if (archive) {
+      archive.innerHTML = filtered.map(n => `
+        <a class="archive-item" href="uutinen.html?id=${n.id}">
+          <img src="${n.image}" />
+          <div><h3>${n.title}</h3></div>
+        </a>
+      `).join('');
+    }
+  });
+}
+
+function renderFilteredHome(list) {
+  const main = document.getElementById('mainNews');
+  const side = document.getElementById('sideNews');
+
+  const [mainNews, ...rest] = list;
+
+  if (mainNews) {
+    main.innerHTML = `<a class="main-card" href="uutinen.html?id=${mainNews.id}">
+      <img src="${mainNews.image}" />
+      <h2>${mainNews.title}</h2>
+      <p>${mainNews.excerpt}</p>
+    </a>`;
+  }
+
+  side.innerHTML = rest.slice(0,4).map(n => `
+    <a class="small-card" href="uutinen.html?id=${n.id}">
+      <img src="${n.image}" />
+      <h4>${n.title}</h4>
+    </a>
+  `).join('');
+}
+
+async function loadPartials() {
+  const nav = await fetch('navbar.html').then(r=>r.text());
+  const foot = await fetch('footer.html').then(r=>r.text());
+
+  const n = document.getElementById('navbar');
+  const f = document.getElementById('footer');
+
+  if (n) n.innerHTML = nav;
+  if (f) f.innerHTML = foot;
+}
+
+loadPartials();
 loadNews();
