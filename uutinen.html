@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uutinen</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uutinen - Israel-katsaus</title>
 
   <link rel="icon" href="assets/favicon.png">
-  <link href="styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+  <div id="navbar"></div>
 
-<div id="navbar"></div>
+  <main class="container article-page">
+    <article id="articleContent"></article>
 
-<main class="container article-page">
+    <aside class="latest-news">
+      <h3>Uusimmat uutiset</h3>
+      <div id="latestNews"></div>
+    </aside>
+  </main>
 
-  <article id="article"></article>
+  <div id="footer"></div>
 
-  <aside class="latest">
-    <h3>Uusimmat uutiset</h3>
-    <div id="latestNews"></div>
-  </aside>
-
-</main>
-
-<div id="footer"></div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
