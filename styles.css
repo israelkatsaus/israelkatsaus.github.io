@@ -1,145 +1,79 @@
 /* Perusasetukset */
-body {
-    font-family: 'Fira Sans', sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333;
-    line-height: 1.4; /* Pienehkö riviväli otsikoihin ja tekstiin */
-}
-
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Fira Sans', sans-serif; background-color: #fff; color: #333; line-height: 1.5; }
 a { text-decoration: none; color: inherit; }
 
-.container {
-    max-width: 1200px;
-    margin: 30px auto; /* Väli yläpalkkiin */
-    padding: 0 15px;
-}
+.container { max-width: 1200px; margin: 40px auto; padding: 0 15px; }
 
-/* Yläpalkki */
+/* Navbar */
 .navbar {
     background-color: #005b96;
-    height: 90px; /* Hieman normaalia korkeampi */
+    height: 90px; /* Hieman korkeampi */
     display: flex;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
-
 .nav-container {
-    width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
+    width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
 }
+.nav-logo { max-height: 70px; width: auto; }
+.nav-right { display: flex; align-items: center; gap: 30px; }
+.nav-links a { color: white; font-weight: 400; }
+.search-box input { padding: 8px; border: none; border-radius: 4px; width: 180px; }
 
-.main-logo {
-    max-height: 70px; /* Mahtuu yläpalkin sisälle */
-    width: auto;
+/* Gridit */
+.front-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+.main-news-card img {
+    width: 100%; aspect-ratio: 3/2; object-fit: cover;
+    margin-bottom: 20px; border-radius: 4px;
 }
+.main-news-card h2 { font-size: 2rem; line-height: 1.2; margin-bottom: 10px; }
 
-.nav-right { display: flex; align-items: center; }
+.small-news-side { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.small-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 10px; }
+.small-card h3 { font-size: 1rem; line-height: 1.2; }
 
-.nav-links a {
-    color: white;
-    margin-right: 25px;
-    font-weight: 400;
-}
+.archive-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
-.search-container input {
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    width: 200px;
-}
-
-.hamburger { display: none; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
-
-/* Etusivun Grid */
-.news-grid-system {
-    display: grid;
-    grid-template-columns: 1.8fr 1fr;
-    gap: 30px;
-}
-
-.main-article h2 { font-size: 2.2rem; margin: 15px 0; }
-.main-article img { width: 100%; border-radius: 4px; }
-
-.small-news-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.small-article h3 { font-size: 1rem; margin: 10px 0; }
-.small-article img { width: 100%; border-radius: 4px; }
-
-/* Arkisto */
-.archive-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
-
-/* Uutissivu */
-.single-article-layout {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 40px;
-}
-
-.article-main h1 { font-size: 2.5rem; margin-bottom: 20px; }
-.featured-img { 
-    max-width: 100%; /* Ei skaalaudu yläpalkkia leveämmäksi */
-    height: auto;
-    margin-bottom: 20px; 
-}
-
+/* Avattu uutinen */
+.article-layout { display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px; }
+.article-body-content img { max-width: 100%; height: auto; display: block; margin-bottom: 25px; }
+.article-body-content h1 { font-size: 2.4rem; line-height: 1.1; margin-bottom: 20px; }
 .excerpt { font-weight: bold; font-size: 1.2rem; margin-bottom: 1.5rem; }
-.article-body p { margin-bottom: 1.5rem; } /* Tyhjä rivi kappaleiden väliin */
+.content-text p { margin-bottom: 1.5rem; }
 
-.social-share { margin: 30px 0 10px; }
-.social-share img { width: 30px; margin-right: 15px; }
+.share-bar { margin: 30px 0 10px; display: flex; gap: 15px; }
+.share-bar img { width: 32px; height: 32px; cursor: pointer; }
+.divider { height: 1px; background: #ddd; margin: 15px 0; }
+.author-info { display: flex; align-items: center; gap: 10px; }
+.author-info img { height: 35px; }
 
-.divider { border-bottom: 1px solid #ddd; margin-bottom: 15px; }
-
-.author-footer { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
-.author-footer img { height: 30px; }
-
-/* Alapalkki */
-.footer { background-color: #222; color: white; padding: 40px 0; margin-top: 50px; }
+/* Footer */
+.footer { background-color: #222; color: white; padding: 40px 0; margin-top: 60px; }
 .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
 }
-.footer-logo img { height: 40px; }
+.footer-logo { height: 50px; }
+.footer-right .email { font-size: 0.9rem; margin-top: 2px; color: #bbb; }
 
 /* Mobiili */
-@media (max-width: 768px) {
+.hamburger { display: none; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+
+@media (max-width: 800px) {
+    .nav-container { justify-content: space-between; }
+    .nav-left { position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-logo { max-height: 50px; }
+    .hamburger { display: block; margin-left: auto; }
     .nav-right {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 90px; left: 0; width: 100%;
-        background-color: #005b96;
-        padding: 20px;
+        display: none; position: absolute; top: 90px; left: 0; width: 100%;
+        background: #005b96; flex-direction: column; padding: 20px; gap: 20px;
     }
-    .nav-right.mobile-open { display: flex; text-align: center; }
-    .nav-links { flex-direction: column; margin-bottom: 15px; }
-    .nav-links a { margin: 10px 0; display: block; }
+    .nav-right.open { display: flex; }
     
-    .hamburger { display: block; margin: 0 auto; } /* Keskellä mobiilissa */
-    .search-container input { width: 150px; margin: 0 auto; }
-
-    .news-grid-system, .small-news-grid, .archive-grid, .single-article-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-container { flex-direction: column; text-align: center; gap: 20px; }
+    .front-grid, .article-layout, .archive-grid, .small-news-side { grid-template-columns: 1fr; }
+    .footer-container { flex-direction: column; text-align: center; gap: 30px; }
 }
