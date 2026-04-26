@@ -1,31 +1,24 @@
-* {
-    box-sizing: border-box;
+/* Perusasetukset */
+body {
+    font-family: 'Fira Sans', sans-serif;
     margin: 0;
     padding: 0;
-}
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    line-height: 1.6;
     color: #333;
-    background-color: #fff;
+    line-height: 1.4; /* Pienehkö riviväli otsikoihin ja tekstiin */
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
+a { text-decoration: none; color: inherit; }
 
 .container {
     max-width: 1200px;
-    margin: 40px auto; /* Estää kuvaa liimautumasta yläpalkkiin */
-    padding: 0 20px;
+    margin: 30px auto; /* Väli yläpalkkiin */
+    padding: 0 15px;
 }
 
-/* Navbar */
+/* Yläpalkki */
 .navbar {
     background-color: #005b96;
-    height: 85px; /* Normaalia korkeampi */
+    height: 90px; /* Hieman normaalia korkeampi */
     display: flex;
     align-items: center;
     position: sticky;
@@ -39,67 +32,49 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 15px;
 }
 
-.main-logo { height: 55px; }
-
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 30px;
+.main-logo {
+    max-height: 70px; /* Mahtuu yläpalkin sisälle */
+    width: auto;
 }
+
+.nav-right { display: flex; align-items: center; }
 
 .nav-links a {
     color: white;
+    margin-right: 25px;
     font-weight: 400;
 }
 
-.search-box input {
-    padding: 6px 12px;
+.search-container input {
+    padding: 8px;
     border: none;
     border-radius: 4px;
-    width: 180px;
-    font-family: 'Montserrat', sans-serif;
+    width: 200px;
 }
 
-.hamburger {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
-}
+.hamburger { display: none; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
 
-/* Etusivun Ruudukko */
-.front-grid {
+/* Etusivun Grid */
+.news-grid-system {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: 1.8fr 1fr;
     gap: 30px;
 }
+
+.main-article h2 { font-size: 2.2rem; margin: 15px 0; }
+.main-article img { width: 100%; border-radius: 4px; }
 
 .small-news-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
     gap: 20px;
 }
 
-.news-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin-bottom: 15px; /* Otsikko ei liimaudu kuvaan */
-}
-
-.news-card h2, .news-card h3 {
-    line-height: 1.2; /* Pienehkö riviväli */
-}
-
-.small-news-grid h3 {
-    font-size: 0.95rem; /* Hieman normaalia pienempi */
-}
+.small-article h3 { font-size: 1rem; margin: 10px 0; }
+.small-article img { width: 100%; border-radius: 4px; }
 
 /* Arkisto */
 .archive-grid {
@@ -108,103 +83,63 @@ a {
     gap: 20px;
 }
 
-/* Avattu uutinen */
-.article-layout {
+/* Uutissivu */
+.single-article-layout {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 50px;
+    grid-template-columns: 3fr 1fr;
+    gap: 40px;
 }
 
-.article-view img.featured-img {
-    max-width: 100%;
-    max-height: 500px; /* Estää skaalautumasta liian suureksi */
-    object-fit: cover;
-    margin-bottom: 20px;
+.article-main h1 { font-size: 2.5rem; margin-bottom: 20px; }
+.featured-img { 
+    max-width: 100%; /* Ei skaalaudu yläpalkkia leveämmäksi */
+    height: auto;
+    margin-bottom: 20px; 
 }
 
-.article-view h1 {
-    line-height: 1.1;
-    margin-bottom: 15px;
-}
+.excerpt { font-weight: bold; font-size: 1.2rem; margin-bottom: 1.5rem; }
+.article-body p { margin-bottom: 1.5rem; } /* Tyhjä rivi kappaleiden väliin */
 
-.excerpt {
-    font-weight: bold;
-    margin-bottom: 1.6rem; /* Tyhjä rivi ingressin jälkeen */
-}
+.social-share { margin: 30px 0 10px; }
+.social-share img { width: 30px; margin-right: 15px; }
 
-.article-body p {
-    margin-bottom: 1.6rem; /* Tyhjä rivi kappaleiden väliin */
-}
+.divider { border-bottom: 1px solid #ddd; margin-bottom: 15px; }
 
-.share-links {
-    margin: 30px 0 10px;
-    display: flex;
-    gap: 15px;
-}
-
-.share-links img { width: 30px; }
-
-.divider {
-    height: 1px;
-    background: #ddd;
-    margin: 10px 0 20px;
-}
-
-.author-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.author-info img { width: 40px; }
+.author-footer { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+.author-footer img { height: 30px; }
 
 /* Alapalkki */
-.footer {
-    background-color: #222;
-    color: white;
-    padding: 40px 0;
-    margin-top: 60px;
-}
-
+.footer { background-color: #222; color: white; padding: 40px 0; margin-top: 50px; }
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 15px;
 }
+.footer-logo img { height: 40px; }
 
-.footer-logo { height: 40px; }
-
-/* Responsiivisuus */
-@media (max-width: 900px) {
-    .front-grid, .article-layout, .archive-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .hamburger { display: block; }
-    
+/* Mobiili */
+@media (max-width: 768px) {
     .nav-right {
         display: none;
-        position: absolute;
-        top: 85px;
-        left: 0;
-        width: 100%;
-        background: #005b96;
         flex-direction: column;
+        position: absolute;
+        top: 90px; left: 0; width: 100%;
+        background-color: #005b96;
         padding: 20px;
     }
+    .nav-right.mobile-open { display: flex; text-align: center; }
+    .nav-links { flex-direction: column; margin-bottom: 15px; }
+    .nav-links a { margin: 10px 0; display: block; }
+    
+    .hamburger { display: block; margin: 0 auto; } /* Keskellä mobiilissa */
+    .search-container input { width: 150px; margin: 0 auto; }
 
-    .nav-right.active { display: flex; }
-
-    .nav-center-mobile { flex-grow: 1; text-align: center; }
-
-    .search-box input { width: 140px; } /* Mahtuu keskelle */
-
-    .footer-container {
-        flex-direction: column;
-        text-align: center;
-        gap: 30px;
+    .news-grid-system, .small-news-grid, .archive-grid, .single-article-layout {
+        grid-template-columns: 1fr;
     }
+
+    .footer-container { flex-direction: column; text-align: center; gap: 20px; }
 }
