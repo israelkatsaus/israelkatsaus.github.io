@@ -1,26 +1,42 @@
+/* ==============================
+INIT (SAFE BOOT)
+============================== */
+
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadNavbar();
-  await loadFooter();
 
-  await initSearch();
-
-  // Aja vain jos elementit olemassa
-  if (document.getElementById("newsContainer") || document.getElementById("archiveContainer")) {
-    loadNews();
+  try {
+    await loadNavbar();
+    await loadFooter();
+  } catch (e) {
+    console.error("Layout load error:", e);
   }
 
-  if (document.getElementById("article")) {
-    loadArticle();
-  }
+  // pieni viive varmistaa DOM-renderin
+  setTimeout(async () => {
 
-  if (document.getElementById("latest")) {
-    loadLatest();
-  }
+    await initSearch();
+
+    const hasNews = document.getElementById("newsContainer");
+    const hasArchive = document.getElementById("archiveContainer");
+
+    if (hasNews || hasArchive) {
+      loadNews();
+    }
+
+    if (document.getElementById("article")) {
+      loadArticle();
+    }
+
+    if (document.getElementById("latest")) {
+      loadLatest();
+    }
+
+  }, 50);
 });
 
 
 /* ==============================
-LOAD NAVBAR / FOOTER
+NAVBAR / FOOTER
 ============================== */
 
 async function loadNavbar() {
@@ -32,7 +48,7 @@ async function loadNavbar() {
     if (!res.ok) throw new Error("Navbar failed");
     el.innerHTML = await res.text();
   } catch (e) {
-    console.error(e);
+    console.error("Navbar error:", e);
   }
 }
 
@@ -45,7 +61,7 @@ async function loadFooter() {
     if (!res.ok) throw new Error("Footer failed");
     el.innerHTML = await res.text();
   } catch (e) {
-    console.error(e);
+    console.error("Footer error:", e);
   }
 }
 
@@ -69,11 +85,14 @@ document.addEventListener("click", (e) => {
 
 
 /* ==============================
-NEWS
+NEWS LOADER
 ============================== */
 
 async function loadNews() {
-  const container = document.getElementById("newsContainer") || document.getElementById("archiveContainer");
+  const container =
+    document.getElementById("newsContainer") ||
+    document.getElementById("archiveContainer");
+
   if (!container) return;
 
   try {
@@ -85,7 +104,7 @@ async function loadNews() {
     const articles = (data.articles || [])
       .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    renderArticles(articles);
+    renderArticles(articles, container);
 
   } catch (err) {
     console.error("News error:", err);
@@ -94,13 +113,13 @@ async function loadNews() {
 
 
 /* ==============================
-RENDER FRONT PAGE
+RENDER
 ============================== */
 
-function renderArticles(articles) {
-  const container = document.getElementById("newsContainer") || document.getElementById("archiveContainer");
-  if (!container) return;
+function renderArticles(articles, container) {
+  if (!articles.length) return;
 
+  // ARCHIVE
   if (container.id === "archiveContainer") {
     container.innerHTML = `
       <div class="grid">
@@ -108,7 +127,7 @@ function renderArticles(articles) {
           <a href="uutinen.html?id=${a.id}" class="card">
             <img src="${a.image}" alt="">
             <h2>${a.title}</h2>
-            <p>${a.date}</p>
+            <p>${a.date || ""}</p>
             <p>${a.excerpt || ""}</p>
           </a>
         `).join("")}
@@ -117,6 +136,7 @@ function renderArticles(articles) {
     return;
   }
 
+  // FRONT PAGE
   const main = articles[0];
 
   container.innerHTML = `
@@ -141,7 +161,7 @@ function renderArticles(articles) {
 
 
 /* ==============================
-ARTICLE
+ARTICLE PAGE
 ============================== */
 
 async function loadArticle() {
@@ -162,7 +182,7 @@ async function loadArticle() {
 
     container.innerHTML = `
       <div class="article-header">
-        <img src="${article.image}">
+        <img src="${article.image}" alt="${article.title}">
         <h1 class="article-title">${article.title}</h1>
         <p class="article-meta">${article.date || ""}</p>
       </div>
@@ -172,19 +192,21 @@ async function loadArticle() {
       </div>
 
       <div class="share-buttons">
-        <a href="https://facebook.com/sharer/sharer.php?u=${location.href}">
-          <img src="images/facebook.png">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${location.href}" target="_blank">
+          <img src="images/facebook.png" alt="">
         </a>
-        <a href="https://twitter.com/intent/tweet?url=${location.href}">
-          <img src="images/x.png">
+
+        <a href="https://twitter.com/intent/tweet?url=${location.href}" target="_blank">
+          <img src="images/x.png" alt="">
         </a>
-        <a href="https://api.whatsapp.com/send?text=${article.title} ${location.href}">
-          <img src="images/whatsapp.png">
+
+        <a href="https://api.whatsapp.com/send?text=${article.title} ${location.href}" target="_blank">
+          <img src="images/whatsapp.png" alt="">
         </a>
       </div>
 
       <div class="article-source">
-        <img src="assets/LOGO3.png">
+        <img src="assets/LOGO3.png" alt="">
         <span>Israel-katsaus</span>
       </div>
     `;
@@ -196,7 +218,7 @@ async function loadArticle() {
 
 
 /* ==============================
-LATEST
+LATEST NEWS
 ============================== */
 
 async function loadLatest() {
@@ -213,18 +235,15 @@ async function loadLatest() {
 
     el.innerHTML = latest.map(a => `
       <a class="latest-item" href="uutinen.html?id=${a.id}">
-        
         <img class="latest-img" src="${a.image}" alt="${a.title}">
-
         <div class="latest-text">
           <div class="latest-title">${a.title}</div>
           <div class="latest-date">${a.date || ""}</div>
         </div>
-
       </a>
     `).join("");
 
   } catch (err) {
-    console.error("Latest load error:", err);
+    console.error("Latest error:", err);
   }
 }
