@@ -11,8 +11,8 @@
 <body>
     <div id="navbar-placeholder"></div>
 
-    <main class="container">
-        <section id="news-grid" class="news-grid">
+    <main class="container page-content">
+        <section id="front-page-grid" class="front-grid">
             </section>
     </main>
 
@@ -20,10 +20,11 @@
 
     <script src="script.js"></script>
     <script>
-        window.onload = () => {
-            loadLayout();
-            loadFrontPage();
-        };
+        window.addEventListener('DOMContentLoaded', () => {
+            loadComponent('navbar-placeholder', 'navbar.html', initSearch);
+            loadComponent('footer-placeholder', 'footer.html');
+            renderFrontPage();
+        });
     </script>
 </body>
 </html>
