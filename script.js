@@ -207,13 +207,24 @@ async function loadLatest() {
     const res = await fetch("news.json");
     const data = await res.json();
 
-    el.innerHTML = data.articles.slice(0, 5).map(a => `
-      <a href="uutinen.html?id=${a.id}">
-        ${a.title}
+    const latest = (data.articles || [])
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 5);
+
+    el.innerHTML = latest.map(a => `
+      <a class="latest-item" href="uutinen.html?id=${a.id}">
+
+        <img src="${a.image}" alt="${a.title}" class="latest-img">
+
+        <div class="latest-text">
+          <div class="latest-title">${a.title}</div>
+          <div class="latest-date">${a.date || ""}</div>
+        </div>
+
       </a>
     `).join("");
 
-  } catch (e) {
-    console.error("Latest error:", e);
+  } catch (err) {
+    console.error("Latest error:", err);
   }
 }
