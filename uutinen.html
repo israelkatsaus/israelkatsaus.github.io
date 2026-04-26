@@ -1,42 +1,27 @@
 <!DOCTYPE html>
 <html lang="fi">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Uutinen</title>
-
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css">
-
+  <meta charset="UTF-8">
+  <title>Uutinen</title>
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <div id="navbar"></div>
 
-<!-- MAIN -->
-<main class="container article-container">
+<div class="container">
+  <div class="article-container">
+    
+    <div class="article-content" id="articleContent"></div>
 
-  <!-- ARTIKKELI -->
-  <article id="article"></article>
+    <div class="latest-news" id="latestNews"></div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h3>Uusimmat uutiset</h3>
-    <div id="latest"></div>
-  </aside>
+  </div>
+</div>
 
-</main>
+<div id="footer"></div>
 
-<!-- FOOTER -->
-<footer id="footer"></footer>
-
-<!-- SCRIPT -->
-<script src="script.js" defer></script>
-
+<script src="script.js"></script>
 </body>
 </html>
