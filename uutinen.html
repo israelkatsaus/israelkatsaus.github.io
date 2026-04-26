@@ -4,26 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uutinen - Israel-katsaus</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="navbar-placeholder"></div>
-    <main class="container content-wrapper article-container">
-        <article class="article-main" id="article-content">
+
+    <main class="container article-layout">
+        <article id="article-content" class="main-article-body">
             </article>
+
         <aside class="sidebar">
             <h3>Uusimmat uutiset</h3>
-            <div id="sidebar-list"></div>
+            <div id="latest-news-sidebar"></div>
         </aside>
     </main>
+
     <div id="footer-placeholder"></div>
+
     <script src="script.js"></script>
     <script>
-        window.onload = () => {
-            loadLayout(() => { renderArticle(); });
-        };
+        window.addEventListener('DOMContentLoaded', () => {
+            loadComponent('navbar-placeholder', 'navbar.html');
+            loadComponent('footer-placeholder', 'footer.html');
+            renderSingleArticle();
+        });
     </script>
 </body>
 </html>
