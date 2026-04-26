@@ -1,260 +1,139 @@
-/* ==============================
-INIT (SAFE BOOT)
-============================== */
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-  try {
-    await loadNavbar();
-    await loadFooter();
-  } catch (e) {
-    console.error("Layout load error:", e);
-  }
-
-  // SAFE START (ei kaada sivua jos yksi funktio puuttuu)
-  setTimeout(async () => {
-
-    // SEARCH (SAFE)
-    try {
-      if (typeof initSearch === "function") {
-        await initSearch();
-      }
-    } catch (e) {
-      console.warn("Search not loaded:", e);
-    }
-
-    // NEWS / ARCHIVE
-    const hasNews = document.getElementById("newsContainer");
-    const hasArchive = document.getElementById("archiveContainer");
-
-    if (hasNews || hasArchive) {
-      loadNews();
-    }
-
-    // ARTICLE
-    if (document.getElementById("article")) {
-      loadArticle();
-    }
-
-    // LATEST SIDEBAR
-    if (document.getElementById("latest")) {
-      loadLatest();
-    }
-
-  }, 50);
-});
-
-
-/* ==============================
-NAVBAR / FOOTER
-============================== */
-
-async function loadNavbar() {
-  const el = document.getElementById("navbar");
-  if (!el) return;
-
-  try {
-    const res = await fetch("navbar.html");
-    if (!res.ok) throw new Error("Navbar failed");
-    el.innerHTML = await res.text();
-  } catch (e) {
-    console.error("Navbar error:", e);
-  }
-}
-
-async function loadFooter() {
-  const el = document.getElementById("footer");
-  if (!el) return;
-
-  try {
-    const res = await fetch("footer.html");
-    if (!res.ok) throw new Error("Footer failed");
-    el.innerHTML = await res.text();
-  } catch (e) {
-    console.error("Footer error:", e);
-  }
-}
-
-
-/* ==============================
-MENU
-============================== */
-
-function toggleMenu() {
-  document.getElementById("navLinks")?.classList.toggle("active");
-}
-
-document.addEventListener("click", (e) => {
-  const nav = document.getElementById("navLinks");
-  if (!nav) return;
-
-  if (!e.target.closest(".nav-links") && !e.target.closest(".menu")) {
-    nav.classList.remove("active");
-  }
-});
-
-
-/* ==============================
-NEWS LOADER
-============================== */
+let newsData = [];
 
 async function loadNews() {
-  const container =
-    document.getElementById("newsContainer") ||
-    document.getElementById("archiveContainer");
+  const res = await fetch("news.json");
+  newsData = await res.json();
+  initPage();
+}
 
-  if (!container) return;
+function initPage() {
+  loadNavbar();
+  loadFooter();
+  setupSearch();
 
-  try {
-    const res = await fetch("news.json");
-    if (!res.ok) throw new Error("news.json failed");
+  if (document.getElementById("mainFeature")) loadIndex();
+  if (document.getElementById("archiveList")) loadArchive();
+  if (document.getElementById("articleContent")) loadArticle();
+}
 
-    const data = await res.json();
+function loadNavbar() {
+  fetch("navbar.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
+      setupSearch();
+    });
+}
 
-    const articles = (data.articles || [])
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+function loadFooter() {
+  fetch("footer.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("footer").innerHTML = html;
+    });
+}
 
-    renderArticles(articles, container);
+/* SEARCH (global) */
+function setupSearch() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
 
-  } catch (err) {
-    console.error("News error:", err);
+  input.addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    localStorage.setItem("search", q);
+    filterNews(q);
+  });
+}
+
+function filterNews(q) {
+  const filtered = newsData.filter(n =>
+    n.title.toLowerCase().includes(q) ||
+    n.excerpt.toLowerCase().includes(q) ||
+    n.content.toLowerCase().includes(q)
+  );
+
+  if (document.getElementById("archiveList")) {
+    renderArchive(filtered);
   }
 }
 
+/* INDEX */
+function loadIndex() {
+  const sorted = [...newsData].sort((a,b)=> new Date(b.date)-new Date(a.date));
 
-/* ==============================
-RENDER ARTICLES
-============================== */
+  const main = sorted[0];
+  const rest = sorted.slice(1,5);
 
-function renderArticles(articles, container) {
-  if (!articles || !articles.length) return;
+  document.getElementById("mainFeature").innerHTML = `
+    <img src="${main.image}">
+    <h2><a href="uutinen.html?id=${main.id}">${main.title}</a></h2>
+    <p>${main.excerpt}</p>
+  `;
 
-  // ARCHIVE
-  if (container.id === "archiveContainer") {
-    container.innerHTML = `
-      <div class="grid">
-        ${articles.map(a => `
-          <a href="uutinen.html?id=${a.id}" class="card">
-            <img src="${a.image}" alt="">
-            <h2>${a.title}</h2>
-            <p>${a.date || ""}</p>
-            <p>${a.excerpt || ""}</p>
-          </a>
-        `).join("")}
-      </div>
-    `;
-    return;
-  }
-
-  // FRONT PAGE
-  const main = articles[0];
-  if (!main) return;
-
-  container.innerHTML = `
-    <a href="uutinen.html?id=${main.id}" class="main-article">
-      <img src="${main.image}" alt="${main.title}">
-      <div class="main-text">
-        <h2>${main.title}</h2>
-        <p>${main.excerpt || ""}</p>
-      </div>
-    </a>
-
+  document.getElementById("sideNews").innerHTML = rest.map(n => `
     <div class="small-news">
-      ${articles.slice(1, 5).map(a => `
-        <a href="uutinen.html?id=${a.id}" class="news-card">
-          <img src="${a.image}" alt="">
-          <h3>${a.title}</h3>
-        </a>
-      `).join("")}
+      <img src="${n.image}">
+      <a href="uutinen.html?id=${n.id}">${n.title}</a>
     </div>
+  `).join("");
+}
+
+/* ARCHIVE */
+function loadArchive() {
+  renderArchive(newsData.sort((a,b)=> new Date(b.date)-new Date(a.date)));
+}
+
+function renderArchive(list) {
+  document.getElementById("archiveList").innerHTML = list.map(n => `
+    <div class="small-news">
+      <img src="${n.image}">
+      <a href="uutinen.html?id=${n.id}">${n.title}</a>
+      <p>${n.date}</p>
+    </div>
+  `).join("");
+}
+
+/* ARTICLE */
+function loadArticle() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const article = newsData.find(n => n.id == id);
+  if (!article) return;
+
+  const formatted = article.content.split("</p><p>").join("<br><br>");
+
+  document.getElementById("articleContent").innerHTML = `
+    <img src="${article.image}">
+    <h1>${article.title}</h1>
+    <div class="article-text"><p>${formatted}</p></div>
+
+    <div class="article-share">
+      <img src="images/facebook.png">
+      <img src="images/x.png">
+      <img src="images/whatsapp.png">
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <img src="assets/LOGO3.png" width="30">
+      <span>Israel-katsaus</span>
+    </div>
+  `;
+
+  const latest = [...newsData]
+    .sort((a,b)=> new Date(b.date)-new Date(a.date))
+    .slice(0,5);
+
+  document.getElementById("latestNews").innerHTML = `
+    <h3>Uusimmat uutiset</h3>
+    ${latest.map(n=>`
+      <div>
+        <a href="uutinen.html?id=${n.id}">${n.title}</a>
+      </div>
+    `).join("")}
   `;
 }
 
-
-/* ==============================
-ARTICLE PAGE
-============================== */
-
-async function loadArticle() {
-  const container = document.getElementById("article");
-  if (!container) return;
-
-  const id = new URLSearchParams(location.search).get("id");
-  if (!id) return;
-
-  try {
-    const res = await fetch("news.json");
-    const data = await res.json();
-
-    const article = data.articles?.find(a => a.id == id);
-    if (!article) return;
-
-    document.title = article.title;
-
-    container.innerHTML = `
-      <div class="article-header">
-        <img src="${article.image}" alt="${article.title}">
-        <h1 class="article-title">${article.title}</h1>
-        <p class="article-meta">${article.date || ""}</p>
-      </div>
-
-      <div class="article-content">
-        ${article.content || ""}
-      </div>
-
-      <div class="share-buttons">
-        <a href="https://www.facebook.com/sharer/sharer.php?u=${location.href}" target="_blank">
-          <img src="images/facebook.png" alt="">
-        </a>
-
-        <a href="https://twitter.com/intent/tweet?url=${location.href}" target="_blank">
-          <img src="images/x.png" alt="">
-        </a>
-
-        <a href="https://api.whatsapp.com/send?text=${article.title} ${location.href}" target="_blank">
-          <img src="images/whatsapp.png" alt="">
-        </a>
-      </div>
-
-      <div class="article-source">
-        <img src="assets/LOGO3.png" alt="">
-        <span>Israel-katsaus</span>
-      </div>
-    `;
-
-  } catch (e) {
-    console.error("Article error:", e);
-  }
-}
-
-
-/* ==============================
-LATEST NEWS
-============================== */
-
-async function loadLatest() {
-  const el = document.getElementById("latest");
-  if (!el) return;
-
-  try {
-    const res = await fetch("news.json");
-    const data = await res.json();
-
-    const latest = (data.articles || [])
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 5);
-
-    el.innerHTML = latest.map(a => `
-      <a class="latest-item" href="uutinen.html?id=${a.id}">
-        <img class="latest-img" src="${a.image}" alt="${a.title}">
-        <div class="latest-text">
-          <div class="latest-title">${a.title}</div>
-          <div class="latest-date">${a.date || ""}</div>
-        </div>
-      </a>
-    `).join("");
-
-  } catch (err) {
-    console.error("Latest error:", err);
-  }
-}
+loadNews();
