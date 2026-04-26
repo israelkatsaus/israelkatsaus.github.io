@@ -1,16 +1,25 @@
 <nav class="navbar">
     <div class="container nav-content">
         <div class="nav-left">
-            <a href="index.html"><img src="assets/LOGO.png" alt="Logo" class="logo"></a>
+            <a href="index.html">
+                <img src="assets/LOGO.png" alt="Logo" class="logo">
+            </a>
         </div>
+
+        <div class="nav-center">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Hae..." onkeypress="handleSearch(event)">
+            </div>
+        </div>
+
         <div class="nav-right">
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="index.html">Etusivu</a>
                 <a href="archive.html">Arkisto</a>
             </div>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Hae uutisia..." onkeypress="handleSearch(event)">
-            </div>
+            <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+                &#9776;
+            </button>
         </div>
     </div>
 </nav>
