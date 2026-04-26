@@ -1,46 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Lataa Navbar ja Footer
-    loadComponent('navbar-placeholder', 'navbar.html', setupNavbar);
+    loadComponent('navbar-placeholder', 'navbar.html', initNavbar);
     loadComponent('footer-placeholder', 'footer.html');
-
-    // Lataa uutiset
-    fetch('news.json')
-        .then(res => res.json())
-        .then(data => {
-            const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-            initPage(articles);
-        });
+    loadNews();
 });
 
 function loadComponent(id, file, callback) {
-    fetch(file).then(res => res.text()).then(html => {
+    fetch(file).then(r => r.text()).then(html => {
         document.getElementById(id).innerHTML = html;
         if(callback) callback();
     });
 }
 
-function setupNavbar() {
-    const ham = document.getElementById('hamburger-btn');
+function initNavbar() {
+    const btn = document.getElementById('hamburger-btn');
     const menu = document.getElementById('nav-menu');
     const search = document.getElementById('search-input');
 
-    if(ham) ham.onclick = () => menu.classList.toggle('mobile-open');
+    btn.addEventListener('click', () => menu.classList.toggle('open'));
 
-    if(search) {
-        search.onkeypress = (e) => {
-            if(e.key === 'Enter') {
-                window.location.href = `archive.html?query=${search.value}`;
-            }
-        };
-    }
+    search.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            window.location.href = `archive.html?q=${encodeURIComponent(search.value)}`;
+        }
+    });
 }
 
-function initPage(articles) {
+async function loadNews() {
+    const res = await fetch('news.json');
+    const data = await res.json();
+    let articles = data.articles;
+    articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
     const path = window.location.pathname;
     const urlParams = new URLSearchParams(window.location.search);
 
     if (path.includes('archive.html')) {
-        renderArchive(articles, urlParams.get('query'));
+        renderArchive(articles, urlParams.get('q'));
     } else if (path.includes('uutinen.html')) {
         renderArticle(articles, urlParams.get('id'));
     } else {
@@ -50,64 +45,54 @@ function initPage(articles) {
 
 function renderFrontPage(articles) {
     const container = document.getElementById('front-page-content');
-    if(!container) return;
+    if (!container) return;
 
     const main = articles[0];
-    const smalls = articles.slice(1, 5);
+    const side = articles.slice(1, 5);
 
     let html = `
-        <div class="main-article">
+        <div class="main-news-card">
             <a href="uutinen.html?id=${main.id}">
                 <img src="${main.image}" alt="">
                 <h2>${main.title}</h2>
                 <p>${main.excerpt}</p>
             </a>
         </div>
-        <div class="small-news-grid">
+        <div class="small-news-side">
+            ${side.map(a => `
+                <div class="small-card">
+                    <a href="uutinen.html?id=${a.id}">
+                        <img src="${a.image}" alt="">
+                        <h3>${a.title}</h3>
+                    </a>
+                </div>
+            `).join('')}
+        </div>
     `;
-
-    smalls.forEach(art => {
-        html += `
-            <div class="small-article">
-                <a href="uutinen.html?id=${art.id}">
-                    <img src="${art.image}" alt="">
-                    <h3>${art.title}</h3>
-                </a>
-            </div>
-        `;
-    });
-
-    html += `</div>`;
     container.innerHTML = html;
 }
 
 function renderArchive(articles, query) {
     const grid = document.getElementById('archive-grid');
-    if(!grid) return;
+    let results = articles;
 
-    let filtered = articles;
-    if(query) {
+    if (query) {
         const q = query.toLowerCase();
-        filtered = articles.filter(a => 
-            a.title.toLowerCase().includes(q) || 
-            a.excerpt.toLowerCase().includes(q) || 
-            a.content.toLowerCase().includes(q)
-        ).sort((a, b) => {
-            // Tärkeysjärjestys: Otsikko (3), Ingressi (2), Leipäteksti (1)
-            const getScore = (art) => {
-                if(art.title.toLowerCase().includes(q)) return 3;
-                if(art.excerpt.toLowerCase().includes(q)) return 2;
-                return 1;
-            };
-            return getScore(b) - getScore(a);
-        });
+        results = articles.map(a => {
+            let score = 0;
+            if (a.title.toLowerCase().includes(q)) score += 3;
+            if (a.excerpt.toLowerCase().includes(q)) score += 2;
+            if (a.content.toLowerCase().includes(q)) score += 1;
+            return { ...a, score };
+        }).filter(a => a.score > 0).sort((a, b) => b.score - a.score);
+        document.querySelector('.archive-title').innerText = `Haun tulokset: "${query}"`;
     }
 
-    grid.innerHTML = filtered.map(art => `
-        <div class="small-article">
-            <a href="uutinen.html?id=${art.id}">
-                <img src="${art.image}" alt="">
-                <h3>${art.title}</h3>
+    grid.innerHTML = results.map(a => `
+        <div class="small-card">
+            <a href="uutinen.html?id=${a.id}">
+                <img src="${a.image}" alt="">
+                <h3>${a.title}</h3>
             </a>
         </div>
     `).join('');
@@ -115,34 +100,37 @@ function renderArchive(articles, query) {
 
 function renderArticle(articles, id) {
     const article = articles.find(a => a.id == id) || articles[0];
-    const mainView = document.getElementById('article-content');
+    const body = document.getElementById('article-body');
     const sidebar = document.getElementById('sidebar-latest');
 
-    mainView.innerHTML = `
-        <h1>${article.title}</h1>
-        <p class="excerpt">${article.excerpt}</p>
-        <img src="${article.image}" class="featured-img" alt="">
-        <div class="article-body">${article.content}</div>
-        
-        <div class="social-share">
-            <img src="images/facebook.png" alt="FB">
-            <img src="images/x.png" alt="X">
-            <img src="images/whatsapp.png" alt="WA">
-        </div>
-        <div class="divider"></div>
-        <div class="author-footer">
-            <img src="assets/LOGO3.png" alt="Logo">
-            <span>Israel-katsaus</span>
+    const shareUrl = encodeURIComponent(window.location.href);
+    const shareTitle = encodeURIComponent(article.title);
+
+    body.innerHTML = `
+        <div class="article-body-content">
+            <img src="${article.image}" alt="">
+            <h1>${article.title}</h1>
+            <p class="excerpt">${article.excerpt}</p>
+            <div class="content-text">${article.content}</div>
+            
+            <div class="share-bar">
+                <img src="images/facebook.png" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${shareUrl}')">
+                <img src="images/x.png" onclick="window.open('https://x.com/intent/tweet?url=${shareUrl}&text=${shareTitle}')">
+                <img src="images/whatsapp.png" onclick="window.open('https://api.whatsapp.com/send?text=${shareTitle}%20${shareUrl}')">
+            </div>
+            <div class="divider"></div>
+            <div class="author-info">
+                <img src="assets/LOGO3.png" alt="">
+                <strong>Israel-katsaus</strong>
+            </div>
         </div>
     `;
 
-    // Sivupalkkiin 5 uusinta uutista (paitsi nykyinen)
-    const latest = articles.filter(a => a.id != article.id).slice(0, 5);
-    sidebar.innerHTML = latest.map(art => `
-        <div class="small-article" style="margin-bottom:20px">
-            <a href="uutinen.html?id=${art.id}">
-                <img src="${art.image}" alt="">
-                <h3 style="font-size:0.9rem">${art.title}</h3>
+    sidebar.innerHTML = articles.filter(a => a.id != article.id).slice(0, 6).map(a => `
+        <div class="small-card" style="margin-bottom: 20px;">
+            <a href="uutinen.html?id=${a.id}">
+                <img src="${a.image}" alt="">
+                <h3 style="font-size: 0.9rem;">${a.title}</h3>
             </a>
         </div>
     `).join('');
