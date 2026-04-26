@@ -246,6 +246,7 @@ ARTICLE PAGE
 
 /* SOURCE */
 .article-source {
+  height: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
