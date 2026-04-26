@@ -1,54 +1,67 @@
-let newsData = [];
+let articles = [];
 
-// LOAD PARTIALS
-async function loadPartials() {
-  document.getElementById("navbar").innerHTML = await fetch("navbar.html").then(r => r.text());
-  document.getElementById("footer").innerHTML = await fetch("footer.html").then(r => r.text());
-}
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadNavbar();
+  await loadFooter();
+  await loadNews();
 
-// LOAD NEWS
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (window.location.pathname.includes("uutinen.html")) {
+    renderArticle(id);
+  }
+
+  if (window.location.pathname.includes("archive.html")) {
+    renderArchive();
+  }
+
+  if (window.location.pathname.includes("index.html") || window.location.pathname === "/") {
+    renderFrontPage();
+  }
+
+  setupSearch();
+});
+
 async function loadNews() {
   const res = await fetch("news.json");
   const data = await res.json();
-  newsData = data.articles.sort((a,b)=> new Date(b.date)-new Date(a.date));
-
-  renderIndex();
-  renderArchive();
-  renderArticlePage();
+  articles = data.articles.sort((a,b) => new Date(b.date) - new Date(a.date));
 }
 
-function renderIndex() {
-  if (!document.getElementById("mainNews")) return;
-
-  const main = newsData[0];
-  const side = newsData.slice(1,5);
-
-  document.getElementById("mainNews").innerHTML = newsCard(main, true);
-
-  document.getElementById("sideNews").innerHTML =
-    side.map(n => newsCard(n)).join("");
+async function loadNavbar() {
+  document.getElementById("navbar").innerHTML = await fetch("navbar.html").then(r => r.text());
 }
 
-function renderArchive() {
-  const el = document.getElementById("archiveList");
-  if (!el) return;
-
-  el.innerHTML = newsData.map(n => newsCard(n)).join("");
+async function loadFooter() {
+  document.getElementById("footer").innerHTML = await fetch("footer.html").then(r => r.text());
 }
 
-function renderArticlePage() {
-  const el = document.getElementById("article");
-  if (!el) return;
+/* FRONT PAGE */
+function renderFrontPage() {
+  if (!articles.length) return;
 
-  const id = new URLSearchParams(window.location.search).get("id");
-  const article = newsData.find(n => n.id == id);
+  const main = document.getElementById("mainNews");
+  const small = document.getElementById("smallNews");
 
+  const [first, ...rest] = articles;
+
+  main.innerHTML = createCard(first, true);
+
+  small.innerHTML = rest.slice(0,4).map(a => createCard(a)).join("");
+}
+
+/* ARTICLE */
+function renderArticle(id) {
+  const article = articles.find(a => a.id == id);
   if (!article) return;
 
-  el.innerHTML = `
+  const container = document.getElementById("articleContent");
+
+  container.innerHTML = `
     <h1>${article.title}</h1>
-    <img src="${article.image}" style="width:100%; margin-top:10px;">
-    <div>${article.content.replace(/<p>/g,"<p style='margin-bottom:15px'>")}</div>
+    <img class="article-img" src="${article.image}">
+    <div>${article.content}</div>
 
     <div class="share">
       <img src="images/facebook.png">
@@ -56,53 +69,60 @@ function renderArticlePage() {
       <img src="images/whatsapp.png">
     </div>
 
-    <hr>
+    <div class="divider"></div>
 
-    <div style="display:flex; align-items:center; gap:10px;">
-      <img src="assets/LOGO3.png" width="25">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <img src="assets/LOGO3.png" style="height:25px;">
       <span>Israel-katsaus</span>
     </div>
   `;
 
   const latest = document.getElementById("latestNews");
-  if (latest) {
-    latest.innerHTML = newsData.slice(0,5)
-      .map(n => `<div class="news-card">${n.title}</div>`).join("");
-  }
+  latest.innerHTML = articles.slice(0,5).map(createMini).join("");
 }
 
-// NEWS CARD
-function newsCard(n, big=false) {
+/* ARCHIVE */
+function renderArchive() {
+  const list = document.getElementById("archiveList");
+  list.innerHTML = articles.map(createCard).join("");
+}
+
+/* CARD */
+function createCard(a, big=false) {
   return `
-    <div class="news-card" style="${big ? "font-size:18px" : ""}">
-      <a href="uutinen.html?id=${n.id}" style="text-decoration:none;color:black">
-        <img src="${n.image}" style="width:100%; margin-top:10px; border-radius:4px;">
-        <h3 style="margin-top:10px">${n.title}</h3>
-        <p>${n.excerpt}</p>
-      </a>
+    <div onclick="openArticle(${a.id})" style="cursor:pointer">
+      <h3>${a.title}</h3>
+      <img src="${a.image}" style="width:100%;margin-top:8px;margin-bottom:8px;">
+      ${big ? `<p>${a.excerpt}</p>` : ""}
     </div>
   `;
 }
 
-// SEARCH
-document.addEventListener("input", (e) => {
-  if (e.target.id !== "searchInput") return;
+function createMini(a) {
+  return `<div onclick="openArticle(${a.id})" style="cursor:pointer;margin-bottom:10px">
+    ${a.title}
+  </div>`;
+}
 
-  const q = e.target.value.toLowerCase();
+function openArticle(id) {
+  window.location.href = `uutinen.html?id=${id}`;
+}
 
-  const filtered = newsData.filter(n =>
-    n.title.toLowerCase().includes(q) ||
-    n.excerpt.toLowerCase().includes(q) ||
-    n.content.toLowerCase().includes(q)
-  );
+/* SEARCH (title > excerpt > content) */
+function setupSearch() {
+  document.addEventListener("input", (e) => {
+    if (e.target.id !== "searchInput") return;
 
-  const main = document.getElementById("mainNews");
-  const side = document.getElementById("sideNews");
+    const q = e.target.value.toLowerCase();
 
-  if (main && side) {
-    main.innerHTML = filtered[0] ? newsCard(filtered[0], true) : "";
-    side.innerHTML = filtered.slice(1,5).map(newsCard).join("");
-  }
-});
+    const filtered = articles.filter(a =>
+      a.title.toLowerCase().includes(q) ||
+      a.excerpt.toLowerCase().includes(q) ||
+      a.content.toLowerCase().includes(q)
+    );
 
-loadPartials().then(loadNews);
+    if (window.location.pathname.includes("archive.html")) {
+      document.getElementById("archiveList").innerHTML = filtered.map(createCard).join("");
+    }
+  });
+}
