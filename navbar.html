@@ -1,23 +1,29 @@
 <nav class="navbar">
-    <div class="nav-container">
-        <div class="mobile-search-trigger" id="search-trigger">🔍</div>
-        
+    <div class="nav-content">
+        <div class="mobile-search-wrapper">
+            <input type="text" class="search-input" id="search-input-mobile" placeholder="Hae...">
+        </div>
+
         <div class="nav-left">
             <a href="index.html">
-                <img src="assets/LOGO.png" alt="Logo" class="main-logo">
+                <img src="assets/LOGO.png" alt="Logo" class="logo-img">
             </a>
         </div>
 
-        <div class="nav-right" id="nav-menu">
+        <div class="nav-right" id="nav-links-container">
             <div class="nav-links">
-                <a href="index.html">ETUSIVU</a>
-                <a href="archive.html">ARKISTO</a>
+                <a href="index.html">Etusivu</a>
+                <a href="archive.html">Arkisto</a>
             </div>
-            <div class="search-container" id="search-container">
-                <input type="text" id="search-input" placeholder="Hae uutisia...">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="search-input-desktop" placeholder="Hae uutisia...">
             </div>
         </div>
 
-        <button class="hamburger" id="hamburger-btn">☰</button>
+        <button class="hamburger" id="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
 </nav>
