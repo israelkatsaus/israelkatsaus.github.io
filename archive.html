@@ -11,20 +11,20 @@
 <body>
     <div id="navbar-placeholder"></div>
 
-    <main class="container">
+    <main class="container page-content">
         <h1>Arkisto</h1>
-        <div id="archive-list" class="archive-list">
-            </div>
+        <div id="archive-container" class="archive-list"></div>
     </main>
 
     <div id="footer-placeholder"></div>
 
     <script src="script.js"></script>
     <script>
-        window.onload = () => {
-            loadLayout();
-            loadArchive();
-        };
+        window.addEventListener('DOMContentLoaded', () => {
+            loadComponent('navbar-placeholder', 'navbar.html', initSearch);
+            loadComponent('footer-placeholder', 'footer.html');
+            renderArchive();
+        });
     </script>
 </body>
 </html>
