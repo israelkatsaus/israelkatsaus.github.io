@@ -1,79 +1,69 @@
-/* Perusasetukset */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Fira Sans', sans-serif; background-color: #fff; color: #333; line-height: 1.5; }
+body { font-family: 'Fira Sans', sans-serif; background: #fff; color: #222; }
 a { text-decoration: none; color: inherit; }
 
 .container { max-width: 1200px; margin: 40px auto; padding: 0 15px; }
 
 /* Navbar */
-.navbar {
-    background-color: #005b96;
-    height: 90px; /* Hieman korkeampi */
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-.nav-container {
-    width: 1200px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
-}
-.nav-logo { max-height: 70px; width: auto; }
-.nav-right { display: flex; align-items: center; gap: 30px; }
+.navbar { background: #005b96; height: 90px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; }
+.nav-container { width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; width: 100%; }
+.main-logo { max-height: 65px; width: auto; }
+.nav-right { display: flex; align-items: center; gap: 40px; }
+.nav-links { display: flex; gap: 30px; }
 .nav-links a { color: white; font-weight: 400; }
-.search-box input { padding: 8px; border: none; border-radius: 4px; width: 180px; }
+.search-container input { padding: 8px 12px; border: none; border-radius: 4px; width: 200px; font-family: inherit; }
+.hamburger, .mobile-search-trigger { display: none; cursor: pointer; color: white; font-size: 24px; }
 
-/* Gridit */
-.front-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-.main-news-card img {
-    width: 100%; aspect-ratio: 3/2; object-fit: cover;
-    margin-bottom: 20px; border-radius: 4px;
-}
-.main-news-card h2 { font-size: 2rem; line-height: 1.2; margin-bottom: 10px; }
+/* Etusivu Grid */
+.front-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 35px; }
+.main-news img { width: 100%; aspect-ratio: 3/2; object-fit: cover; margin-bottom: 20px; }
+.main-news h2 { font-size: 2.2rem; line-height: 1.1; margin-top: 15px; }
 
 .small-news-side { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .small-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 10px; }
-.small-card h3 { font-size: 1rem; line-height: 1.2; }
+.small-card h3 { font-size: 0.95rem; line-height: 1.2; font-weight: 700; }
 
+/* Arkisto */
 .archive-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
-/* Avattu uutinen */
-.article-layout { display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px; }
-.article-body-content img { max-width: 100%; height: auto; display: block; margin-bottom: 25px; }
-.article-body-content h1 { font-size: 2.4rem; line-height: 1.1; margin-bottom: 20px; }
-.excerpt { font-weight: bold; font-size: 1.2rem; margin-bottom: 1.5rem; }
-.content-text p { margin-bottom: 1.5rem; }
+/* Uutissivu */
+.article-layout { display: grid; grid-template-columns: 2.5fr 1fr; gap: 50px; }
+.article-view img.main-img { max-width: 100%; height: auto; display: block; margin-bottom: 25px; }
+.article-view h1 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 20px; }
+.excerpt { font-weight: 700; font-size: 1.2rem; margin-bottom: 1.5rem; }
+.article-content p { margin-bottom: 1.5rem; }
 
-.share-bar { margin: 30px 0 10px; display: flex; gap: 15px; }
-.share-bar img { width: 32px; height: 32px; cursor: pointer; }
-.divider { height: 1px; background: #ddd; margin: 15px 0; }
-.author-info { display: flex; align-items: center; gap: 10px; }
+.share-links { display: flex; gap: 15px; margin: 30px 0 10px; }
+.share-links img { width: 30px; cursor: pointer; }
+.jakoviiva { border-top: 1px solid #ddd; margin-bottom: 15px; }
+.author-info { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.9rem; }
 .author-info img { height: 35px; }
 
+/* Sidebar */
+.sidebar .small-card { margin-bottom: 25px; }
+
 /* Footer */
-.footer { background-color: #222; color: white; padding: 40px 0; margin-top: 60px; }
-.footer-container {
-    max-width: 1200px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
-}
-.footer-logo { height: 50px; }
-.footer-right .email { font-size: 0.9rem; margin-top: 2px; color: #bbb; }
+.footer { background: #1a1a1a; color: white; padding: 40px 0; margin-top: 60px; }
+.footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; }
+.footer-logo { height: 45px; }
+.footer-email { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
 
 /* Mobiili */
-.hamburger { display: none; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
-
-@media (max-width: 800px) {
+@media (max-width: 850px) {
     .nav-container { justify-content: space-between; }
     .nav-left { position: absolute; left: 50%; transform: translateX(-50%); }
-    .nav-logo { max-height: 50px; }
-    .hamburger { display: block; margin-left: auto; }
+    .main-logo { max-height: 45px; }
+    .hamburger, .mobile-search-trigger { display: block; }
+    
     .nav-right {
         display: none; position: absolute; top: 90px; left: 0; width: 100%;
         background: #005b96; flex-direction: column; padding: 20px; gap: 20px;
     }
-    .nav-right.open { display: flex; }
-    
+    .nav-right.active { display: flex; }
+    .search-container { display: none; width: 100%; }
+    .search-container.active { display: block; }
+    .search-container input { width: 100%; }
+
     .front-grid, .article-layout, .archive-grid, .small-news-side { grid-template-columns: 1fr; }
     .footer-container { flex-direction: column; text-align: center; gap: 30px; }
 }
