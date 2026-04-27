@@ -6,19 +6,18 @@
     <title>Uutinen - Israel-katsaus</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="navbar-placeholder"></div>
 
-    <main class="container main-content">
-        <div class="article-view-container">
-            <div id="article-content" class="article-main-column">
-                </div>
-            <aside class="sidebar">
-                <h3>Uusimmat uutiset</h3>
-                <div id="sidebar-latest"></div>
-            </aside>
+    <main class="container content-wrapper">
+        <div class="article-page-layout">
+            <article id="article-content" class="full-article">
+                </article>
+            
+            <aside id="latest-sidebar" class="sidebar">
+                </aside>
         </div>
     </main>
 
@@ -26,10 +25,11 @@
 
     <script src="script.js"></script>
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            loadLayout();
-            loadSingleArticle();
-        });
+        window.onload = () => {
+            loadComponent('navbar-placeholder', 'navbar.html', initNavbar);
+            loadComponent('footer-placeholder', 'footer.html');
+            renderSingleArticle();
+        };
     </script>
 </body>
 </html>
