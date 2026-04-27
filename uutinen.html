@@ -16,8 +16,11 @@
             <article id="article-content" class="full-article">
                 </article>
             
-            <aside id="latest-sidebar" class="sidebar">
-                </aside>
+            <aside class="sidebar">
+                <h3 class="sidebar-main-title">UUSIMMAT UUTISET</h3>
+                <div id="latest-sidebar-content">
+                    </div> 
+            </aside>
         </div>
     </main>
 
@@ -25,11 +28,12 @@
 
     <script src="script.js"></script>
     <script>
-        window.onload = () => {
+        // Käytetään mieluummin 'DOMContentLoaded' jotta skripti suoritetaan heti kun rakenne on valmis
+        document.addEventListener('DOMContentLoaded', () => {
             loadComponent('navbar-placeholder', 'navbar.html', initNavbar);
             loadComponent('footer-placeholder', 'footer.html');
             renderSingleArticle();
-        };
+        });
     </script>
 </body>
 </html>
