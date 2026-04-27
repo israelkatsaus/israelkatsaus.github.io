@@ -6,24 +6,25 @@
     <title>Arkisto - Israel-katsaus</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="navbar-placeholder"></div>
 
-    <main class="container main-content">
-        <h1 class="page-title">Arkisto</h1>
-        <div id="archive-list" class="archive-grid"></div>
+    <main class="container content-wrapper">
+        <h2 class="section-title">Arkisto</h2>
+        <div id="archive-grid" class="archive-grid"></div>
     </main>
 
     <div id="footer-placeholder"></div>
 
     <script src="script.js"></script>
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            loadLayout();
-            loadArchive();
-        });
+        window.onload = () => {
+            loadComponent('navbar-placeholder', 'navbar.html', initNavbar);
+            loadComponent('footer-placeholder', 'footer.html');
+            renderArchive();
+        };
     </script>
 </body>
 </html>
