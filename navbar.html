@@ -1,35 +1,22 @@
-<nav class="top-nav">
+<nav class="navbar">
     <div class="nav-container">
-        <button class="hamburger" id="nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <div class="logo-box">
-            <a href="index.html">
-                <img src="assets/LOGO.png" alt="Logo" class="nav-logo">
-            </a>
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</div>
+        <a href="index.html" class="logo-link">
+            <img src="assets/LOGO.png" alt="Logo" class="nav-logo">
+        </a>
+        <div class="nav-links" id="nav-links">
+            <a href="index.html">ETUSIVU</a>
+            <a href="archive.html">ARKISTO</a>
         </div>
-
-        <div class="nav-menu" id="nav-menu">
-            <div class="nav-links">
-                <a href="index.html">ETUSIVU</a>
-                <a href="archive.html">ARKISTO</a>
-            </div>
-            <div class="search-box">
-                <input type="text" id="desktop-search" placeholder="Hae...">
-            </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Hae...">
         </div>
     </div>
-</nav>
-
-<div class="mobile-overlay" id="mobile-overlay">
-    <div class="mobile-menu-content">
-        <div class="mobile-search-wrap">
-            <input type="text" id="mobile-search" placeholder="HAKU">
+    <div id="mobile-dropdown" class="mobile-dropdown">
+        <div class="search-box-mobile">
+            <input type="text" id="search-input-mobile" placeholder="HAE">
         </div>
         <a href="index.html">ETUSIVU</a>
         <a href="archive.html">ARKISTO</a>
     </div>
-</div>
+</nav>
