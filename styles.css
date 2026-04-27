@@ -144,10 +144,10 @@ a { text-decoration: none; color: inherit; }
     
     .nav-logo {
         position: absolute;
-        left: 50%;
+        left: 48%;
         transform: translateX(-50%);
-        top: 14px; 
-        height: 40px; 
+        top: 15px; 
+        height: 45px; 
     }
     
     #front-page-layout, .article-page-layout { grid-template-columns: 1fr; }
