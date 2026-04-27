@@ -10,14 +10,16 @@ async function loadComponent(id, file, callback) {
 function initNavbar() {
     const btn = document.getElementById('hamburger-btn');
     const menu = document.getElementById('nav-menu');
-    btn.onclick = () => menu.classList.toggle('active');
+    if (btn && menu) {
+        btn.onclick = () => menu.classList.toggle('active');
+    }
 }
 
 // Hae uutiset JSON-tiedostosta
 async function getArticles() {
     const resp = await fetch('news.json');
     const data = await resp.json();
-    // Järjestetään uusimmasta vanhimpaan (ID tai Date perusteella)
+    // Järjestetään uusimmasta vanhimpaan päivämäärän mukaan
     return data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
@@ -39,8 +41,10 @@ async function handleSearch(event) {
 
         const grid = document.getElementById('search-grid');
         const container = document.getElementById('search-results-container');
+        const layout = document.getElementById('front-page-layout');
         
         if (grid && container) {
+            if (layout) layout.style.display = 'none'; // Piilotetaan etusivun uutiset haun tieltä
             container.style.display = 'block';
             grid.innerHTML = results.map(art => `
                 <div class="news-card" onclick="location.href='uutinen.html?id=${art.id}'">
@@ -56,34 +60,45 @@ async function handleSearch(event) {
 // Etusivun renderöinti
 async function renderFrontPage() {
     const articles = await getArticles();
+    if (articles.length === 0) return;
+
     const main = articles[0];
     const side = articles.slice(1, 7);
 
-    document.getElementById('main-article-area').innerHTML = `
-        <div class="main-article-card" onclick="location.href='uutinen.html?id=${main.id}'">
-            <div class="img-container-32"><img src="${main.image}"></div>
-            <h2>${main.title}</h2>
-            <p>${main.excerpt}</p>
-        </div>
-    `;
+    const mainArea = document.getElementById('main-article-area');
+    if (mainArea) {
+        mainArea.innerHTML = `
+            <div class="main-article-card" onclick="location.href='uutinen.html?id=${main.id}'">
+                <div class="img-container-32"><img src="${main.image}"></div>
+                <h2>${main.title}</h2>
+                <p>${main.excerpt}</p>
+            </div>
+        `;
+    }
 
-    document.getElementById('side-articles-area').innerHTML = side.map(art => `
-        <div class="side-card" onclick="location.href='uutinen.html?id=${art.id}'">
-            <img src="${art.image}">
-            <h4>${art.title}</h4>
-        </div>
-    `).join('');
+    const sideArea = document.getElementById('side-articles-area');
+    if (sideArea) {
+        sideArea.innerHTML = side.map(art => `
+            <div class="side-card" onclick="location.href='uutinen.html?id=${art.id}'">
+                <img src="${art.image}">
+                <h4>${art.title}</h4>
+            </div>
+        `).join('');
+    }
 }
 
 // Arkiston renderöinti
 async function renderArchive() {
     const articles = await getArticles();
-    document.getElementById('archive-grid').innerHTML = articles.map(art => `
-        <div class="news-card" onclick="location.href='uutinen.html?id=${art.id}'">
-            <img src="${art.image}">
-            <h3>${art.title}</h3>
-        </div>
-    `).join('');
+    const grid = document.getElementById('archive-grid');
+    if (grid) {
+        grid.innerHTML = articles.map(art => `
+            <div class="news-card" onclick="location.href='uutinen.html?id=${art.id}'">
+                <img src="${art.image}">
+                <h3>${art.title}</h3>
+            </div>
+        `).join('');
+    }
 }
 
 // Yksittäisen uutisen renderöinti
@@ -97,28 +112,35 @@ async function renderSingleArticle() {
         const shareUrl = encodeURIComponent(window.location.href);
         const shareTitle = encodeURIComponent(article.title);
 
-        document.getElementById('article-content').innerHTML = `
-            <img src="${article.image}" class="article-hero-img">
-            <h1>${article.title}</h1>
-            <div class="article-ingress">${article.excerpt}</div>
-            <div class="article-body">${article.content}</div>
-            <div class="article-author">Israel-katsaus/toimitus</div>
-            <div class="share-box">
-                <p>JAA UUTINEN</p>
-                <div class="share-links">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank"><img src="images/facebook.png"></a>
-                    <a href="https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}" target="_blank"><img src="images/x.png"></a>
-                    <a href="https://api.whatsapp.com/send?text=${shareTitle}%20${shareUrl}" target="_blank"><img src="images/whatsapp.png"></a>
+        const contentArea = document.getElementById('article-content');
+        if (contentArea) {
+            contentArea.innerHTML = `
+                <img src="${article.image}" class="article-hero-img">
+                <h1>${article.title}</h1>
+                <div class="article-ingress">${article.excerpt}</div>
+                <div class="article-body">${article.content}</div>
+                <div class="article-author">Israel-katsaus/toimitus</div>
+                <div class="share-box">
+                    <p>JAA UUTINEN</p>
+                    <div class="share-links">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank"><img src="images/facebook.png"></a>
+                        <a href="https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}" target="_blank"><img src="images/x.png"></a>
+                        <a href="https://api.whatsapp.com/send?text=${shareTitle}%20${shareUrl}" target="_blank"><img src="images/whatsapp.png"></a>
+                    </div>
+                    <div class="divider"></div>
                 </div>
-                <div class="divider"></div>
-            </div>
-        `;
+            `;
+        }
     }
 
-    // Sivupalkki (uusimmat)
-    document.getElementById('latest-sidebar').innerHTML = articles.slice(0, 8).map(art => `
-        <div class="sidebar-item" onclick="location.href='uutinen.html?id=${art.id}'">
-            <p>${art.title}</p>
-        </div>
-    `).join('');
+    // Sivupalkki (Uusimmat uutiset)
+    // Huom: varmista että uutinen.html:ssä on <div id="latest-sidebar-list"></div> otsikon alla
+    const sidebarList = document.getElementById('latest-sidebar-list') || document.getElementById('latest-sidebar');
+    if (sidebarList) {
+        sidebarList.innerHTML = articles.slice(0, 8).map(art => `
+            <div class="sidebar-item" onclick="location.href='uutinen.html?id=${art.id}'">
+                <p>${art.title}</p>
+            </div>
+        `).join('');
+    }
 }
