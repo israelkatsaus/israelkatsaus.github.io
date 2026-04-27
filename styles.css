@@ -1,163 +1,112 @@
-body {
-  margin: 0;
-  font-family: 'Fira Sans', sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+:root {
+    --blue: #005b96;
+    --dark: #1a1a1a;
+    --white: #ffffff;
 }
 
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px;
-  flex: 1;
+* { box-sizing: border-box; margin: 0; padding: 0; text-decoration: none; }
+
+body { 
+    font-family: 'Fira Sans', sans-serif; 
+    line-height: 1.5; 
+    display: flex; 
+    flex-direction: column; 
+    min-height: 100vh;
 }
+
+.inner-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.content-spacer { margin-top: 40px; flex: 1; }
 
 /* NAVBAR */
-.navbar {
-  background: #005b96;
+.top-nav { 
+    background-color: var(--blue); 
+    height: 110px; /* Korkeampi yläpalkki */
+    display: flex; 
+    align-items: center; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000;
 }
 
-.nav-inner {
-  max-width: 1100px;
-  margin: auto;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.main-logo { max-height: 85px; width: auto; object-fit: contain; }
+
+.nav-right { display: flex; align-items: center; gap: 50px; }
+.nav-links { display: flex; gap: 40px; }
+.nav-links a { color: var(--white); font-weight: 400; }
+
+.search-container input { 
+    padding: 8px 12px; 
+    border: none; 
+    border-radius: 4px; 
+    width: 220px; 
+    font-family: inherit;
 }
 
-.logo {
-  height: 40px;
+/* GRIDS */
+.front-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 30px; }
+
+.main-story img { 
+    width: 100%; 
+    aspect-ratio: 3/2; 
+    object-fit: cover; 
+    margin-bottom: 20px; 
 }
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
+.main-story h2 { font-size: 2.2rem; line-height: 1.2; margin-top: 15px; }
 
-.nav-right a {
-  color: white;
-  text-decoration: none;
-}
+.side-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.small-card h3 { font-size: 0.9rem; line-height: 1.3; font-weight: 700; margin-top: 10px; color: #222; }
+.small-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
 
-.nav-right input {
-  padding: 6px;
-}
+.archive-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 30px; }
 
-.hamburger {
-  display: none;
-  color: white;
-  font-size: 22px;
-}
+/* UUTISSIVU */
+.article-layout { display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px; }
+article img { width: 100%; max-width: 100%; height: auto; margin-bottom: 25px; display: block; }
+article h1 { font-size: 2.5rem; line-height: 1.1; margin-top: 20px; margin-bottom: 20px; }
 
-#mobile-menu {
-  display: none;
-  flex-direction: column;
-  background: #005b96;
-  padding: 15px;
-}
+.ingress { font-weight: 700; font-size: 1.25rem; margin-bottom: 1.5rem; }
+.body-text p { margin-bottom: 1.5rem; }
 
-#mobile-menu a {
-  color: white;
-  text-decoration: none;
-  margin-top: 10px;
-}
+.article-footer { display: flex; align-items: center; gap: 20px; margin-top: 30px; }
+.toimitus-label { font-style: italic; font-weight: 700; font-size: 0.9rem; line-height: 1; }
+
+.share-links { display: flex; gap: 12px; align-items: center; }
+.share-links img { width: 22px; height: 22px; cursor: pointer; display: block; }
+
+.divider-line { border-bottom: 1px solid #ddd; margin-top: 15px; margin-bottom: 40px; }
+
+/* SIDEBAR */
+.sidebar .small-card { margin-bottom: 25px; }
 
 /* FOOTER */
-.footer {
-  background: #111;
-  color: white;
-}
+.main-footer { background-color: var(--dark); color: var(--white); padding: 50px 0; margin-top: 60px; }
+.footer-flex { display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { height: 45px; }
+.footer-email { font-size: 0.85rem; margin-top: 2px; color: #ccc; }
 
-.footer-inner {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-}
+/* MOBIILI */
+.hamburger-menu { display: none; background: none; border: none; cursor: pointer; }
+.hamburger-menu span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; }
 
-.footer-logo {
-  height: 40px;
-}
+.mobile-overlay { display: none; position: fixed; top: 110px; left: 0; width: 100%; background: var(--blue); padding: 20px; z-index: 999; }
+.mobile-overlay.active { display: block; }
+.mobile-menu-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.mobile-menu-content a { color: white; font-size: 1.5rem; font-weight: 700; }
+.mobile-search input { width: 80vw; padding: 12px; border-radius: 4px; border: none; }
 
-/* ETUSIVU */
-.main-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
-}
-
-.main-img {
-  width: 100%;
-  aspect-ratio: 3/2;
-  object-fit: cover;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
-}
-
-.small-news h4 {
-  font-size: 14px;
-}
-
-/* UUTINEN */
-.article-layout {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 30px;
-}
-
-.article-img {
-  width: 100%;
-  margin-top: 10px;
-}
-
-#article p {
-  margin-bottom: 1em;
-}
-
-.meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 20px;
-}
-
-.meta b {
-  font-style: italic;
-}
-
-.share img {
-  width: 20px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-hr {
-  margin-top: 10px;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-  .nav-right { display:none; }
-  .hamburger { display:block; }
-  .logo { margin:auto; }
-
-  .main-layout,
-  .article-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-inner {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
+@media (max-width: 850px) {
+    .hamburger-menu { display: block; }
+    .nav-right { display: none; }
+    .logo-area { position: absolute; left: 50%; transform: translateX(-50%); }
+    .main-logo { max-height: 55px; }
+    
+    .front-grid, .article-layout, .side-news-grid, .archive-grid { grid-template-columns: 1fr; }
+    .footer-flex { flex-direction: column; text-align: center; gap: 30px; }
 }
