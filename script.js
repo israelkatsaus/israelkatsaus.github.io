@@ -134,13 +134,27 @@ async function renderSingleArticle() {
     }
 
     // Sivupalkki (Uusimmat uutiset)
-    // Huom: varmista että uutinen.html:ssä on <div id="latest-sidebar-list"></div> otsikon alla
-    const sidebarList = document.getElementById('latest-sidebar-list') || document.getElementById('latest-sidebar');
+    // Etsitään ensin listalle tarkoitettua diviä, jos ei löydy, käytetään sidebaria
+    const sidebarList = document.getElementById('latest-sidebar-list');
+    
     if (sidebarList) {
         sidebarList.innerHTML = articles.slice(0, 8).map(art => `
             <div class="sidebar-item" onclick="location.href='uutinen.html?id=${art.id}'">
                 <p>${art.title}</p>
             </div>
         `).join('');
+    } else {
+        // Varmistus: jos listadiviä ei löydy, kokeillaan ladata suoraan sivupalkkiin
+        const fallbackSidebar = document.getElementById('latest-sidebar');
+        if (fallbackSidebar) {
+            fallbackSidebar.innerHTML = `
+                <h3 class="sidebar-main-title">UUSIMMAT UUTISET</h3>
+                ${articles.slice(0, 8).map(art => `
+                    <div class="sidebar-item" onclick="location.href='uutinen.html?id=${art.id}'">
+                        <p>${art.title}</p>
+                    </div>
+                `).join('')}
+            `;
+        }
     }
 }
