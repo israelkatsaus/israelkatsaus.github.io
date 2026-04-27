@@ -1,33 +1,23 @@
-<nav class="nav-bar">
-    <div class="nav-container">
-        <button class="hamburger" id="mobile-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <div class="nav-logo-area">
-            <a href="index.html">
-                <img src="assets/LOGO.png" alt="Logo" class="logo-main">
-            </a>
+<header>
+    <div class="navbar">
+        <a href="index.html"><img src="assets/LOGO.png" alt="Israel-katsaus" class="logo"></a>
+        
+        <div class="nav-links">
+            <a href="index.html">ETUSIVU</a>
+            <a href="archive.html">ARKISTO</a>
         </div>
-
-        <div class="nav-right" id="nav-menu">
-            <div class="nav-links">
-                <a href="index.html">ETUSIVU</a>
-                <a href="archive.html">ARKISTO</a>
-            </div>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Hae...">
-            </div>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Hae uutisia..." onkeypress="if(event.key === 'Enter') searchArticles()">
         </div>
+        
+        <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
     </div>
-</nav>
-
-<div class="mobile-menu" id="mobile-menu">
-    <div class="mobile-search-container">
-        <input type="text" id="mobile-search-input" placeholder="HAKU">
+    
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#" onclick="searchFromMobile(); return false;">HAKU</a>
+        <a href="index.html">ETUSIVU</a>
+        <a href="archive.html">ARKISTO</a>
     </div>
-    <a href="index.html">ETUSIVU</a>
-    <a href="archive.html">ARKISTO</a>
-</div>
+</header>
