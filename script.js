@@ -109,6 +109,9 @@ async function renderSingleArticle() {
     const article = articles.find(a => a.id == id);
 
     if (article) {
+        // Päivitetään välilehden otsikko uutisen otsikolla
+        document.title = article.title;
+
         const shareUrl = encodeURIComponent(window.location.href);
         const shareTitle = encodeURIComponent(article.title);
 
@@ -134,7 +137,6 @@ async function renderSingleArticle() {
     }
 
     // Sivupalkki (Uusimmat uutiset)
-    // Etsitään ensin listalle tarkoitettua diviä, jos ei löydy, käytetään sidebaria
     const sidebarList = document.getElementById('latest-sidebar-list');
     
     if (sidebarList) {
@@ -144,7 +146,6 @@ async function renderSingleArticle() {
             </div>
         `).join('');
     } else {
-        // Varmistus: jos listadiviä ei löydy, kokeillaan ladata suoraan sivupalkkiin
         const fallbackSidebar = document.getElementById('latest-sidebar');
         if (fallbackSidebar) {
             fallbackSidebar.innerHTML = `
