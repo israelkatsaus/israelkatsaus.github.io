@@ -1,76 +1,69 @@
-/* Perusasetukset */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Fira Sans', sans-serif; background-color: #fff; color: #333; line-height: 1.4; }
+body { font-family: 'Fira Sans', sans-serif; background: #fff; color: #222; }
 a { text-decoration: none; color: inherit; }
 
-.main-wrapper { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+.main-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
 
 /* Yläpalkki */
-.navbar { background-color: #005b96; height: 95px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; }
+.navbar { background-color: #005b96; height: 100px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; }
 .nav-content { max-width: 1200px; width: 100%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.main-logo { max-height: 70px; width: auto; display: block; }
+.nav-logo { max-height: 75px; width: auto; object-fit: contain; }
 
 .nav-right { display: flex; align-items: center; gap: 40px; }
-.nav-links { display: flex; gap: 30px; }
-.nav-links a { color: white; font-weight: 400; font-size: 1.1rem; }
-.search-container input { padding: 8px 12px; border: none; border-radius: 4px; width: 200px; font-family: inherit; }
+.nav-links { display: flex; gap: 35px; }
+.nav-links a { color: white; font-size: 1.1rem; font-weight: 400; }
+.search-box input { padding: 8px 12px; border: none; border-radius: 4px; width: 180px; font-family: inherit; }
 
-/* Grid-asettelut */
-.front-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 30px; }
-.hero-article img { width: 100%; aspect-ratio: 3/2; object-fit: cover; margin-bottom: 15px; }
-.hero-article h2 { font-size: 2.2rem; line-height: 1.1; margin-top: 10px; }
+/* Etusivun ruudukko */
+.front-page-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 30px; margin-top: 10px; }
+.main-news-item img { width: 100%; aspect-ratio: 3/2; object-fit: cover; margin-bottom: 20px; }
+.main-news-item h2 { font-size: 2.2rem; line-height: 1.1; margin-top: 10px; }
 
-.small-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.small-item img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 8px; }
-.small-item h3 { font-size: 0.95rem; line-height: 1.2; font-weight: 700; }
+.side-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.small-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; margin-bottom: 8px; }
+.small-card h3 { font-size: 0.95rem; line-height: 1.25; font-weight: 700; margin-top: 5px; }
 
+/* Arkisto */
 .archive-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
-/* Artikkelisivu */
-.article-layout { display: grid; grid-template-columns: 2.5fr 1fr; gap: 50px; }
-.article-body img { width: 100%; height: auto; max-width: 100%; margin-bottom: 25px; }
-.article-body h1 { font-size: 2.5rem; line-height: 1.1; margin-top: 15px; margin-bottom: 15px; }
-.ingress { font-weight: 700; font-size: 1.25rem; margin-bottom: 1.5rem; }
-.content-text p { margin-bottom: 1.5rem; }
+/* Uutissivu */
+.article-layout { display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px; }
+.article-body img { width: 100%; max-width: 100%; height: auto; margin-bottom: 25px; }
+.article-body h1 { font-size: 2.6rem; line-height: 1.1; margin: 15px 0 20px 0; }
+.article-body .ingress { font-weight: 700; font-size: 1.3rem; margin-bottom: 1.5rem; }
+.article-body p { margin-bottom: 1.5rem; } /* Tyhjä rivi kappaleiden väliin */
 
-/* Some-linkit ja Byline */
-.share-bar { display: flex; gap: 15px; margin: 30px 0 10px 0; }
-.share-bar img { width: 30px; cursor: pointer; }
+.share-links { display: flex; gap: 15px; margin: 30px 0 10px; }
+.share-links img { width: 30px; cursor: pointer; }
 .divider { border-top: 1px solid #ddd; margin-bottom: 15px; }
-.byline { display: flex; align-items: center; gap: 12px; }
-.byline img { height: 35px; width: auto; object-fit: contain; }
-.byline span { font-weight: 700; font-size: 0.95rem; }
+.author-line { display: flex; align-items: center; gap: 10px; }
+.author-line img { height: 35px; width: auto; object-fit: contain; }
+.author-line span { font-weight: 700; }
 
-/* Sidebar */
-.sidebar .small-item { margin-bottom: 25px; }
+/* Footer */
+.footer { background: #1a1a1a; color: #fff; padding: 40px 0; margin-top: 60px; }
+.footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+.footer-logo { height: 50px; width: auto; object-fit: contain; }
+.footer-email { font-size: 0.85rem; margin-top: 5px; color: #bbb; }
 
-/* Alapalkki */
-.footer { background-color: #1a1a1a; color: white; padding: 40px 0; margin-top: 60px; }
-.footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.footer-logo-img { height: 45px; width: auto; object-fit: contain; }
-.footer-email { font-size: 0.85rem; margin-top: 2px; color: #bbb; }
-
-/* Mobiiliasettelu */
+/* Mobiili */
 .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 5px; }
-.hamburger span { display: block; width: 25px; height: 3px; background-color: white; margin: 4px 0; transition: 0.3s; }
+.hamburger span { display: block; width: 25px; height: 3px; background: #fff; margin: 5px 0; }
 
-@media (max-width: 850px) {
-    .nav-container { justify-content: space-between; position: relative; }
-    .hamburger { display: block; z-index: 1001; }
-    .nav-logo-container { position: absolute; left: 50%; transform: translateX(-50%); }
-    .main-logo { max-height: 45px; }
+@media (max-width: 900px) {
+    .navbar { height: 85px; }
+    .hamburger { display: block; }
+    .logo-wrapper { position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-logo { max-height: 50px; }
+    .nav-right { display: none; flex-direction: column; position: absolute; top: 85px; left: 0; width: 100%; background: #005b96; padding: 20px; gap: 20px; }
+    .nav-right.active { display: flex; }
+    .nav-links { flex-direction: column; align-items: center; }
     
-    .nav-right {
-        display: none; position: absolute; top: 95px; left: 0; width: 100%;
-        background-color: #005b96; flex-direction: column; padding: 20px; gap: 20px;
-    }
-    .nav-right.mobile-open { display: flex; border-top: 1px solid rgba(255,255,255,0.1); }
-    .nav-links { flex-direction: column; align-items: center; gap: 20px; }
-    
-    /* Hakukenttä mobiilissa oikealla */
-    .search-container { order: -1; margin-left: auto; display: block !important; }
-    .search-container input { width: 130px; font-size: 0.85rem; }
+    /* Haku oikealle mobiilissa */
+    .nav-content { position: relative; }
+    .search-box { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); display: block !important; }
+    .search-box input { width: 120px; font-size: 0.8rem; }
 
-    .front-grid, .article-layout, .archive-grid, .small-news-grid { grid-template-columns: 1fr; }
-    .footer-content { flex-direction: column; text-align: center; gap: 30px; }
+    .front-page-grid, .article-layout, .archive-grid, .side-news-grid { grid-template-columns: 1fr; }
+    .footer-container { flex-direction: column; text-align: center; gap: 30px; }
 }
