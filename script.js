@@ -1,136 +1,242 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Ladataan komponentit
-    Promise.all([
-        fetch('navbar.html').then(r => r.text()),
-        fetch('footer.html').then(r => r.text())
-    ]).then(([navHtml, footHtml]) => {
-        document.getElementById('nav-placeholder').innerHTML = navHtml;
-        document.getElementById('footer-placeholder').innerHTML = footHtml;
-        initNav();
-    });
+let allArticles = [];
 
-    // Haetaan uutiset
-    fetch('news.json')
-        .then(r => r.json())
-        .then(data => {
-            const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-            renderPage(articles);
-        });
-});
-
-function initNav() {
-    const toggle = document.getElementById('mobile-toggle');
-    const menu = document.getElementById('mobile-menu');
-    if(toggle) toggle.onclick = () => menu.classList.toggle('active');
-
-    const handleSearch = (e) => {
-        if(e.key === 'Enter') {
-            window.location.href = `archive.html?search=${encodeURIComponent(e.target.value)}`;
-        }
-    };
-
-    document.getElementById('search-input')?.addEventListener('keypress', handleSearch);
-    document.getElementById('mobile-search-input')?.addEventListener('keypress', handleSearch);
-}
-
-function renderPage(articles) {
-    const params = new URLSearchParams(window.location.search);
-    const path = window.location.pathname;
-
-    if (path.includes('archive.html')) {
-        renderArchive(articles, params.get('search'));
-    } else if (path.includes('uutinen.html')) {
-        renderArticle(articles, params.get('id'));
-    } else {
-        renderFrontPage(articles);
+async function loadArticles() {
+    try {
+        const res = await fetch('news.json');
+        const data = await res.json();
+        allArticles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+        return allArticles;
+    } catch (e) {
+        console.error("Virhe ladattaessa uutisia:", e);
+        return [];
     }
 }
 
-function renderFrontPage(articles) {
-    const container = document.getElementById('hero-section');
-    if(!container) return;
-
-    const main = articles[0];
-    const side = articles.slice(1, 7);
-
-    container.innerHTML = `
-        <div class="main-story">
-            <a href="uutinen.html?id=${main.id}">
-                <img src="${main.image}" alt="">
-                <h2>${main.title}</h2>
-                <p style="margin-top:12px">${main.excerpt}</p>
-            </a>
-        </div>
-        <div class="side-grid">
-            ${side.map(a => `
-                <div class="small-card">
-                    <a href="uutinen.html?id=${a.id}">
-                        <img src="${a.image}" alt="">
-                        <h3>${a.title}</h3>
-                    </a>
-                </div>
-            `).join('')}
-        </div>
-    `;
-}
-
-function renderArchive(articles, query) {
-    const grid = document.getElementById('archive-grid');
-    if(!grid) return;
-
-    let filtered = articles;
-    if(query) {
-        const q = query.toLowerCase();
-        filtered = articles.map(a => {
-            let score = 0;
-            if(a.title.toLowerCase().includes(q)) score = 3;
-            else if(a.excerpt.toLowerCase().includes(q)) score = 2;
-            else if(a.content.toLowerCase().includes(q)) score = 1;
-            return {...a, score};
-        }).filter(a => a.score > 0).sort((a,b) => b.score - a.score);
-        document.getElementById('archive-title').innerText = `TULOKSET: ${query.toUpperCase()}`;
-    }
-
-    grid.innerHTML = filtered.map(a => `
-        <div class="small-card">
-            <a href="uutinen.html?id=${a.id}">
-                <img src="${a.image}" alt="">
-                <h3>${a.title}</h3>
-            </a>
-        </div>
-    `).join('');
-}
-
-function renderArticle(articles, id) {
-    const art = articles.find(a => a.id == id) || articles[0];
-    const container = document.getElementById('article-container');
-    const sidebar = document.getElementById('sidebar-news');
+// Yhteinen navbar ja footer
+async function initCommon() {
+    // Navbar
+    const navbarHTML = await fetch('navbar.html').then(r => r.text());
+    document.getElementById('navbar').innerHTML = navbarHTML;
     
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(art.title);
+    // Footer
+    const footerHTML = await fetch('footer.html').then(r => r.text());
+    document.getElementById('footer').innerHTML = footerHTML;
+}
 
-    container.innerHTML = `
-        <img src="${art.image}" alt="">
-        <h1>${art.title}</h1>
-        <div class="ingress">${art.excerpt}</div>
-        <div class="content-body">${art.content}</div>
-        <div class="article-meta-line">
-            <span class="toimitus-text">Israel-katsaus/toimitus</span>
-            <div class="share-links">
-                <img src="images/facebook.png" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${url}')">
-                <img src="images/x.png" onclick="window.open('https://twitter.com/intent/tweet?url=${url}&text=${title}')">
-                <img src="images/whatsapp.png" onclick="window.open('https://api.whatsapp.com/send?text=${title}%20${url}')">
+// Haku (otsikko > ingressi > sisältö)
+function searchArticles(query = null) {
+    const input = document.getElementById('searchInput');
+    const term = (query || input.value || '').toLowerCase().trim();
+    if (!term) return;
+    
+    const filtered = allArticles.filter(article => {
+        return article.title.toLowerCase().includes(term) ||
+               (article.excerpt && article.excerpt.toLowerCase().includes(term)) ||
+               (article.content && article.content.toLowerCase().includes(term));
+    });
+    
+    if (window.location.pathname.includes('archive.html')) {
+        renderArchive(filtered);
+    } else {
+        // Ohjaa etusivulle tai näytä tulokset
+        window.location.href = `index.html?search=${encodeURIComponent(term)}`;
+    }
+}
+
+function searchFromMobile() {
+    const term = prompt("Hae uutisia:");
+    if (term) searchArticles(term);
+}
+
+// Renderöi etusivu
+async function renderHome() {
+    const articles = await loadArticles();
+    const container = document.getElementById('mainContent');
+    
+    if (!articles.length) {
+        container.innerHTML = "<p>Ei uutisia saatavilla.</p>";
+        return;
+    }
+    
+    const featured = articles[0];
+    let html = `
+        <div class="featured">
+            <a href="uutinen.html?id=${featured.id}">
+                <img src="${featured.image}" alt="${featured.title}">
+            </a>
+            <a href="uutinen.html?id=${featured.id}" style="text-decoration:none;color:inherit;">
+                <h1>${featured.title}</h1>
+            </a>
+            <p class="date">${featured.date}</p>
+        </div>
+        
+        <div class="small-news">
+    `;
+    for (let i = 1; i < Math.min(7, articles.length); i++) {
+        const art = articles[i];
+        html += `
+            <article>
+                <a href="uutinen.html?id=${art.id}">
+                    <img src="${art.image}" alt="${art.title}">
+                </a>
+                <a href="uutinen.html?id=${art.id}" style="text-decoration:none;color:inherit;">
+                    <h3>${art.title}</h3>
+                </a>
+                <p class="date">${art.date}</p>
+            </article>
+        `;
+    }
+    html += `</div>`;
+    
+    container.innerHTML = html;
+}
+
+// Renderöi arkisto
+async function renderArchive(filtered = null) {
+    const articles = filtered || await loadArticles();
+    const grid = document.getElementById('archiveGrid');
+    
+    let html = '';
+    articles.forEach(article => {
+        html += `
+            <article>
+                <a href="uutinen.html?id=${article.id}">
+                    <img src="${article.image}" alt="${article.title}">
+                </a>
+                <a href="uutinen.html?id=${article.id}" style="text-decoration:none;color:inherit;">
+                    <h3>${article.title}</h3>
+                </a>
+                <p class="date">${article.date}</p>
+            </article>
+        `;
+    });
+    
+    grid.innerHTML = html;
+}
+
+// Yksittäinen uutinen
+async function renderArticle() {
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'));
+    
+    if (!id) return;
+    
+    const articles = await loadArticles();
+    const article = articles.find(a => a.id === id);
+    
+    if (!article) {
+        document.getElementById('articleContent').innerHTML = "<p>Uutista ei löytynyt.</p>";
+        return;
+    }
+    
+    document.getElementById('pageTitle').textContent = article.title + " - Israel-katsaus";
+    
+    const contentDiv = document.getElementById('articleContent');
+    
+    let html = `
+        <img src="${article.image}" alt="${article.title}">
+        <h1>${article.title}</h1>
+        <p class="date">${article.date}</p>
+        
+        ${article.excerpt ? `<p class="excerpt">${article.excerpt}</p>` : ''}
+        
+        <div class="content">
+            ${article.content}
+        </div>
+        
+        <div class="meta">
+            Israel-katsaus/toimitus
+            <div class="share-icons">
+                <a href="#" onclick="shareTo('facebook'); return false;"><img src="images/facebook.png" alt="Facebook"></a>
+                <a href="#" onclick="shareTo('x'); return false;"><img src="images/x.png" alt="X"></a>
+                <a href="#" onclick="shareTo('whatsapp'); return false;"><img src="images/whatsapp.png" alt="WhatsApp"></a>
             </div>
         </div>
-        <div class="hr-small"></div>
+        <div class="divider"></div>
     `;
-
-    sidebar.innerHTML = articles.slice(0, 6).filter(a => a.id != art.id).map(a => `
-        <div class="small-card" style="margin-bottom: 25px">
-            <a href="uutinen.html?id=${a.id}">
-                <img src="${a.image}" alt="">
-                <h3>${a.title}</h3>
-            </a>
-        </div>
-    `).join('');
+    
+    contentDiv.innerHTML = html;
+    
+    // Renderöi sidebar uusimmat (ilman nykyistä)
+    renderSidebar(articles.filter(a => a.id !== id).slice(0, 6));
 }
+
+// Sidebar uusimmille
+function renderSidebar(articles) {
+    const container = document.getElementById('sidebarArticles');
+    let html = '';
+    
+    articles.forEach(article => {
+        html += `
+            <article>
+                <a href="uutinen.html?id=${article.id}">
+                    <img src="${article.image}" alt="${article.title}">
+                </a>
+                <a href="uutinen.html?id=${article.id}" style="text-decoration:none;color:inherit;">
+                    <h4>${article.title}</h4>
+                </a>
+            </article>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Some-jakaminen
+function shareTo(platform) {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent(document.title);
+    
+    let shareUrl = '';
+    
+    if (platform === 'facebook') {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+    } else if (platform === 'x') {
+        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+    } else if (platform === 'whatsapp') {
+        shareUrl = `https://wa.me/?text=${title}%20${url}`;
+    }
+    
+    if (shareUrl) window.open(shareUrl, '_blank');
+}
+
+// Mobiilivalikko
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('show');
+}
+
+// Pääohjaus
+async function init() {
+    await initCommon();
+    
+    const path = window.location.pathname;
+    
+    if (path.includes('archive.html')) {
+        await renderArchive();
+    } else if (path.includes('uutinen.html')) {
+        await renderArticle();
+        document.getElementById('sidebar').style.display = 'block';
+    } else {
+        // Etusivu (index.html)
+        await renderHome();
+        
+        // Tarkista mahdollinen hakuparametri
+        const params = new URLSearchParams(window.location.search);
+        const searchTerm = params.get('search');
+        if (searchTerm) {
+            // Tässä voisi näyttää hakutulokset erikseen, mutta yksinkertaisuuden vuoksi ohjataan hakuun
+            console.log("Hakutermi:", searchTerm);
+        }
+    }
+    
+    // Hakukenttä toimii kaikilla sivuilla
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchArticles();
+        });
+    }
+}
+
+window.onload = init;
