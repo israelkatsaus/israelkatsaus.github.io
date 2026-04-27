@@ -1,134 +1,118 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Ladataan komponentit
-    Promise.all([
-        fetch('navbar.html').then(r => r.text()),
-        fetch('footer.html').then(r => r.text())
-    ]).then(([nav, foot]) => {
-        document.getElementById('navbar-placeholder').innerHTML = nav;
-        document.getElementById('footer-placeholder').innerHTML = foot;
-        initNav();
-    });
-
-    // Haetaan uutiset
-    fetch('news.json').then(r => r.json()).then(data => {
-        const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-        route(articles);
-    });
+    loadComponent('navbar-placeholder', 'navbar.html', initSearch);
+    loadComponent('footer-placeholder', 'footer.html');
+    
+    const path = window.location.pathname;
+    if (path.includes('index.html') || path === '/') {
+        renderFrontPage();
+    } else if (path.includes('archive.html')) {
+        renderArchive();
+    } else if (path.includes('uutinen.html')) {
+        renderArticle();
+    }
 });
 
-function initNav() {
-    const btn = document.getElementById('nav-toggle');
-    const overlay = document.getElementById('mobile-overlay');
-    if(btn) btn.onclick = () => overlay.classList.toggle('active');
-
-    const searchAction = (e) => {
-        if(e.key === 'Enter') window.location.href = `archive.html?search=${encodeURIComponent(e.target.value)}`;
-    };
-    document.getElementById('desktop-search')?.addEventListener('keypress', searchAction);
-    document.getElementById('mobile-search')?.addEventListener('keypress', searchAction);
+async function loadComponent(id, file, callback) {
+    const res = await fetch(file);
+    const html = await res.text();
+    document.getElementById(id).innerHTML = html;
+    if (callback) callback();
 }
 
-function route(articles) {
-    const params = new URLSearchParams(window.location.search);
-    const page = window.location.pathname.split("/").pop();
-
-    if(page === 'archive.html') renderArchive(articles, params.get('search'));
-    else if(page === 'uutinen.html') renderArticle(articles, params.get('id'));
-    else renderFrontPage(articles);
+async function fetchNews() {
+    const res = await fetch('news.json');
+    const data = await res.json();
+    return data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-function renderFrontPage(articles) {
-    const container = document.getElementById('news-container');
-    if(!container) return;
+async function renderFrontPage() {
+    const articles = await fetchNews();
     const main = articles[0];
-    const side = articles.slice(1, 7);
+    const sides = articles.slice(1, 7);
 
-    container.innerHTML = `
-        <div class="front-page-grid">
-            <div class="main-news">
-                <a href="uutinen.html?id=${main.id}">
-                    <img src="${main.image}" alt="">
-                    <h2>${main.title}</h2>
-                    <p style="margin-top:10px">${main.excerpt}</p>
-                </a>
-            </div>
-            <div class="side-news-grid">
-                ${side.map(a => `
-                    <div class="small-article">
-                        <a href="uutinen.html?id=${a.id}">
-                            <img src="${a.image}" alt="">
-                            <h3>${a.title}</h3>
-                        </a>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `;
+    document.getElementById('main-article').innerHTML = `
+        <a href="uutinen.html?id=${main.id}" class="article-card">
+            <img src="${main.image}" alt="">
+            <h2>${main.title}</h2>
+            <p>${main.excerpt}</p>
+        </a>`;
+
+    document.getElementById('side-articles').innerHTML = sides.map(a => `
+        <a href="uutinen.html?id=${a.id}" class="side-article">
+            <img src="${a.image}" alt="">
+            <h3>${a.title}</h3>
+        </a>`).join('');
 }
 
-function renderArchive(articles, query) {
-    const container = document.getElementById('news-container');
-    let results = articles;
+async function renderArticle() {
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'));
+    const articles = await fetchNews();
+    const article = articles.find(a => a.id === id);
 
-    if(query) {
-        const q = query.toLowerCase();
-        results = articles.map(a => {
-            let score = 0;
-            if(a.title.toLowerCase().includes(q)) score = 3;
-            else if(a.excerpt.toLowerCase().includes(q)) score = 2;
-            else if(a.content.toLowerCase().includes(q)) score = 1;
-            return {...a, score};
-        }).filter(a => a.score > 0).sort((a,b) => b.score - a.score);
+    if (article) {
+        document.title = `${article.title} | Israel-katsaus`;
+        const shareUrl = encodeURIComponent(window.location.href);
+        const shareText = encodeURIComponent(article.title);
+
+        document.getElementById('article-content').innerHTML = `
+            <img src="${article.image}" alt="">
+            <h1>${article.title}</h1>
+            <div class="excerpt">${article.excerpt}</div>
+            <div class="body-text">${article.content}</div>
+            <div class="signature">Israel-katsaus/toimitus</div>
+            <div class="share-links">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank"><img src="images/facebook.png"></a>
+                <a href="https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}" target="_blank"><img src="images/x.png"></a>
+                <a href="https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}" target="_blank"><img src="images/whatsapp.png"></a>
+            </div>
+            <hr class="divider">
+        `;
+        
+        // Sivupalkki (uusimmat, pois lukien nykyinen)
+        const latest = articles.filter(a => a.id !== id).slice(0, 5);
+        document.getElementById('latest-news-sidebar').innerHTML = latest.map(a => `
+            <a href="uutinen.html?id=${a.id}" class="side-article">
+                <img src="${a.image}">
+                <h3>${a.title}</h3>
+            </a><br>`).join('');
+    }
+}
+
+function initSearch() {
+    const handleSearch = (e) => {
+        if (e.key === 'Enter') {
+            const term = e.target.value.toLowerCase();
+            window.location.href = `archive.html?search=${term}`;
+        }
+    };
+    document.getElementById('search-input')?.addEventListener('keypress', handleSearch);
+    document.getElementById('search-input-mobile')?.addEventListener('keypress', handleSearch);
+}
+
+async function renderArchive() {
+    const articles = await fetchNews();
+    const params = new URLSearchParams(window.location.search);
+    const searchTerm = params.get('search');
+    
+    let filtered = articles;
+    if (searchTerm) {
+        filtered = articles.filter(a => 
+            a.title.toLowerCase().includes(searchTerm) || 
+            a.excerpt.toLowerCase().includes(searchTerm) || 
+            a.content.toLowerCase().includes(searchTerm)
+        );
     }
 
-    container.innerHTML = `
-        <h1 style="margin-bottom:30px">${query ? 'Hakutulokset' : 'Arkisto'}</h1>
-        <div class="side-news-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))">
-            ${results.map(a => `
-                <div class="small-article">
-                    <a href="uutinen.html?id=${a.id}">
-                        <img src="${a.image}" alt="">
-                        <h3>${a.title}</h3>
-                    </a>
-                </div>
-            `).join('')}
-        </div>
-    `;
+    document.getElementById('archive-list').innerHTML = filtered.map(a => `
+        <div style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <a href="uutinen.html?id=${a.id}">
+                <h3>${a.title}</h3>
+                <small>${a.date}</small>
+            </a>
+        </div>`).join('');
 }
 
-function renderArticle(articles, id) {
-    const container = document.getElementById('news-container');
-    const art = articles.find(a => a.id == id) || articles[0];
-    const latest = articles.filter(a => a.id != art.id).slice(0, 6);
-    const url = encodeURIComponent(window.location.href);
-
-    container.innerHTML = `
-        <div class="article-layout">
-            <div class="article-body">
-                <img src="${art.image}" alt="">
-                <h1>${art.title}</h1>
-                <div class="ingress">${art.excerpt}</div>
-                <div class="content-text">${art.content}</div>
-                <div class="article-footer">
-                    <span class="toimitus-tag">Israel-katsaus/toimitus</span>
-                    <div class="share-links">
-                        <img src="images/facebook.png" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${url}')">
-                        <img src="images/x.png" onclick="window.open('https://twitter.com/intent/tweet?url=${url}')">
-                        <img src="images/whatsapp.png" onclick="window.open('https://api.whatsapp.com/send?text=${url}')">
-                    </div>
-                </div>
-                <div class="divider"></div>
-            </div>
-            <aside class="side-news-grid" style="grid-template-columns: 1fr;">
-                ${latest.map(a => `
-                    <div class="small-article">
-                        <a href="uutinen.html?id=${a.id}">
-                            <img src="${a.image}" alt="">
-                            <h3>${a.title}</h3>
-                        </a>
-                    </div>
-                `).join('')}
-            </aside>
-        </div>
-    `;
+function toggleMobileMenu() {
+    document.getElementById('mobile-dropdown').classList.toggle('active');
 }
