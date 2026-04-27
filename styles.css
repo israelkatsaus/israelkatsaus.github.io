@@ -117,7 +117,7 @@ a { text-decoration: none; color: inherit; }
         position: absolute;
         left: 50%;
         transform: translateX(-50%); /* Poistetaan pystysuuntainen translateY(-50%) */
-        top: 10px; /* Säädä tätä lukua: pienempi luku nostaa logoa ylemmäs */
+        top: 13px; /* Säädä tätä lukua: pienempi luku nostaa logoa ylemmäs */
         height: 40px; /* Varmista, että logo ei ole liian suuri yläpalkkiin */
     }
     
