@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arkisto - Israel-katsaus</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/favicon.png">
 </head>
 <body>
-    <div id="nav-placeholder"></div>
-    <main class="content-limit">
-        <h1 id="archive-title" class="section-title">ARKISTO</h1>
-        <div id="archive-grid" class="archive-grid"></div>
-    </main>
-    <div id="footer-placeholder"></div>
+    <div id="navbar"></div>
+
+    <div class="main-container" style="grid-template-columns: 1fr;">
+        <div id="archiveContent">
+            <h1 style="margin-bottom: 30px; color: #005b96;">Arkisto</h1>
+            <div class="archive-grid" id="archiveGrid"></div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
