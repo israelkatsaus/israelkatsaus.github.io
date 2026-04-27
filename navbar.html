@@ -1,22 +1,25 @@
 <nav class="navbar">
     <div class="nav-container">
-        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
         <a href="index.html" class="logo-link">
             <img src="assets/LOGO.png" alt="Logo" class="nav-logo">
         </a>
+
         <div class="nav-links" id="nav-links">
+            <div class="mobile-search">
+                <input type="text" placeholder="HAE..." class="search-input-mobile">
+            </div>
             <a href="index.html">ETUSIVU</a>
             <a href="archive.html">ARKISTO</a>
         </div>
+
         <div class="search-box">
-            <input type="text" id="search-input" placeholder="Hae...">
+            <input type="text" placeholder="Hae uutisia..." id="search-input" onkeypress="handleSearch(event)">
         </div>
-    </div>
-    <div id="mobile-dropdown" class="mobile-dropdown">
-        <div class="search-box-mobile">
-            <input type="text" id="search-input-mobile" placeholder="HAE">
-        </div>
-        <a href="index.html">ETUSIVU</a>
-        <a href="archive.html">ARKISTO</a>
     </div>
 </nav>
