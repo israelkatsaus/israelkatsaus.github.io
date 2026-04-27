@@ -1,62 +1,58 @@
-/* Perusasetukset */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Fira Sans', sans-serif; background: #fff; color: #222; min-height: 100vh; display: flex; flex-direction: column; }
-a { text-decoration: none; color: inherit; }
+:root { --blue: #005b96; --dark: #1a1a1a; --white: #ffffff; }
+* { box-sizing: border-box; margin: 0; padding: 0; text-decoration: none; }
+body { font-family: 'Fira Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+.main-wrapper { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
 
-.container { max-width: 1100px; margin: 30px auto; padding: 0 20px; flex: 1; }
-
-/* Yläpalkki */
-.navbar { background-color: #005b96; height: 100px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; }
-.nav-container { max-width: 1100px; width: 100%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.main-logo { max-height: 70px; width: auto; object-fit: contain; }
-
-.nav-right { display: flex; align-items: center; gap: 45px; }
-.nav-links { display: flex; gap: 35px; }
-.nav-links a { color: white; font-weight: 400; font-size: 1.1rem; }
-.search-box input { padding: 8px 12px; border: none; border-radius: 4px; width: 200px; }
+/* Navbar */
+.navbar { background: var(--blue); height: 110px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; }
+.nav-content { max-width: 1200px; width: 100%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+.nav-logo { max-height: 80px; width: auto; display: block; }
+.nav-controls { display: flex; align-items: center; gap: 40px; }
+.nav-links { display: flex; gap: 30px; }
+.nav-links a { color: var(--white); font-weight: 400; font-size: 1.1rem; }
+.search-wrap input { padding: 8px; border: none; border-radius: 4px; width: 200px; }
 
 /* Gridit */
 .front-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 30px; }
-.main-news-item img { width: 100%; aspect-ratio: 3/2; object-fit: cover; margin-bottom: 20px; }
+.main-news-item img { width: 100%; aspect-ratio: 3/2; object-fit: cover; margin-bottom: 15px; }
 .main-news-item h2 { font-size: 2.2rem; line-height: 1.1; margin-top: 10px; }
-
-.small-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.side-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .small-item img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-.small-item h3 { font-size: 0.95rem; line-height: 1.2; font-weight: 700; margin-top: 8px; }
-
-.archive-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.small-item h3 { font-size: 0.95rem; line-height: 1.2; margin-top: 5px; font-weight: 700; }
 
 /* Uutissivu */
-.article-layout { display: grid; grid-template-columns: 2.4fr 1fr; gap: 40px; }
-.article-view img { width: 100%; max-width: 100%; height: auto; margin-bottom: 25px; }
-.article-view h1 { font-size: 2.5rem; line-height: 1.1; margin: 15px 0 20px 0; }
-.ingress { font-weight: 700; font-size: 1.25rem; margin-bottom: 1.5rem; }
-.article-content p { margin-bottom: 1.5rem; }
+.article-layout { display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px; }
+.article-main img { width: 100%; max-width: 1200px; height: auto; margin-bottom: 25px; display: block; }
+.article-main h1 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 20px; }
+.ingress { font-weight: 700; font-size: 1.3rem; margin-bottom: 1.5rem; }
+.content-body p { margin-bottom: 1.5rem; }
 
-.toimitus-text { font-style: italic; margin-top: 30px; margin-bottom: 10px; }
-.share-links { display: flex; gap: 15px; }
-.share-links img { width: 30px; height: 30px; cursor: pointer; }
-.share-divider { border-bottom: 1px solid #ddd; margin: 15px 0; width: 100px; }
+/* Some-jako & Toimitus */
+.article-footer { display: flex; align-items: center; gap: 15px; margin-top: 30px; }
+.author { font-style: italic; font-weight: 700; }
+.share-btns { display: flex; gap: 10px; }
+.share-btns img { width: 28px; height: 28px; cursor: pointer; }
+.bottom-line { border-bottom: 1px solid #ddd; margin: 15px 0; width: 100%; }
 
-/* Alapalkki */
-.site-footer { background: #1a1a1a; color: white; padding: 40px 0; margin-top: 50px; }
-.footer-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.footer-logo { height: 45px; }
-.email { font-size: 0.85rem; color: #ccc; margin-top: 3px; }
+/* Footer */
+.footer { background: var(--dark); color: var(--white); padding: 40px 0; margin-top: auto; }
+.footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+.footer-logo-img { height: 50px; width: auto; object-fit: contain; }
+.footer-sub { font-size: 0.85rem; color: #ccc; }
 
 /* Mobiili */
 .hamburger { display: none; background: none; border: none; cursor: pointer; }
-.hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; }
-.mobile-menu { display: none; background: #004471; padding: 20px; text-align: center; }
-.mobile-menu.active { display: block; }
-.mobile-menu a { display: block; color: white; padding: 15px; font-size: 1.2rem; }
-.mobile-search input { width: 80%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: none; }
+.hamburger span { display: block; width: 25px; height: 3px; background: var(--white); margin: 5px 0; }
+.mobile-overlay { display: none; position: fixed; top: 110px; left: 0; width: 100%; background: var(--blue); padding: 20px; z-index: 999; }
+.mobile-overlay.open { display: block; }
+.mobile-menu-content { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+.mobile-menu-content a { color: white; font-size: 1.5rem; }
 
 @media (max-width: 850px) {
     .hamburger { display: block; }
-    .nav-right { display: none; }
-    .logo-box { position: absolute; left: 50%; transform: translateX(-50%); }
-    .main-logo { max-height: 50px; }
-    .front-grid, .article-layout, .archive-grid, .small-news-grid { grid-template-columns: 1fr; }
-    .footer-container { flex-direction: column; text-align: center; gap: 30px; }
+    .nav-controls { display: none; }
+    .logo-container { position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-logo { max-height: 50px; }
+    .front-grid, .article-layout, .side-news-grid { grid-template-columns: 1fr; }
+    .footer-content { flex-direction: column; text-align: center; gap: 30px; }
 }
