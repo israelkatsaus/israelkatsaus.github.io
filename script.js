@@ -1,49 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Ladataan komponentit
-    loadComponent('navbar-placeholder', 'navbar.html', initNavbar);
+    loadComponent('nav-placeholder', 'navbar.html', initNavbar);
     loadComponent('footer-placeholder', 'footer.html');
 
-    // Haetaan uutiset
+    // Haetaan uutisdata
     fetch('news.json')
         .then(res => res.json())
         .then(data => {
             const articles = data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-            initPage(articles);
+            initApp(articles);
         });
 });
 
-function loadComponent(id, url, callback) {
-    fetch(url).then(r => r.text()).then(html => {
+function loadComponent(id, file, callback) {
+    fetch(file).then(res => res.text()).then(html => {
         document.getElementById(id).innerHTML = html;
         if(callback) callback();
     });
 }
 
 function initNavbar() {
-    const btn = document.getElementById('hamburger-btn');
-    const nav = document.getElementById('nav-right');
-    const search = document.getElementById('search-input');
+    const ham = document.getElementById('hamburger-btn');
+    const menu = document.getElementById('mobile-menu');
+    const searchInputs = [document.getElementById('search-input'), document.getElementById('mobile-search-input')];
 
-    if(btn) btn.addEventListener('click', () => nav.classList.toggle('active'));
+    if(ham) ham.onclick = () => menu.classList.toggle('active');
 
-    if(search) {
-        search.addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') {
-                window.location.href = `archive.html?query=${encodeURIComponent(search.value)}`;
-            }
-        });
-    }
+    searchInputs.forEach(input => {
+        if(input) {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    window.location.href = `archive.html?search=${encodeURIComponent(input.value)}`;
+                }
+            });
+        }
+    });
 }
 
-function initPage(articles) {
-    const path = window.location.pathname;
+function initApp(articles) {
     const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('query');
+    const searchWord = urlParams.get('search');
     const articleId = urlParams.get('id');
 
-    if (path.includes('archive.html')) {
-        renderArchive(articles, query);
-    } else if (path.includes('uutinen.html')) {
+    if (window.location.pathname.includes('archive.html')) {
+        renderArchive(articles, searchWord);
+    } else if (window.location.pathname.includes('uutinen.html')) {
         renderArticle(articles, articleId);
     } else {
         renderFrontPage(articles);
@@ -51,9 +52,9 @@ function initPage(articles) {
 }
 
 function renderFrontPage(articles) {
-    const grid = document.getElementById('front-page-grid');
+    const grid = document.getElementById('front-grid');
     if(!grid) return;
-
+    
     const main = articles[0];
     const side = articles.slice(1, 7);
 
@@ -62,7 +63,7 @@ function renderFrontPage(articles) {
             <a href="uutinen.html?id=${main.id}">
                 <img src="${main.image}" alt="">
                 <h2>${main.title}</h2>
-                <p>${main.excerpt}</p>
+                <p style="margin-top:10px">${main.excerpt}</p>
             </a>
         </div>
         <div class="small-news-grid">
@@ -80,19 +81,18 @@ function renderFrontPage(articles) {
 
 function renderArchive(articles, query) {
     const grid = document.getElementById('archive-grid');
-    let results = articles;
+    if(!grid) return;
 
+    let results = articles;
     if(query) {
         const q = query.toLowerCase();
         results = articles.map(a => {
             let score = 0;
-            if(a.title.toLowerCase().includes(q)) score = 3;
-            else if(a.excerpt.toLowerCase().includes(q)) score = 2;
-            else if(a.content.toLowerCase().includes(q)) score = 1;
-            return {...a, score};
-        })
-        .filter(a => a.score > 0)
-        .sort((a, b) => b.score - a.score);
+            if (a.title.toLowerCase().includes(q)) score = 3;
+            else if (a.excerpt.toLowerCase().includes(q)) score = 2;
+            else if (a.content.toLowerCase().includes(q)) score = 1;
+            return { ...a, score };
+        }).filter(a => a.score > 0).sort((a, b) => b.score - a.score);
     }
 
     grid.innerHTML = results.map(a => `
@@ -107,36 +107,38 @@ function renderArchive(articles, query) {
 
 function renderArticle(articles, id) {
     const art = articles.find(a => a.id == id) || articles[0];
-    const container = document.getElementById('full-article');
+    const container = document.getElementById('article-view');
     const sidebar = document.getElementById('latest-sidebar');
 
-    container.innerHTML = `
-        <img src="${art.image}" alt="">
-        <h1>${art.title}</h1>
-        <div class="ingress">${art.excerpt}</div>
-        <div class="article-body">${art.content}</div>
-        <div class="share-links">
-            <img src="images/facebook.png" onclick="share('fb')">
-            <img src="images/x.png" onclick="share('x')">
-            <img src="images/whatsapp.png" onclick="share('wa')">
-        </div>
-        <div class="separator"></div>
-        <div class="toimitus-label">Israel-katsaus/toimitus</div>
-    `;
+    const shareUrl = encodeURIComponent(window.location.href);
+    const shareText = encodeURIComponent(art.title);
 
-    sidebar.innerHTML = articles.slice(0, 5).filter(a => a.id != art.id).map(a => `
-        <div class="small-item" style="margin-bottom: 20px;">
-            <a href="uutinen.html?id=${a.id}">
-                <img src="${a.image}" alt="">
-                <h3>${a.title}</h3>
-            </a>
-        </div>
-    `).join('');
-}
-
-function share(platform) {
-    const url = window.location.href;
-    if(platform === 'fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
-    if(platform === 'x') window.open(`https://twitter.com/intent/tweet?url=${url}`);
-    if(platform === 'wa') window.open(`https://api.whatsapp.com/send?text=${url}`);
+    if(container) {
+        container.className = "article-view article-layout";
+        container.innerHTML = `
+            <div class="main-article">
+                <img src="${art.image}" alt="">
+                <h1>${art.title}</h1>
+                <div class="ingress">${art.excerpt}</div>
+                <div class="article-content">${art.content}</div>
+                <p class="toimitus-text">Israel-katsaus/toimitus</p>
+                <div class="share-links">
+                    <img src="images/facebook.png" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${shareUrl}')">
+                    <img src="images/x.png" onclick="window.open('https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}')">
+                    <img src="images/whatsapp.png" onclick="window.open('https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}')">
+                </div>
+                <div class="share-divider"></div>
+            </div>
+            <div class="sidebar">
+                ${articles.slice(0, 6).map(a => `
+                    <div class="small-item" style="margin-bottom:20px">
+                        <a href="uutinen.html?id=${a.id}">
+                            <img src="${a.image}" alt="">
+                            <h3 style="font-size:0.85rem">${a.title}</h3>
+                        </a>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
 }
