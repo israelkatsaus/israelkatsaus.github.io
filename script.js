@@ -13,47 +13,71 @@ function initNavbar() {
     if (btn && menu) {
         btn.onclick = () => menu.classList.toggle('active');
     }
+    
+    // Tarkistetaan, onko osoiterivillä hakusana (jos tultiin toiselta sivulta)
+    const params = new URLSearchParams(window.location.search);
+    const searchQuery = params.get('search');
+    if (searchQuery && document.getElementById('search-grid')) {
+        executeSearch(searchQuery);
+    }
 }
 
 // Hae uutiset JSON-tiedostosta
 async function getArticles() {
     const resp = await fetch('news.json');
     const data = await resp.json();
-    // Järjestetään uusimmasta vanhimpaan päivämäärän mukaan
     return data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-// Hakuominaisuus
+// Haun käsittely (Enter-painallus)
 async function handleSearch(event) {
     if (event.key === 'Enter') {
-        const query = event.target.value.toLowerCase();
-        const articles = await getArticles();
-        
-        const results = articles.map(art => {
-            let score = 0;
-            if (art.title.toLowerCase().includes(query)) score += 3;
-            if (art.excerpt.toLowerCase().includes(query)) score += 2;
-            if (art.content.toLowerCase().includes(query)) score += 1;
-            return { ...art, score };
-        })
-        .filter(art => art.score > 0)
-        .sort((a, b) => b.score - a.score);
+        const query = event.target.value.trim().toLowerCase();
+        if (!query) return;
 
         const grid = document.getElementById('search-grid');
-        const container = document.getElementById('search-results-container');
-        const layout = document.getElementById('front-page-layout');
         
-        if (grid && container) {
-            if (layout) layout.style.display = 'none'; // Piilotetaan etusivun uutiset haun tieltä
-            container.style.display = 'block';
+        // Jos ollaan sivulla, jossa EI ole hakuruudukkoa (eli muu kuin index.html)
+        if (!grid) {
+            window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+        } else {
+            executeSearch(query);
+        }
+    }
+}
+
+// Varsinainen hakulogiikka ja tulosten tulostus
+async function executeSearch(query) {
+    const articles = await getArticles();
+    const results = articles.map(art => {
+        let score = 0;
+        if (art.title.toLowerCase().includes(query)) score += 3;
+        if (art.excerpt.toLowerCase().includes(query)) score += 2;
+        if (art.content.toLowerCase().includes(query)) score += 1;
+        return { ...art, score };
+    })
+    .filter(art => art.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+    const grid = document.getElementById('search-grid');
+    const container = document.getElementById('search-results-container');
+    const layout = document.getElementById('front-page-layout');
+    
+    if (grid && container) {
+        if (layout) layout.style.display = 'none';
+        container.style.display = 'block';
+        
+        if (results.length === 0) {
+            grid.innerHTML = "<p>Ei hakutuloksia.</p>";
+        } else {
             grid.innerHTML = results.map(art => `
                 <div class="news-card" onclick="location.href='uutinen.html?id=${art.id}'">
                     <img src="${art.image}">
                     <h3>${art.title}</h3>
                 </div>
             `).join('');
-            window.scrollTo(0, 0);
         }
+        window.scrollTo(0, 0);
     }
 }
 
@@ -61,6 +85,10 @@ async function handleSearch(event) {
 async function renderFrontPage() {
     const articles = await getArticles();
     if (articles.length === 0) return;
+
+    // Jos osoiterivillä on haku, ei ladata normaalia etusivua vielä (initNavbar hoitaa haun)
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('search')) return;
 
     const main = articles[0];
     const side = articles.slice(1, 7);
@@ -109,9 +137,7 @@ async function renderSingleArticle() {
     const article = articles.find(a => a.id == id);
 
     if (article) {
-        // Päivitetään välilehden otsikko uutisen otsikolla
         document.title = article.title;
-
         const shareUrl = encodeURIComponent(window.location.href);
         const shareTitle = encodeURIComponent(article.title);
 
@@ -136,26 +162,12 @@ async function renderSingleArticle() {
         }
     }
 
-    // Sivupalkki (Uusimmat uutiset)
     const sidebarList = document.getElementById('latest-sidebar-list');
-    
     if (sidebarList) {
         sidebarList.innerHTML = articles.slice(0, 8).map(art => `
             <div class="sidebar-item" onclick="location.href='uutinen.html?id=${art.id}'">
                 <p>${art.title}</p>
             </div>
         `).join('');
-    } else {
-        const fallbackSidebar = document.getElementById('latest-sidebar');
-        if (fallbackSidebar) {
-            fallbackSidebar.innerHTML = `
-                <h3 class="sidebar-main-title">UUSIMMAT UUTISET</h3>
-                ${articles.slice(0, 8).map(art => `
-                    <div class="sidebar-item" onclick="location.href='uutinen.html?id=${art.id}'">
-                        <p>${art.title}</p>
-                    </div>
-                `).join('')}
-            `;
-        }
     }
 }
