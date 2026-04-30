@@ -1,5 +1,8 @@
 /* PERUSASETUKSET */
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+    overflow-y: scroll;
+}
 body { 
     font-family: 'Fira Sans', sans-serif; 
     background-color: #f9f9f9; 
