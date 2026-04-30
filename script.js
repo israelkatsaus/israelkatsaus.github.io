@@ -1,4 +1,4 @@
-// Lataa komponentit (Navbar/Footer)
+// Lataa komponentit (Navbar/Footer) - ladataan vain kerran sivuston alussa
 async function loadComponent(id, file, callback) {
     const resp = await fetch(file);
     const html = await resp.text();
@@ -6,7 +6,63 @@ async function loadComponent(id, file, callback) {
     if (callback) callback();
 }
 
-// Mobiilivalikon toiminnallisuus
+// --- SPA NAVIGAATIO ---
+
+// Navigointifunktio, joka vaihtaa vain content-wrapperin sisällön
+async function navigate(page, id = null) {
+    const wrapper = document.querySelector('.content-wrapper');
+    if (!wrapper) return;
+
+    // Muodostetaan URL
+    let url = `${page}.html`;
+    if (id) url += `?id=${id}`;
+    
+    // Päivitetään selaimen osoiterivi ilman sivun latausta
+    window.history.pushState({ page, id }, "", url);
+
+    try {
+        const resp = await fetch(`${page}.html`);
+        const html = await resp.text();
+        
+        // Poimitaan ladatusta sivusta vain content-wrapperin sisältö
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newContent = doc.querySelector('.content-wrapper').innerHTML;
+        
+        wrapper.innerHTML = newContent;
+
+        // Suoritetaan sivukohtainen renderöinti
+        if (page === 'index') {
+            document.title = "Israel-katsaus";
+            renderFrontPage();
+        } else if (page === 'archive') {
+            document.title = "Arkisto | Israel-katsaus";
+            renderArchive();
+        } else if (page === 'uutinen') {
+            renderSingleArticle(); // Otsikko päivittyy funktion sisällä
+        }
+
+        // Suljetaan mobiilivalikko ja skrollataan ylös
+        const menu = document.getElementById('nav-menu');
+        if (menu) menu.classList.remove('active');
+        window.scrollTo(0, 0);
+
+    } catch (err) {
+        console.error("Sivun lataus epäonnistui:", err);
+    }
+}
+
+// Kuunnellaan selaimen takaisin-painiketta
+window.onpopstate = function(event) {
+    if (event.state) {
+        navigate(event.state.page, event.state.id);
+    } else {
+        location.reload();
+    }
+};
+
+// --- TOIMINNALLISUUDET ---
+
 function initNavbar() {
     const btn = document.getElementById('hamburger-btn');
     const menu = document.getElementById('nav-menu');
@@ -14,7 +70,6 @@ function initNavbar() {
         btn.onclick = () => menu.classList.toggle('active');
     }
     
-    // Tarkistetaan, onko osoiterivillä hakusana (jos tultiin toiselta sivulta)
     const params = new URLSearchParams(window.location.search);
     const searchQuery = params.get('search');
     if (searchQuery && document.getElementById('search-grid')) {
@@ -22,14 +77,12 @@ function initNavbar() {
     }
 }
 
-// Hae uutiset JSON-tiedostosta
 async function getArticles() {
     const resp = await fetch('news.json');
     const data = await resp.json();
     return data.articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-// Haun käsittely (Enter-painallus)
 async function handleSearch(event) {
     if (event.key === 'Enter') {
         const query = event.target.value.trim().toLowerCase();
@@ -37,8 +90,8 @@ async function handleSearch(event) {
 
         const grid = document.getElementById('search-grid');
         
-        // Jos ollaan sivulla, jossa EI ole hakuruudukkoa (eli muu kuin index.html)
         if (!grid) {
+            // Jos ei olla etusivulla, navigoidaan sinne hakuparametrin kanssa
             window.location.href = `index.html?search=${encodeURIComponent(query)}`;
         } else {
             executeSearch(query);
@@ -46,7 +99,6 @@ async function handleSearch(event) {
     }
 }
 
-// Varsinainen hakulogiikka ja tulosten tulostus
 async function executeSearch(query) {
     const articles = await getArticles();
     const results = articles.map(art => {
@@ -71,7 +123,7 @@ async function executeSearch(query) {
             grid.innerHTML = "<p>Ei hakutuloksia.</p>";
         } else {
             grid.innerHTML = results.map(art => `
-                <div class="news-card" onclick="location.href='uutinen.html?id=${art.id}'">
+                <div class="news-card" onclick="navigate('uutinen', ${art.id})">
                     <img src="${art.image}">
                     <h3>${art.title}</h3>
                 </div>
@@ -81,12 +133,10 @@ async function executeSearch(query) {
     }
 }
 
-// Etusivun renderöinti
 async function renderFrontPage() {
     const articles = await getArticles();
     if (articles.length === 0) return;
 
-    // Jos osoiterivillä on haku, ei ladata normaalia etusivua vielä (initNavbar hoitaa haun)
     const params = new URLSearchParams(window.location.search);
     if (params.get('search')) return;
 
@@ -96,7 +146,7 @@ async function renderFrontPage() {
     const mainArea = document.getElementById('main-article-area');
     if (mainArea) {
         mainArea.innerHTML = `
-            <div class="main-article-card" onclick="location.href='uutinen.html?id=${main.id}'">
+            <div class="main-article-card" onclick="navigate('uutinen', ${main.id})">
                 <div class="img-container-32"><img src="${main.image}"></div>
                 <h2>${main.title}</h2>
                 <p>${main.excerpt}</p>
@@ -107,7 +157,7 @@ async function renderFrontPage() {
     const sideArea = document.getElementById('side-articles-area');
     if (sideArea) {
         sideArea.innerHTML = side.map(art => `
-            <div class="side-card" onclick="location.href='uutinen.html?id=${art.id}'">
+            <div class="side-card" onclick="navigate('uutinen', ${art.id})">
                 <img src="${art.image}">
                 <h4>${art.title}</h4>
             </div>
@@ -115,13 +165,12 @@ async function renderFrontPage() {
     }
 }
 
-// Arkiston renderöinti
 async function renderArchive() {
     const articles = await getArticles();
     const grid = document.getElementById('archive-grid');
     if (grid) {
         grid.innerHTML = articles.map(art => `
-            <div class="news-card" onclick="location.href='uutinen.html?id=${art.id}'">
+            <div class="news-card" onclick="navigate('uutinen', ${art.id})">
                 <img src="${art.image}">
                 <h3>${art.title}</h3>
             </div>
@@ -129,7 +178,6 @@ async function renderArchive() {
     }
 }
 
-// Yksittäisen uutisen renderöinti
 async function renderSingleArticle() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -165,7 +213,7 @@ async function renderSingleArticle() {
     const sidebarList = document.getElementById('latest-sidebar-list');
     if (sidebarList) {
         sidebarList.innerHTML = articles.slice(0, 8).map(art => `
-            <div class="sidebar-item" onclick="location.href='uutinen.html?id=${art.id}'">
+            <div class="sidebar-item" onclick="navigate('uutinen', ${art.id})">
                 <p>${art.title}</p>
             </div>
         `).join('');
