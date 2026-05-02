@@ -96,7 +96,7 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 25px; 
     display: block; 
 }
-.full-article h1 { margin-bottom: 20px; line-height: 1.2; }
+.full-article h1 { font-size: 1.8rem; margin-bottom: 20px; line-height: 1.2; }
 .article-ingress { font-weight: 700; margin-bottom: 1.5rem; line-height: 1.6; }
 .article-body p { margin-bottom: 1.5rem; line-height: 1.6; }
 .article-author { font-style: italic; font-weight: bold; font-size: 0.85rem; margin-top: 20px; }
