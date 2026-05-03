@@ -1,3 +1,29 @@
+// --- FAVICONIN HALLINTA ---
+
+/**
+ * Vaihtaa faviconin selaimen teeman mukaan (Dark/Light mode).
+ * Käytetään aikaleimaa (?v=) välimuistin ohittamiseen.
+ */
+function updateFavicon() {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const favicon = document.querySelector('link[rel="icon"]');
+    
+    if (favicon) {
+        const version = new Date().getTime(); 
+        if (isDarkMode) {
+            favicon.href = `assets/favicon-light.png?v=${version}`;
+        } else {
+            favicon.href = `assets/favicon-dark.png?v=${version}`;
+        }
+    }
+}
+
+// Suoritetaan heti ja kuunnellaan muutoksia
+updateFavicon();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateFavicon);
+
+// --- KOMPONENTTIEN LATAUS ---
+
 // Lataa komponentit (Navbar/Footer) - ladataan vain kerran sivuston alussa
 async function loadComponent(id, file, callback) {
     const resp = await fetch(file);
@@ -46,6 +72,9 @@ async function navigate(page, id = null) {
         const menu = document.getElementById('nav-menu');
         if (menu) menu.classList.remove('active');
         window.scrollTo(0, 0);
+
+        // Varmistetaan faviconin tila sivun vaihdon yhteydessä
+        updateFavicon();
 
     } catch (err) {
         console.error("Sivun lataus epäonnistui:", err);
