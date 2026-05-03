@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Israel-katsaus</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+    
+    <!-- Dynaamiset faviconit selaimen teeman mukaan -->
+    <!-- Käytetään tätä, kun selaimessa on VAALEA teema (tarvitaan tumma logo) -->
+    <link rel="icon" type="image/png" href="assets/favicon-dark.png" media="(prefers-color-scheme: light)">
+    <!-- Käytetään tätä, kun selaimessa on TUMMA teema (tarvitaan vaalea logo) -->
+    <link rel="icon" type="image/png" href="assets/favicon-light.png" media="(prefers-color-scheme: dark)">
+    <!-- Varavaihtoehto vanhoille selaimille -->
+    <link rel="shortcut icon" href="assets/favicon-dark.png">
+
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Yläpalkki ladataan tähän kerran -->
     <div id="navbar-placeholder"></div>
 
+    <!-- Tämän wrapperin sisältö vaihtuu dynaamisesti navigoidessa -->
     <main class="container content-wrapper">
         <div id="search-results-container" style="display:none;">
             <h2 class="section-title">Hakutulokset</h2>
@@ -24,14 +34,30 @@
         </div>
     </main>
 
+    <!-- Alatunniste ladataan tähän -->
     <div id="footer-placeholder"></div>
 
     <script src="script.js"></script>
     <script>
         window.onload = () => {
-            loadComponent('navbar-placeholder', 'navbar.html', initNavbar);
+            // Ladataan komponentit
+            loadComponent('navbar-placeholder', 'navbar.html', () => {
+                initNavbar();
+                
+                // Tarkistetaan heti latauksen jälkeen, onko URL:ssa hakusana
+                const params = new URLSearchParams(window.location.search);
+                const query = params.get('search');
+                if (query) {
+                    executeSearch(query);
+                    // Täytetään hakukenttä näkyviin
+                    const searchInput = document.getElementById('search-input');
+                    if (searchInput) searchInput.value = query;
+                } else {
+                    renderFrontPage();
+                }
+            });
+            
             loadComponent('footer-placeholder', 'footer.html');
-            renderFrontPage();
         };
     </script>
 </body>
