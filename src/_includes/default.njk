@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Israel-katsaus</title>
+    <!-- Viittaus CSS-tyyleihin. Eleventy kopioi tämän suoraan osoitteeseen /css/styles.css -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Kirjasinlaji Googlen palvelimelta (Fira Sans) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- YLÄPALKKI (NAVBAR) -->
+    <nav class="navbar">
+        <div class="nav-container container">
+            <!-- Hampurilaispainike mobiilille -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Avaa valikko">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="Israel-katsaus" style="height: 50px; display: block;">
+                </a>
+            </div>
+                
+            <!-- Mobiilin Facebook-logo (näkyy vain pienillä ruuduilla) -->
+            <a href="https://facebook.com" class="facebook-mobile-link" target="_blank">
+                <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
+            </a>
+
+            <!-- Oikean reunan linkit ja haku -->
+            <div class="nav-center-right" id="nav-menu">
+                <div class="nav-links">
+                    <a href="/">ETUSIVU</a>
+                    <a href="/arkisto/">ARKISTO</a>
+                    <!-- Desktopin Facebook-logo (näkyy vain tietokoneella) -->
+                    <a href="https://facebook.com" class="facebook-desktop-link" target="_blank">
+                        <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
+                    </a>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Etsi uutisia..." autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SIVUN VARSINAINEN SISÄLTÖ -->
+    {{ content | safe }}
+
+    <!-- ALAPALKKI (FOOTER) -->
+    <footer class="footer">
+        <div class="footer-container container">
+            <div class="footer-logo">
+                <img src="/images/logo.png" alt="Israel-katsaus" style="height: 40px; opacity: 0.8;">
+            </div>
+            <div class="footer-copyright">
+                <p class="footer-main-text">© 2026 ISRAEL-KATSAUS</p>
+                <p class="footer-sub-text">Kaikki oikeudet pidätetään.</p>
+            </div>
+            <div class="footer-contact" style="text-align: right; line-height: 1.1;">
+                <p class="email-title" style="font-weight: 500; font-size: 1.0rem; color: #fff; margin: 0; padding: 0;">Palaute ja yhteydenotto</p>
+                <p class="email-text" style="margin: 0; padding: 0;"><a href="mailto:israelkatsaus@gmail.com" style="color: var(--footer-text); text-decoration: none; font-size: 0.85rem;">israelkatsaus@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+    // Hakukentän toiminnallisuus (Enter-painallus)
+    const navSearch = document.getElementById('search-input');
+    if (navSearch) {
+        navSearch.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query.length > 0) {
+                    window.location.href = '/haku/?q=' + encodeURIComponent(query);
+                }
+            }
+        });
+    }
+
+    // Mobiilivalikon avaaminen ja sulkeminen (Hampurilaisvalikko)
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+        });
+    }
+    </script>
+
+</body>
+</html>

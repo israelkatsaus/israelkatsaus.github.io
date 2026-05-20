@@ -1,0 +1,68 @@
+---
+layout: default.njk
+---
+<main class="content-wrapper container">
+    <div class="article-page-layout">
+        <article class="full-article">
+            
+            <!-- Otsikko ja ingressi -->
+            <h1>{{ title }}</h1>
+            <div class="article-ingress">{{ excerpt }}</div>
+            
+            <!-- Pääkuva -->
+            <img src="{{ image }}" alt="{{ title }}" class="article-hero-img">
+            
+            <!-- Kursivoitu päivämäärä ja kirjoittaja -->
+            <div class="article-meta">
+                {{ date | dtf }} — {{ author }}
+            </div>
+            
+            <!-- Leipäteksti -->
+            <div class="article-body">
+                {{ content | safe }}
+            </div>
+            
+            <!-- Jakoviiva heti leipätekstin jälkeen -->
+            <div class="divider"></div>
+
+            <!-- Jaa-laatikko -->
+            <div class="share-box">
+                <p>JAA UUTINEN</p>
+                <div class="share-links">
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://sinunsivusi.fi{{ page.url }}" target="_blank" rel="noopener noreferrer">
+                        <img src="/images/facebook.png" alt="Jaa Facebookissa" style="width:39px; height:auto; object-fit:contain;">
+                    </a>
+                    
+                    <!-- X (Twitter) -->
+                    <a href="https://x.com/intent/tweet?url=https://sinunsivusi.fi{{ page.url }}&text={{ title | urlencode }}" target="_blank" rel="noopener noreferrer">
+                        <img src="/images/x.png" alt="Jaa X:ssä" style="width:35px; height:auto; object-fit:contain;">
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://api.whatsapp.com/send?text={{ title | urlencode }}%20https://sinunsivusi.fi{{ page.url }}" target="_blank" rel="noopener noreferrer" data-action="share/whatsapp/share">
+                        <img src="/images/whatsapp.png" alt="Jaa WhatsAppissa" style="width:30px; height:auto; object-fit:contain;">
+                    </a>
+                </div> <!-- Korjattu: share-links sulkeutuu nyt tässä -->
+            </div> <!-- share-box sulkeutuu -->
+
+        </article>
+
+        <!-- SIVUPALKKI (Uusimmat uutiset) -->
+        <aside class="sidebar">
+            <h3 class="sidebar-main-title">Uusimmat uutiset</h3>
+            
+            <div class="sidebar-list">
+                {%- for uutinen in collections.uutiset | reverse | limit(5) -%}
+                    <!-- Linkitetään koko laatikko uutiseen -->
+                    <a href="{{ uutinen.url | url }}" class="sidebar-item" style="display: block; text-decoration: none; color: inherit;">
+                        <span style="font-size: 0.75rem; opacity: 0.6; font-style: italic;">{{ uutinen.date | dtf }}</span>
+                        <p style="margin-top: 2px; font-weight: 500;">{{ uutinen.data.title }}</p>
+                    </a>
+                {%- else -%}
+                    <p>Ei muita uutisia.</p>
+                {%- endfor -%}
+            </div>
+        </aside>
+    </div>
+</main>

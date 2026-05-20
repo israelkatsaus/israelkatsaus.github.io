@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etusivu | Israel-katsaus</title>
+    <!-- Viittaus CSS-tyyleihin. Eleventy kopioi tämän suoraan osoitteeseen /css/styles.css -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Kirjasinlaji Googlen palvelimelta (Fira Sans) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- YLÄPALKKI (NAVBAR) -->
+    <nav class="navbar">
+        <div class="nav-container container">
+            <!-- Hampurilaispainike mobiilille -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Avaa valikko">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="Israel-katsaus" style="height: 50px; display: block;">
+                </a>
+            </div>
+                
+            <!-- Mobiilin Facebook-logo (näkyy vain pienillä ruuduilla) -->
+            <a href="https://facebook.com" class="facebook-mobile-link" target="_blank">
+                <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
+            </a>
+
+            <!-- Oikean reunan linkit ja haku -->
+            <div class="nav-center-right" id="nav-menu">
+                <div class="nav-links">
+                    <a href="/">ETUSIVU</a>
+                    <a href="/arkisto/">ARKISTO</a>
+                    <!-- Desktopin Facebook-logo (näkyy vain tietokoneella) -->
+                    <a href="https://facebook.com" class="facebook-desktop-link" target="_blank">
+                        <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
+                    </a>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Etsi uutisia..." autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SIVUN VARSINAINEN SISÄLTÖ -->
+    
+<main class="content-wrapper container">
+    <!-- ETUSIVUN JAETTU ASENTELU (Isompi uutinen ja sivupalkki) -->
+    <div id="front-page-layout">
+        
+        <!-- PÄÄUUTINEN (Otetaan uusin uutinen collections-kokoelmasta) -->
+        <section class="main-article-section"><article class="main-article-card">
+                    <a href="/uutiset/uutinen7/">
+                        <div class="img-container-32">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Mensaje_a_la_Naci%C3%B3n_del_presidente_Jos%C3%A9_Balc%C3%A1zar_0-53_screenshot.png/960px-Mensaje_a_la_Naci%C3%B3n_del_presidente_Jos%C3%A9_Balc%C3%A1zar_0-53_screenshot.png" alt="Israel kritisoi Perun presidentin lausuntoja toiseen maailmansotaan liittyen">
+                        </div>
+                        <h2>Israel kritisoi Perun presidentin lausuntoja toiseen maailmansotaan liittyen</h2>
+                        <p>Perun presidentin juutalaisia syyllistävät puheet ovat herättäneet huolta ja kritiikkiä</p>
+                    </a>
+                </article></section>
+
+        <!-- 2. OIKEA PUOLI: Seuraavat 6 uutista pienemmässä ruudukossa -->
+        <aside class="side-grid"><article class="side-card">
+                    <a href="/uutiset/uutinen6/">
+                        <img src="/images/uploads/Carosso.png" alt="Israelilaispojan taistelu antisemitismiä vastaan">
+                        <h4>Israelilaispojan taistelu antisemitismiä vastaan</h4>
+                    </a>
+                </article><article class="side-card">
+                    <a href="/uutiset/uutinen5/">
+                        <img src="/images/uploads/Benjamin.jpg" alt="Netanyahu: Israel puolustaa olemassaoloaan">
+                        <h4>Netanyahu: Israel puolustaa olemassaoloaan</h4>
+                    </a>
+                </article><article class="side-card">
+                    <a href="/uutiset/uutinen4/">
+                        <img src="https://static-cdn.toi-media.com/www/uploads/2024/11/AFP__20241022__36KN73W__v1__HighRes__PresidentJoeBidenTravelsToNewHampshireForOffici-e1730879698904.jpg" alt="Sandersin Israel-linja kriittisessä tarkastelussa">
+                        <h4>Sandersin Israel-linja kriittisessä tarkastelussa</h4>
+                    </a>
+                </article><article class="side-card">
+                    <a href="/uutiset/uutinen3/">
+                        <img src="https://images.jpost.com/image/upload/f_auto,fl_lossy/q_auto/c_fill,g_faces:center,h_720,w_1280/718309" alt="Antisemitismi ilmestyi kadulle Saksassa">
+                        <h4>Antisemitismi ilmestyi kadulle Saksassa</h4>
+                    </a>
+                </article><article class="side-card">
+                    <a href="/uutiset/uutinen2/">
+                        <img src="/images/uploads/Galilealaismies syytteeseen.png" alt="Galilealaismies syytteeseen terrori-iskun suunnittelusta">
+                        <h4>Galilealaismies syytteeseen terrori-iskun suunnittelusta</h4>
+                    </a>
+                </article><article class="side-card">
+                    <a href="/uutiset/uutinen1/">
+                        <img src="https://images.jpost.com/image/upload/f_auto,fl_lossy/q_auto/c_fill,g_faces:center,h_720,w_1280/718950" alt="Mies tuomittiin terrori-iskun yrityksestä Israelin suurlähetykseen Lontoossa">
+                        <h4>Mies tuomittiin terrori-iskun yrityksestä Israelin suurlähetykseen Lontoossa</h4>
+                    </a>
+                </article></aside>
+
+    </div>
+</main>
+
+    <!-- ALAPALKKI (FOOTER) -->
+    <footer class="footer">
+        <div class="footer-container container">
+            <div class="footer-logo">
+                <img src="/images/logo.png" alt="Israel-katsaus" style="height: 40px; opacity: 0.8;">
+            </div>
+            <div class="footer-copyright">
+                <p class="footer-main-text">© 2026 ISRAEL-KATSAUS</p>
+                <p class="footer-sub-text">Kaikki oikeudet pidätetään.</p>
+            </div>
+            <div class="footer-contact" style="text-align: right; line-height: 1.1;">
+                <p class="email-title" style="font-weight: 500; font-size: 1.0rem; color: #fff; margin: 0; padding: 0;">Palaute ja yhteydenotto</p>
+                <p class="email-text" style="margin: 0; padding: 0;"><a href="mailto:israelkatsaus@gmail.com" style="color: var(--footer-text); text-decoration: none; font-size: 0.85rem;">israelkatsaus@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+    // Hakukentän toiminnallisuus (Enter-painallus)
+    const navSearch = document.getElementById('search-input');
+    if (navSearch) {
+        navSearch.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query.length > 0) {
+                    window.location.href = '/haku/?q=' + encodeURIComponent(query);
+                }
+            }
+        });
+    }
+
+    // Mobiilivalikon avaaminen ja sulkeminen (Hampurilaisvalikko)
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+        });
+    }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haku | Israel-katsaus</title>
+    <!-- Viittaus CSS-tyyleihin. Eleventy kopioi tämän suoraan osoitteeseen /css/styles.css -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Kirjasinlaji Googlen palvelimelta (Fira Sans) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- YLÄPALKKI (NAVBAR) -->
+    <nav class="navbar">
+        <div class="nav-container container">
+            <!-- Hampurilaispainike mobiilille -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Avaa valikko">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="Israel-katsaus" style="height: 50px; display: block;">
+                </a>
+            </div>
+                
+            <!-- Mobiilin Facebook-logo (näkyy vain pienillä ruuduilla) -->
+            <a href="https://facebook.com" class="facebook-mobile-link" target="_blank">
+                <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
+            </a>
+
+            <!-- Oikean reunan linkit ja haku -->
+            <div class="nav-center-right" id="nav-menu">
+                <div class="nav-links">
+                    <a href="/">ETUSIVU</a>
+                    <a href="/arkisto/">ARKISTO</a>
+                    <!-- Desktopin Facebook-logo (näkyy vain tietokoneella) -->
+                    <a href="https://facebook.com" class="facebook-desktop-link" target="_blank">
+                        <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
+                    </a>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Etsi uutisia..." autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SIVUN VARSINAINEN SISÄLTÖ -->
+    
+<main class="content-wrapper container">
+    <h1 class="page-title">Hakutulokset</h1>
+    <p class="page-subtitle" id="search-status">Kirjoita hakusana yläpalkkiin...</p>
+
+    <!-- Hakutulokset ilmestyvät tähän samaan siistiin listaan kuin arkistossa -->
+    <div class="archive-list" id="search-results-list"><article class="archive-item search-js-item" data-title="israel kritisoi perun presidentin lausuntoja toiseen maailmansotaan liittyen" data-excerpt="perun presidentin juutalaisia syyllistävät puheet ovat herättäneet huolta ja kritiikkiä">
+                <a href="/uutiset/uutinen7/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Mensaje_a_la_Naci%C3%B3n_del_presidente_Jos%C3%A9_Balc%C3%A1zar_0-53_screenshot.png/960px-Mensaje_a_la_Naci%C3%B3n_del_presidente_Jos%C3%A9_Balc%C3%A1zar_0-53_screenshot.png" alt="Israel kritisoi Perun presidentin lausuntoja toiseen maailmansotaan liittyen">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">19.04.2026</span>
+                        <h2>Israel kritisoi Perun presidentin lausuntoja toiseen maailmansotaan liittyen</h2>
+                        <p>Perun presidentin juutalaisia syyllistävät puheet ovat herättäneet huolta ja kritiikkiä</p>
+                    </div>
+                </a>
+            </article><article class="archive-item search-js-item" data-title="israelilaispojan taistelu antisemitismiä vastaan" data-excerpt="pienen ben carasson ystävä menetti isänsä hamasin hyökkäyksessä, ja päättäväinen carasso ryhtyi taistelemaan antisemitismiä vastaan sosiaalisessa mediassa.">
+                <a href="/uutiset/uutinen6/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="/images/uploads/Carosso.png" alt="Israelilaispojan taistelu antisemitismiä vastaan">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">18.04.2026</span>
+                        <h2>Israelilaispojan taistelu antisemitismiä vastaan</h2>
+                        <p>Pienen Ben Carasson ystävä menetti isänsä Hamasin hyökkäyksessä, ja päättäväinen Carasso ryhtyi taistelemaan antisemitismiä vastaan sosiaalisessa mediassa.</p>
+                    </div>
+                </a>
+            </article><article class="archive-item search-js-item" data-title="netanyahu: israel puolustaa olemassaoloaan" data-excerpt="pääministeri korosti muistotilaisuudessa surua, yhtenäisyyttä ja turvallisuusuhkia.">
+                <a href="/uutiset/uutinen5/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="/images/uploads/Benjamin.jpg" alt="Netanyahu: Israel puolustaa olemassaoloaan">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">17.04.2026</span>
+                        <h2>Netanyahu: Israel puolustaa olemassaoloaan</h2>
+                        <p>Pääministeri korosti muistotilaisuudessa surua, yhtenäisyyttä ja turvallisuusuhkia.</p>
+                    </div>
+                </a>
+            </article><article class="archive-item search-js-item" data-title="sandersin israel-linja kriittisessä tarkastelussa" data-excerpt="bernie sandersin vaatimus asemyynnin keskeyttämisestä israelille on yksipuolista ja huonosti perusteltua">
+                <a href="/uutiset/uutinen4/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="https://static-cdn.toi-media.com/www/uploads/2024/11/AFP__20241022__36KN73W__v1__HighRes__PresidentJoeBidenTravelsToNewHampshireForOffici-e1730879698904.jpg" alt="Sandersin Israel-linja kriittisessä tarkastelussa">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">16.04.2026</span>
+                        <h2>Sandersin Israel-linja kriittisessä tarkastelussa</h2>
+                        <p>Bernie Sandersin vaatimus asemyynnin keskeyttämisestä Israelille on yksipuolista ja huonosti perusteltua</p>
+                    </div>
+                </a>
+            </article><article class="archive-item search-js-item" data-title="antisemitismi ilmestyi kadulle saksassa" data-excerpt="laajamittaista antisemitististä katutöhrintää juutalaisten suosimalla asuinalueella berliinissä">
+                <a href="/uutiset/uutinen3/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="https://images.jpost.com/image/upload/f_auto,fl_lossy/q_auto/c_fill,g_faces:center,h_720,w_1280/718309" alt="Antisemitismi ilmestyi kadulle Saksassa">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">15.04.2026</span>
+                        <h2>Antisemitismi ilmestyi kadulle Saksassa</h2>
+                        <p>Laajamittaista antisemitististä katutöhrintää juutalaisten suosimalla asuinalueella Berliinissä</p>
+                    </div>
+                </a>
+            </article><article class="archive-item search-js-item" data-title="galilealaismies syytteeseen terrori-iskun suunnittelusta" data-excerpt="tapaus on osa huolestuttavaa trendiä, jossa israelin arabiväestö liittyy isis-terrorijärjestöön ja radikalisoituu.">
+                <a href="/uutiset/uutinen2/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="/images/uploads/Galilealaismies syytteeseen.png" alt="Galilealaismies syytteeseen terrori-iskun suunnittelusta">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">14.04.2026</span>
+                        <h2>Galilealaismies syytteeseen terrori-iskun suunnittelusta</h2>
+                        <p>Tapaus on osa huolestuttavaa trendiä, jossa Israelin arabiväestö liittyy ISIS-terrorijärjestöön ja radikalisoituu.</p>
+                    </div>
+                </a>
+            </article><article class="archive-item search-js-item" data-title="mies tuomittiin terrori-iskun yrityksestä israelin suurlähetykseen lontoossa" data-excerpt="lontoon tuomioistuin on tuominnut 34-vuotiaan abdullah albadrin yrityksestä tunkeutua viime vuonna israelin suurlähetystöön mukanaan teräaseita ja marttyyriusviesti.">
+                <a href="/uutiset/uutinen1/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="https://images.jpost.com/image/upload/f_auto,fl_lossy/q_auto/c_fill,g_faces:center,h_720,w_1280/718950" alt="Mies tuomittiin terrori-iskun yrityksestä Israelin suurlähetykseen Lontoossa">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">13.04.2026</span>
+                        <h2>Mies tuomittiin terrori-iskun yrityksestä Israelin suurlähetykseen Lontoossa</h2>
+                        <p>Lontoon tuomioistuin on tuominnut 34-vuotiaan Abdullah Albadrin yrityksestä tunkeutua viime vuonna Israelin suurlähetystöön mukanaan teräaseita ja marttyyriusviesti.</p>
+                    </div>
+                </a>
+            </article><article class="archive-item search-js-item" data-title="ensimmäinen onnistunut uutinen eleventyllä" data-excerpt="tämä on uutisen lyhyt esittelyteksti eli ingressi, joka näkyy listauksissa ja sosiaalisessa mediassa upeasti.">
+                <a href="/uutiset/2026-05-19-testi/" class="archive-link">
+                    <div class="archive-img-wrapper">
+                        <img src="/images/uploads/Benjamin.jpg" alt="Ensimmäinen onnistunut uutinen Eleventyllä">
+                    </div>
+                    <div class="archive-text">
+                        <span class="archive-date">12.04.2026</span>
+                        <h2>Ensimmäinen onnistunut uutinen Eleventyllä</h2>
+                        <p>Tämä on uutisen lyhyt esittelyteksti eli ingressi, joka näkyy listauksissa ja sosiaalisessa mediassa upeasti.</p>
+                    </div>
+                </a>
+            </article></div>
+</main>
+
+<script>
+    // Haetaan osoiteriviltä hakusana (esim. ?q=israel)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('q');
+    const searchInput = document.getElementById('search-input');
+    const statusText = document.getElementById('search-status');
+    const items = document.querySelectorAll('.search-js-item');
+
+    function suoritaHaku(hakusana) {
+        if (!hakusana || hakusana.trim() === "") {
+            statusText.textContent = "Kirjoita hakusana yläpalkkiin...";
+            items.forEach(item => item.style.display = 'none');
+            return;
+        }
+
+        const sana = hakusana.toLowerCase().trim();
+        let loytyi = 0;
+
+        items.forEach(item => {
+            const otsikko = item.getAttribute('data-title');
+            const esittely = item.getAttribute('data-excerpt');
+
+            if (otsikko.includes(sana) || esittely.includes(sana)) {
+                item.style.display = 'block';
+                loytyi++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        statusText.textContent = `Löytyi ${loytyi} hakutulosta sanalla "${hakusana}"`;
+    }
+
+    // Suoritetaan haku heti kun sivu latautuu
+    if (searchQuery) {
+        if (searchInput) searchInput.value = searchQuery;
+        suoritaHaku(searchQuery);
+    } else {
+        // Jos tullaan sivulle ilman hakusanaa, piilotetaan kaikki aluksi
+        items.forEach(item => item.style.display = 'none');
+    }
+</script>
+
+    <!-- ALAPALKKI (FOOTER) -->
+    <footer class="footer">
+        <div class="footer-container container">
+            <div class="footer-logo">
+                <img src="/images/logo.png" alt="Israel-katsaus" style="height: 40px; opacity: 0.8;">
+            </div>
+            <div class="footer-copyright">
+                <p class="footer-main-text">© 2026 ISRAEL-KATSAUS</p>
+                <p class="footer-sub-text">Kaikki oikeudet pidätetään.</p>
+            </div>
+            <div class="footer-contact" style="text-align: right; line-height: 1.1;">
+                <p class="email-title" style="font-weight: 500; font-size: 1.0rem; color: #fff; margin: 0; padding: 0;">Palaute ja yhteydenotto</p>
+                <p class="email-text" style="margin: 0; padding: 0;"><a href="mailto:israelkatsaus@gmail.com" style="color: var(--footer-text); text-decoration: none; font-size: 0.85rem;">israelkatsaus@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+    // Hakukentän toiminnallisuus (Enter-painallus)
+    const navSearch = document.getElementById('search-input');
+    if (navSearch) {
+        navSearch.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query.length > 0) {
+                    window.location.href = '/haku/?q=' + encodeURIComponent(query);
+                }
+            }
+        });
+    }
+
+    // Mobiilivalikon avaaminen ja sulkeminen (Hampurilaisvalikko)
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+        });
+    }
+    </script>
+
+</body>
+</html>
