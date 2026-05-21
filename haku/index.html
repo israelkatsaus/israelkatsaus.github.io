@@ -40,7 +40,7 @@
             </div>
                 
             <!-- Mobiilin Facebook-logo (näkyy vain pienillä ruuduilla) -->
-            <a href="https://facebook.com" class="facebook-mobile-link" target="_blank">
+            <a href="https://www.facebook.com/profile.php?id=61589601305182" class="facebook-mobile-link" target="_blank">
                 <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
             </a>
 
@@ -50,7 +50,7 @@
                     <a href="/">ETUSIVU</a>
                     <a href="/arkisto/">ARKISTO</a>
                     <!-- Desktopin Facebook-logo (näkyy vain tietokoneella) -->
-                    <a href="https://facebook.com" class="facebook-desktop-link" target="_blank">
+                    <a href="https://www.facebook.com/profile.php?id=61589601305182" class="facebook-desktop-link" target="_blank">
                         <img src="/images/facebook.png" alt="Facebook" class="facebook-nav-icon">
                     </a>
                 </div>
@@ -63,13 +63,49 @@
 
     <!-- SIVUN VARSINAINEN SISÄLTÖ -->
     
+<style>
+    /* Hakusivun omat tyylit, jotka kunnioittavat teemoja */
+    .search-page-layout h1 {
+        color: var(--text-color, #222);
+    }
+    .search-result-item {
+        border-bottom: 1px solid var(--border-color, #eee);
+        padding-bottom: 15px;
+    }
+    .search-result-item .date {
+        font-size: 0.85rem;
+        color: var(--text-muted, #666);
+    }
+    .search-result-item h2 a {
+        color: var(--link-color, #0056b3);
+        text-decoration: none;
+    }
+    .search-result-item h2 a:hover {
+        text-decoration: underline;
+    }
+    .search-result-item p {
+        color: var(--text-color, #333);
+        line-height: 1.4;
+    }
+    
+    /* Automaattinen korjaus tummalle teemalle, jos sivuston CSS-muuttujat eivät jostain syystä lataudu */
+    @media (prefers-color-scheme: dark) {
+        .search-page-layout h1 { color: #f0f0f0; }
+        .search-result-item { border-bottom-color: #444; }
+        .search-result-item .date { color: #aaa; }
+        .search-result-item h2 a { color: #66b2ff; }
+        .search-result-item p { color: #e0e0e0; }
+        #search-results p { color: #ccc; }
+    }
+</style>
+
 <main class="content-wrapper container">
-    <div class="search-page-layout" style="max-width: 800px; margin: 40px auto; min-height: 60px;">
+    <div class="search-page-layout" style="max-width: 800px; margin: 40px auto; min-height: 60vh; padding: 0 20px;">
         
-        <h1 style="margin-bottom: 20px; font-size: 2rem; color: #333;">Hakutulokset</h1>
+        <h1 style="margin-bottom: 20px; font-size: 2rem;">Hakutulokset</h1>
         
         <div id="search-results">
-            <p style="color: #666;">Ladataan hakutuloksia...</p>
+            <p>Ladataan hakutuloksia...</p>
         </div>
 
     </div>
@@ -157,10 +193,9 @@ if (hakusana) {
                 uutiskortti.style.marginBottom = '20px';
 
                 uutiskortti.innerHTML = `
-                    <span style="font-size: 0.85rem; color: #666;">${uutinen.date || ''}</span>
-                    <h2 style="margin: 5px 0; font-size: 1.4rem;"><a href="${uutinen.url}" style="color: #0056b3; text-decoration: none;">${uutinen.title}</a></h2>
-                    <p style="margin: 5px 0; color: #333; line-height: 1.4;">${uutinen.excerpt || (uutinen.content ? uutinen.content.substring(0, 150) + '...' : '')}</p>
-                    <hr style="border: 0; border-top: 1px solid #eee; margin-top: 15px;">
+                    <span class="date">${uutinen.date || ''}</span>
+                    <h2 style="margin: 5px 0; font-size: 1.4rem;"><a href="${uutinen.url}">${uutinen.title}</a></h2>
+                    <p style="margin: 5px 0;">${uutinen.excerpt || (uutinen.content ? uutinen.content.substring(0, 150) + '...' : '')}</p>
                 `;
                 
                 tulosAlue.appendChild(uutiskortti);
