@@ -146,13 +146,13 @@
     </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.43.4/dist/umd/supabase.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Projektisi URL ja API-avaimet
-    const SUPABASE_URL = "https://ofjxnitkdrqaexzicni.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_RqBNisK1mvblEitjLuO_8A_GfNlPLMk"; // <- Vaihda tämä!
-
+    const SUPABASE_URL = "https://ofjxnitikdrqaexzicni.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_RqBNisK1mvblEitjLuO_8A_GfNlPLMk";
+    
     // Alustetaan yhteys tietokantaan
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (error) throw error;
 
             // Haetaan Eleventyn luoma haku-data.json, jotta saadaan uutisten otsikot
-            const res = await fetch('/haku-data.json');
+            const res = await fetch('../../../haku-data.json').catch(() => fetch('/haku-data.json'));
             const kaikkiUutiset = await res.json();
 
             tulostaLista(suosikit, kaikkiUutiset);
