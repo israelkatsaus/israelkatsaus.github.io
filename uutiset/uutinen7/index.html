@@ -111,28 +111,30 @@
         </article>
 
         <aside class="sidebar">
-            <h3 class="sidebar-main-title">Uusimmat uutiset</h3>
+            <h3 style="font-size: 1.2rem; margin-bottom: 2px; border-bottom: 2px solid var(--primary-color, #0056b3); padding-bottom: 5px; text-transform: uppercase; font-weight: bold;">
+                Uusimmat
+            </h3>
             
-            <div class="sidebar-list"><a href="/uutiset/uutinen7/" class="sidebar-item" style="display: block; text-decoration: none; color: inherit;">
-                        <span style="font-size: 0.75rem; opacity: 0.6; font-style: italic;">19.04.2026</span>
-                        <p style="margin-top: 2px; font-weight: 500;">Israel kritisoi Perun presidentin lausuntoja toiseen maailmansotaan liittyen</p>
-                    </a><a href="/uutiset/uutinen6/" class="sidebar-item" style="display: block; text-decoration: none; color: inherit;">
-                        <span style="font-size: 0.75rem; opacity: 0.6; font-style: italic;">18.04.2026</span>
-                        <p style="margin-top: 2px; font-weight: 500;">Israelilaispojan taistelu antisemitismiä vastaan</p>
-                    </a><a href="/uutiset/uutinen5/" class="sidebar-item" style="display: block; text-decoration: none; color: inherit;">
-                        <span style="font-size: 0.75rem; opacity: 0.6; font-style: italic;">17.04.2026</span>
-                        <p style="margin-top: 2px; font-weight: 500;">Netanyahu: Israel puolustaa olemassaoloaan</p>
-                    </a><a href="/uutiset/uutinen4/" class="sidebar-item" style="display: block; text-decoration: none; color: inherit;">
-                        <span style="font-size: 0.75rem; opacity: 0.6; font-style: italic;">16.04.2026</span>
-                        <p style="margin-top: 2px; font-weight: 500;">Sandersin Israel-linja kriittisessä tarkastelussa</p>
-                    </a><a href="/uutiset/uutinen3/" class="sidebar-item" style="display: block; text-decoration: none; color: inherit;">
-                        <span style="font-size: 0.75rem; opacity: 0.6; font-style: italic;">15.04.2026</span>
-                        <p style="margin-top: 2px; font-weight: 500;">Antisemitismi ilmestyi kadulle Saksassa</p>
+            <div class="sidebar-list"><a href="/uutiset/uutinen7/" class="sidebar-item" style="display: block; text-decoration: none; color: #444; margin-bottom: 12px;">
+                        <span style="font-size: 0.75rem; color: #777; font-style: italic;">19.04.2026</span>
+                        <p style="margin-top: 2px; font-weight: 500; color: var(--link-color, #ffff);">Israel kritisoi Perun presidentin lausuntoja toiseen maailmansotaan liittyen</p>
+                    </a><a href="/uutiset/uutinen6/" class="sidebar-item" style="display: block; text-decoration: none; color: #444; margin-bottom: 12px;">
+                        <span style="font-size: 0.75rem; color: #777; font-style: italic;">18.04.2026</span>
+                        <p style="margin-top: 2px; font-weight: 500; color: var(--link-color, #ffff);">Israelilaispojan taistelu antisemitismiä vastaan</p>
+                    </a><a href="/uutiset/uutinen5/" class="sidebar-item" style="display: block; text-decoration: none; color: #444; margin-bottom: 12px;">
+                        <span style="font-size: 0.75rem; color: #777; font-style: italic;">17.04.2026</span>
+                        <p style="margin-top: 2px; font-weight: 500; color: var(--link-color, #ffff);">Netanyahu: Israel puolustaa olemassaoloaan</p>
+                    </a><a href="/uutiset/uutinen4/" class="sidebar-item" style="display: block; text-decoration: none; color: #444; margin-bottom: 12px;">
+                        <span style="font-size: 0.75rem; color: #777; font-style: italic;">16.04.2026</span>
+                        <p style="margin-top: 2px; font-weight: 500; color: var(--link-color, #ffff);">Sandersin Israel-linja kriittisessä tarkastelussa</p>
+                    </a><a href="/uutiset/uutinen3/" class="sidebar-item" style="display: block; text-decoration: none; color: #444; margin-bottom: 12px;">
+                        <span style="font-size: 0.75rem; color: #777; font-style: italic;">15.04.2026</span>
+                        <p style="margin-top: 2px; font-weight: 500; color: var(--link-color, #ffff);">Antisemitismi ilmestyi kadulle Saksassa</p>
                     </a></div>
 
             <div class="sidebar-widget popular-news" style="margin-top: 30px;">
-                <h3 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 2px solid var(--primary-color, #0056b3); padding-bottom: 5px;">
-                    LUETUIMMAT
+                <h3 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 2px solid var(--primary-color, #0056b3); padding-bottom: 5px; text-transform: uppercase; font-weight: bold;">
+                    Luetuimmat
                 </h3>
                 <div id="popular-articles-list">
                     <p style="font-size: 0.9rem; color: var(--text-muted, #666);">Ladataan suosituimpia...</p>
@@ -145,17 +147,12 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2.43.4/dist/umd/supabase.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Projektisi URL ja API-avaimet
     const SUPABASE_URL = "https://ofjxnitikdrqaexzicni.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_RqBNisK1mvblEitjLuO_8A_GfNlPLMk";
     
-    // Alustetaan yhteys tietokantaan
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Muutetaan uutisen polku siistiksi tunnisteeksi (esim. uutiset-ben170)
     const pageId = window.location.pathname.replace(/\//g, "-").replace(/^-+|-+$/g, "") || "index";
 
-    // 1. Kirjataan tämän uutisen lukukerta tietokantaan
     async function paivitaLaskuri() {
         try {
             let { data, error } = await supabase
@@ -165,10 +162,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 .single();
 
             if (error && error.code === 'PGRST116') {
-                // Ensimmäinen lukukerta koko uutiselle, luodaan uusi rivi
                 await supabase.from('uutis_laskurit').insert([{ uutis_id: pageId, katselut: 1 }]);
             } else if (data) {
-                // Uutinen oli jo tietokannassa, kasvatetaan lukua yhdellä
                 await supabase.from('uutis_laskurit')
                     .update({ katselut: data.katselut + 1 })
                     .eq('uutis_id', pageId);
@@ -176,12 +171,9 @@ document.addEventListener("DOMContentLoaded", function() {
         } catch (err) {
             console.error("Virhe katselukertojen päivityksessä:", err);
         }
-        
-        // Päivityksen jälkeen haetaan tämänhetkinen TOP-lista sivupalkkiin
         haetaanTopLista();
     }
 
-    // 2. Haetaan suosituimmat uutiset Supabasesta
     async function haetaanTopLista() {
         try {
             let { data: suosikit, error } = await supabase
@@ -192,7 +184,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (error) throw error;
 
-            // Haetaan Eleventyn luoma haku-data.json, jotta saadaan uutisten otsikot
             const res = await fetch('../../../haku-data.json').catch(() => fetch('/haku-data.json'));
             const kaikkiUutiset = await res.json();
 
@@ -203,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // 3. Rakennetaan HTML-lista sivupalkkiin
     function tulostaLista(suosikit, uutiset) {
         const listaAlue = document.getElementById('popular-articles-list');
         if (!listaAlue || !suosikit) return;
@@ -212,42 +202,46 @@ document.addEventListener("DOMContentLoaded", function() {
         let tulostetut = 0;
 
         suosikit.forEach(item => {
-            if (tulostetut >= 5) return; // Rajoitetaan TOP 5 luetuimpaan
+            if (tulostetut >= 5) return; 
             if (item.uutis_id === "index" || item.uutis_id === "haku" || item.uutis_id === "") return;
 
-            // Etsitään uutisen tiedot hakudatasta
             const loytynytUutinen = uutiset.find(u => {
                 const vertailuId = u.url.replace(/\//g, "-").replace(/^-+|-+$/g, "");
                 return vertailuId === item.uutis_id;
             });
 
             if (loytynytUutinen) {
-                tulostetut++;
-                const linkki = document.createElement('a');
-                linkki.href = loytynytUutinen.url;
-                linkki.style.display = 'block';
-                linkki.style.textDecoration = 'none';
-                linkki.style.marginBottom = '12px';
-                linkki.style.fontSize = '0.95rem';
+    tulostetut++;
+    const linkki = document.createElement('a');
+    linkki.href = loytynytUutinen.url;
+    
+    // Käytetään samaa luokkaa kuin uusimmissa
+    linkki.className = 'sidebar-item'; 
+    
+    linkki.style.display = 'block';
+    linkki.style.textDecoration = 'none';
+    linkki.style.paddingBottom = '10px';
+    linkki.style.marginBottom = '10px';
+    
+    // Käytetään teemaan mukautuvaa puoliläpinäkyvää viivaa (toimii tummalla ja vaalealla)
+    linkki.style.borderBottom = '1px solid var(--border-color, rgba(128, 128, 128, 0.2))'; 
+    linkki.style.fontSize = '0.95rem';
 
-                linkki.innerHTML = `
-                    <div style="color: var(--link-color, #ffff); font-weight: 500; margin-bottom: 2px; opacity: 0.9;">
-                        ${loytynytUutinen.title}
-                    </div>
-                    <span style="font-size: 0.8rem; color: #777; display: block; margin-top: 1px; font-style: italic;">
-                        Luettu ${item.katselut} kertaa
-                    </span>
-`;
-                listaAlue.appendChild(linkki);
-            }
+    // Poistettu kiinteä sininen väri -> color: inherit perii teeman oman tekstivärin!
+    linkki.innerHTML = `
+        <div style="color: inherit; font-weight: 500; margin-top: 2px;">
+            ${loytynytUutinen.title}
+        </div>
+    `;
+    listaAlue.appendChild(linkki);
+}
         });
 
         if (tulostetut === 0) {
-            listaAlue.innerHTML = '<p style="font-size: 0.9rem;">Ei vielä tarpeeksi dataa luetuimmista.</p>';
+            listaAlue.innerHTML = '<p style="font-size: 0.9rem; color: #777;">Ei vielä tarpeeksi dataa luetuimmista.</p>';
         }
     }
 
-    // Käynnistetään prosessi
     paivitaLaskuri();
 });
 </script>
