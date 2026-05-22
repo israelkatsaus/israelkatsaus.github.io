@@ -234,13 +234,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 linkki.style.fontSize = '0.95rem';
 
                 linkki.innerHTML = `
-                    <div style="color: var(--link-color, #0056b3); font-weight: 500; margin-bottom: 2px;">
+                    <div style="color: var(--link-color, #ffff); font-weight: 500; margin-bottom: 2px; opacity: 0.9;">
                         ${loytynytUutinen.title}
                     </div>
-                    <span style="font-size: 0.8rem; color: var(--text-muted, #888); display: block; margin-top: 1px;">
+                    <span style="font-size: 0.8rem; color: #777; display: block; margin-top: 1px; font-style: italic;">
                         Luettu ${item.katselut} kertaa
                     </span>
-                `;
+`;
                 listaAlue.appendChild(linkki);
             }
         });
