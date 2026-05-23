@@ -179,52 +179,49 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function tulostaLista(suosikit, uutiset) {
-        const listaAlue = document.getElementById('popular-articles-list');
-        if (!listaAlue || !suosikit) return;
+    const listaAlue = document.getElementById('popular-articles-list');
+    if (!listaAlue || !suosikit) return;
 
-        listaAlue.innerHTML = '';
-        let tulostetut = 0;
+    listaAlue.innerHTML = '';
+    let tulostetut = 0;
 
-        suosikit.forEach(item => {
-            if (tulostetut >= 5) return; 
-            if (item.uutis_id === "index" || item.uutis_id === "haku" || item.uutis_id === "") return;
+    suosikit.forEach(item => {
+        if (tulostetut >= 5) return; // Rajoitetaan TOP 5 luetuimpaan
+        if (item.uutis_id === "index" || item.uutis_id === "haku" || item.uutis_id === "") return;
 
-            const loytynytUutinen = uutiset.find(u => {
-                const vertailuId = u.url.replace(/\//g, "-").replace(/^-+|-+$/g, "");
-                return vertailuId === item.uutis_id;
-            });
-
-            if (loytynytUutinen) {
-    tulostetut++;
-    const linkki = document.createElement('a');
-    linkki.href = loytynytUutinen.url;
-    
-    // Käytetään samaa luokkaa kuin uusimmissa
-    linkki.className = 'sidebar-item'; 
-    
-    linkki.style.display = 'block';
-    linkki.style.textDecoration = 'none';
-    linkki.style.paddingBottom = '10px';
-    linkki.style.marginBottom = '10px';
-    
-    // Käytetään teemaan mukautuvaa puoliläpinäkyvää viivaa (toimii tummalla ja vaalealla)
-    linkki.style.borderBottom = '1px solid var(--border-color, rgba(128, 128, 128, 0.2))'; 
-    linkki.style.fontSize = '0.95rem';
-
-    // Poistettu kiinteä sininen väri -> color: inherit perii teeman oman tekstivärin!
-    linkki.innerHTML = `
-        <div style="color: inherit; font-weight: 500; margin-top: 2px;">
-            ${loytynytUutinen.title}
-        </div>
-    `;
-    listaAlue.appendChild(linkki);
-}
+        // Etsitään uutisen tiedot hakudatasta
+        const loytynytUutinen = uutiset.find(u => {
+            const vertailuId = u.url.replace(/\//g, "-").replace(/^-+|-+$/g, "");
+            return vertailuId === item.uutis_id;
         });
 
-        if (tulostetut === 0) {
-            listaAlue.innerHTML = '<p style="font-size: 0.9rem; color: #777;">Ei vielä tarpeeksi dataa luetuimmista.</p>';
+        if (loytynytUutinen) {
+            tulostetut++; // Kasvatetaan numeroa (1, 2, 3...)
+            
+            const linkki = document.createElement('a');
+            linkki.href = loytynytUutinen.url;
+            linkki.className = 'sidebar-item'; 
+            linkki.style.display = 'block';
+            linkki.style.textDecoration = 'none';
+            linkki.style.paddingBottom = '10px';
+            linkki.style.marginBottom = '10px';
+            linkki.style.borderBottom = '1px solid var(--border-color, rgba(128, 128, 128, 0.2))'; 
+            linkki.style.fontSize = '0.95rem';
+
+            // Lisätty numero järjestysnumeroksi otsikon eteen
+            linkki.innerHTML = `
+                <div style="color: inherit; font-weight: 500; margin-top: 2px;">
+                    <span style="color: var(--primary-color, #0056b3); font-weight: bold; margin-right: 8px;">${tulostetut}.</span>${loytynytUutinen.title}
+                </div>
+            `;
+            listaAlue.appendChild(linkki);
         }
+    });
+
+    if (tulostetut === 0) {
+        listaAlue.innerHTML = '<p style="font-size: 0.9rem; color: #777;">Ei vielä tarpeeksi dataa luetuimmista.</p>';
     }
+}
 
     paivitaLaskuri();
 });
