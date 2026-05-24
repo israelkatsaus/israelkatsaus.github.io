@@ -149,7 +149,7 @@ a {
 /* Kuvasäiliö: poistetaan alempi marginaali, koska kehys hoitaa välin */
 .img-container-32 { 
     width: 100%; 
-    aspect-ratio: 3/2; 
+    aspect-ratio: 4/3; 
     overflow: hidden; 
 }
 
