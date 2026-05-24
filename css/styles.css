@@ -162,7 +162,6 @@ a {
 /* ITSE KORTTI / KEHYS */
 .main-article-card {
     background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
     border-radius: 6px;       /* Tyylikäs pyöristys kulmiin */
     overflow: hidden;          /* Pitää huolen, että kuva seuraa kulmapyöristystä */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* Erittäin hienovarainen varjo */
@@ -213,7 +212,6 @@ a {
     display: flex;
     flex-direction: column;
     background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
     border-radius: 6px;           /* Sama pyöristys kuin pääuutisessa */
     overflow: hidden;              /* Pitää huolen, että kuva seuraa kulmapyöristystä */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); /* Kevyt varjo */
