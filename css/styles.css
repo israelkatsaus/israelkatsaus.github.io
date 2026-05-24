@@ -146,11 +146,11 @@ a {
     margin-top: 20px;
 }
 
+/* Kuvasäiliö: poistetaan alempi marginaali, koska kehys hoitaa välin */
 .img-container-32 { 
     width: 100%; 
     aspect-ratio: 3/2; 
     overflow: hidden; 
-    margin-bottom: 20px; 
 }
 
 .img-container-32 img { 
@@ -159,11 +159,34 @@ a {
     object-fit: cover; 
 }
 
+/* ITSE KORTTI / KEHYS */
+.main-article-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;       /* Tyylikäs pyöristys kulmiin */
+    overflow: hidden;          /* Pitää huolen, että kuva seuraa kulmapyöristystä */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* Erittäin hienovarainen varjo */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Kortin reaktio hiiren vientiin (kuten arkistossa) */
+.main-article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Tekstisisällön pehmuste kehyksen sisällä */
+.main-article-content {
+    padding: 25px; /* Jättää ilmaa tekstin ympärille kehyksen sisäpuolelle */
+}
+
+/* Pääuutisen otsikko kehyksen sisällä */
 .main-article-card h2 { 
-    margin-bottom: 10px; 
+    margin-bottom: 12px; 
     line-height: 1.2; 
     cursor: pointer; 
-    font-size: 1.6rem;
+    font-size: 2.2rem; /* Säädetty näyttäväksi */
+    color: var(--text-color);
     transition: color 0.2s ease;
 }
 
@@ -172,8 +195,9 @@ a {
 }
 
 .main-article-card p { 
-    line-height: 1.4; 
-    opacity: 0.9; 
+    line-height: 1.5; 
+    opacity: 0.85; 
+    font-size: 1.05rem;
 }
 
 /* Sivupalkin ruudukko: 2 saraketta vierekkäin */
@@ -184,20 +208,41 @@ a {
     align-content: start;
 }
 
-/* Yksittäinen pieni uutiskortti */
+/* Yksittäinen pieni uutiskortti kehyksellä */
 .side-card {
     display: flex;
     flex-direction: column;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;           /* Sama pyöristys kuin pääuutisessa */
+    overflow: hidden;              /* Pitää huolen, että kuva seuraa kulmapyöristystä */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); /* Kevyt varjo */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Kortin reaktio hiiren vientiin */
+.side-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.07);
+}
+
+/* Poistetaan kuvan oma pyöristys ja marginaali, koska kehys hoitaa ne */
 .side-card img {
     width: 100%;
     aspect-ratio: 3/2;
     object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 0; 
 }
 
+/* Tekstilaatikko pienen kehyksen sisällä */
+.side-card-content {
+    padding: 12px; /* Sopivan sirpaleinen tila pikkukortille */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Pienen uutisen otsikko */
 .side-card h4 {
     font-size: 0.9rem;
     font-weight: 700;
