@@ -189,6 +189,14 @@ a {
     transition: color 0.2s ease;
 }
 
+.main-article-date {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin-bottom: 8px;
+    font-style: italic;
+}
+
 .main-article-card:hover h2, .side-card:hover h4, .archive-item:hover .archive-text h2 {
     color: var(--navbar-bg);
 }
@@ -247,6 +255,14 @@ a {
     line-height: 1.3;
     color: var(--text-color);
     transition: color 0.2s ease;
+}
+
+.side-card-date {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-bottom: 4px;
+    font-style: italic;
 }
 
 /* UUSI ARKITOLISTAUS (Siisti riviasettelu) */
@@ -428,6 +444,14 @@ a {
     margin-bottom: 15px;
 }
 
+.main-article-ingress { 
+    font-size: 1.15rem;     
+    font-weight: 500;       
+    line-height: 1.5;       
+    opacity: 0.9;           
+    color: var(--text-color);
+}
+
 /* SIVUPALKKI ARTIKKELISIVULLA */
 .sidebar-main-title {
     font-size: 1.1rem;
@@ -508,6 +532,88 @@ a {
     width: 25px; 
     height: 3px; 
     background-color: white; 
+}
+
+/* TEEMAOSIO (ETUSIVUN ALAPUOLI) */
+.theme-section {
+    margin-top: 50px;
+    border-top: 2px solid var(--border-color);
+    padding-top: 30px;
+}
+
+.theme-section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 25px;
+    color: var(--text-color);
+}
+
+/* 3 sarakkeen ruudukko työpöydällä */
+.theme-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+}
+
+.theme-card {
+    background-color: var(--card-bg);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.theme-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.07);
+}
+
+.theme-card:hover h4 {
+    color: var(--navbar-bg);
+}
+
+.theme-img-wrapper {
+    width: 100%;
+    aspect-ratio: 16/9; /* Käytetään modernia laajakuvaa teemakorteissa */
+    overflow: hidden;
+}
+
+.theme-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.theme-card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.theme-card-date {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-bottom: 6px;
+    font-style: italic;
+}
+
+.theme-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-color);
+    transition: color 0.2s ease;
+}
+
+.no-news {
+    grid-column: 1 / -1;
+    color: #777;
+    font-style: italic;
 }
 
 @media (max-width: 768px) {
