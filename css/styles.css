@@ -722,4 +722,8 @@ a {
     .footer-contact { 
         text-align: center; 
     }
+    .theme-grid {
+        grid-template-columns: 1fr; /* Muuttuu yhdeksi jonoksi puhelimella */
+        gap: 20px;
+    }
 }
