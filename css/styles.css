@@ -616,6 +616,11 @@ a {
     font-style: italic;
 }
 
+/* Lisää pientä hienosäätöä peräkkäisille osioille */
+.choices-section {
+    margin-bottom: 20px; /* Jättää siistin välin alla olevaan antisemitismi-osioon */
+}
+
 @media (max-width: 768px) {
     .hamburger { 
         display: flex; 
