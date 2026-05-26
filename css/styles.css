@@ -8,6 +8,7 @@
     --footer-bg: #36454f;
     --footer-text: #ccc;
     --navbar-bg: #005EB8;
+    --bottom-section-bg: #f3f5f8; /* UUSI: Pehmeä tausta vaaleaan teemaan */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +19,7 @@
         --card-bg: #1e1e1e;
         --border-color: #333;
         --navbar-bg: #005EB8;
+        --bottom-section-bg: #181818; /* UUSI: Pehmeä tausta tummaan teemaan */
     }
 }
 
@@ -146,7 +148,7 @@ a {
     margin-top: 20px;
 }
 
-/* Kuvasäiliö: poistetaan alempi marginaali, koska kehys hoitaa välin */
+/* Kuvasäiliö */
 .img-container-32 { 
     width: 100%; 
     aspect-ratio: 4/3; 
@@ -162,29 +164,26 @@ a {
 /* ITSE KORTTI / KEHYS */
 .main-article-card {
     background-color: var(--card-bg);
-    border-radius: 6px;       /* Tyylikäs pyöristys kulmiin */
-    overflow: hidden;          /* Pitää huolen, että kuva seuraa kulmapyöristystä */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* Erittäin hienovarainen varjo */
+    border-radius: 6px; 
+    overflow: hidden; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Kortin reaktio hiiren vientiin (kuten arkistossa) */
 .main-article-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* Tekstisisällön pehmuste kehyksen sisällä */
 .main-article-content {
-    padding: 25px; /* Jättää ilmaa tekstin ympärille kehyksen sisäpuolelle */
+    padding: 25px; 
 }
 
-/* Pääuutisen otsikko kehyksen sisällä */
 .main-article-card h2 { 
     margin-bottom: 12px; 
     line-height: 1.2; 
     cursor: pointer; 
-    font-size: 1.8rem; /* Säädetty näyttäväksi */
+    font-size: 1.8rem; 
     color: var(--text-color);
     transition: color 0.2s ease;
 }
@@ -207,7 +206,7 @@ a {
     font-size: 1.05rem;
 }
 
-/* Sivupalkin ruudukko: 2 saraketta vierekkäin */
+/* Sivupalkin ruudukko */
 .side-grid {
     display: grid;
     grid-template-columns: 1fr 1fr; 
@@ -215,24 +214,21 @@ a {
     align-content: start;
 }
 
-/* Yksittäinen pieni uutiskortti kehyksellä */
 .side-card {
     display: flex;
     flex-direction: column;
     background-color: var(--card-bg);
-    border-radius: 6px;           /* Sama pyöristys kuin pääuutisessa */
-    overflow: hidden;              /* Pitää huolen, että kuva seuraa kulmapyöristystä */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); /* Kevyt varjo */
+    border-radius: 6px; 
+    overflow: hidden; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03); 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Kortin reaktio hiiren vientiin */
 .side-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.07);
 }
 
-/* Poistetaan kuvan oma pyöristys ja marginaali, koska kehys hoitaa ne */
 .side-card img {
     width: 100%;
     aspect-ratio: 3/2;
@@ -240,15 +236,13 @@ a {
     margin-bottom: 0; 
 }
 
-/* Tekstilaatikko pienen kehyksen sisällä */
 .side-card-content {
-    padding: 12px; /* Sopivan sirpaleinen tila pikkukortille */
+    padding: 12px; 
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
-/* Pienen uutisen otsikko */
 .side-card h4 {
     font-size: 0.9rem;
     font-weight: 700;
@@ -265,7 +259,7 @@ a {
     font-style: italic;
 }
 
-/* UUSI ARKITOLISTAUS (Siisti riviasettelu) */
+/* UUSI ARKITOLISTAUS */
 .page-title {
     font-size: 2.2rem;
     font-weight: 700;
@@ -370,7 +364,7 @@ a {
 .article-ingress { 
     font-weight: 700; 
     margin-bottom: 1.5rem; 
-    line-height: 1.4; /* Tiivistetty */
+    line-height: 1.4; 
 }
 
 /* UUTISEN META */
@@ -394,14 +388,13 @@ a {
     margin-top: 12px;
 }
 
-/* Tyhjää tilaa ennen leipätekstiä */
 .article-body-spacing {
     height: 28px;
 }
 
 .article-body p { 
-    margin-bottom: 1.2rem; /* Tiivistetty */
-    line-height: 1.4; /* Tiivistetty */
+    margin-bottom: 1.2rem; 
+    line-height: 1.4; 
 }
 
 .article-author { 
@@ -511,7 +504,7 @@ a {
 
 .footer-contact { 
     text-align: right; 
-    line-height: 1.1; /* Tiivistetty alapalkin väli */
+    line-height: 1.1; 
 }
 
 .email-text { 
@@ -534,15 +527,36 @@ a {
     background-color: white; 
 }
 
-/* TEEMAOSIO (ETUSIVUN ALAPUOLI) */
+/* ==========================================================================
+   UUSITTU TEEMAOSIO & ETUSIVUN ALAPUOLEN YHTEINEN POHJAVÄRI-ALUE
+   ========================================================================== */
+
+/* Koko ruudun levyinen pehmeä taustalaatikko alaosioille */
+.front-page-bottom-section {
+    background-color: var(--bottom-section-bg);
+    border-top: 1px solid var(--border-color);
+    padding-top: 50px;
+    padding-bottom: 60px;
+    margin-top: 40px;
+    width: 100%;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Yksittäiset osiot laatikon sisällä */
 .theme-section {
-    margin-top: 50px;
-    border-top: 2px solid var(--border-color);
-    padding-top: 30px;
+    margin-top: 0;
+    margin-bottom: 50px;
+    border-top: none; /* Poistettu vanha viiva, sillä ylempi container hoitaa erotuksen */
+    padding-top: 0;
+}
+
+/* Poistetaan marginaali viimeiseltä osiolta, jotta alapalkki asettuu kauniisti */
+.theme-section:last-of-type {
+    margin-bottom: 0;
 }
 
 .theme-section-title {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -557,19 +571,21 @@ a {
     gap: 25px;
 }
 
+/* Teemakortit, jotka nousevat haaleasta taustasta esiin valkoisina */
 .theme-card {
     background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); /* Entistä pehmeämpi ja tyylikkäämpi varjo */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
 }
 
 .theme-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.07);
+    transform: translateY(-4px); /* Hieman vahvempi noste haalealla pohjalla */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
 
 .theme-card:hover h4 {
@@ -578,7 +594,7 @@ a {
 
 .theme-img-wrapper {
     width: 100%;
-    aspect-ratio: 16/9; /* Käytetään modernia laajakuvaa teemakorteissa */
+    aspect-ratio: 16/9; 
     overflow: hidden;
 }
 
@@ -589,7 +605,7 @@ a {
 }
 
 .theme-card-content {
-    padding: 15px;
+    padding: 18px; /* Hieman enemmän ilmaa tekstille */
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -616,11 +632,14 @@ a {
     font-style: italic;
 }
 
-/* Lisää pientä hienosäätöä peräkkäisille osioille */
+/* Hienosäätö Toimituksen valinnat -osiolle */
 .choices-section {
-    margin-bottom: 20px; /* Jättää siistin välin alla olevaan antisemitismi-osioon */
+    margin-bottom: 50px; 
 }
 
+/* ==========================================================================
+   RESPONSIVISUUS (MOBIILI)
+   ========================================================================== */
 @media (max-width: 768px) {
     .hamburger { 
         display: flex; 
@@ -727,8 +746,16 @@ a {
     .footer-contact { 
         text-align: center; 
     }
+
+    /* Alaosioiden taustalaatikon pehmusteet mobiilissa */
+    .front-page-bottom-section {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        margin-top: 30px;
+    }
+
     .theme-grid {
-        grid-template-columns: 1fr; /* Muuttuu yhdeksi jonoksi puhelimella */
+        grid-template-columns: 1fr; 
         gap: 20px;
     }
 }
