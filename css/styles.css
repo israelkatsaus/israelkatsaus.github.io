@@ -151,7 +151,7 @@ a {
 /* Kuvasäiliö */
 .img-container-32 { 
     width: 100%; 
-    aspect-ratio: 4/3; 
+    aspect-ratio: 2/1; 
     overflow: hidden; 
 }
 
