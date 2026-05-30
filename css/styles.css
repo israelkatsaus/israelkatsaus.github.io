@@ -8,7 +8,7 @@
     --footer-bg: #36454f;
     --footer-text: #ccc;
     --navbar-bg: #005EB8;
-    --bottom-section-bg: #eaedf2; /* UUSI: Pehmeä tausta vaaleaan teemaan */
+    --bottom-section-bg: #e9eff5; /* UUSI: Pehmeä tausta vaaleaan teemaan */
 }
 
 @media (prefers-color-scheme: dark) {
