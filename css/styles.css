@@ -151,7 +151,7 @@ a {
 /* Kuvasäiliö */
 .img-container-32 { 
     width: 100%; 
-    aspect-ratio: 2/1; 
+    aspect-ratio: 4/3; 
     overflow: hidden; 
 }
 
@@ -209,7 +209,7 @@ a {
 /* Sivupalkin ruudukko */
 .side-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr; 
     gap: 20px; 
     align-content: start;
 }
@@ -567,7 +567,7 @@ a {
 /* 3 sarakkeen ruudukko työpöydällä */
 .theme-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr); 
     gap: 25px;
 }
 
