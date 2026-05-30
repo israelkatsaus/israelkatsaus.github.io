@@ -8,7 +8,7 @@
     --footer-bg: #36454f;
     --footer-text: #ccc;
     --navbar-bg: #005EB8;
-    --bottom-section-bg: #f3f5f8; /* UUSI: Pehmeä tausta vaaleaan teemaan */
+    --bottom-section-bg: #eaedf2; /* UUSI: Pehmeä tausta vaaleaan teemaan */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,7 +19,7 @@
         --card-bg: #1e1e1e;
         --border-color: #333;
         --navbar-bg: #005EB8;
-        --bottom-section-bg: #181818; /* UUSI: Pehmeä tausta tummaan teemaan */
+        --bottom-section-bg: #141b26; /* UUSI: Pehmeä tausta tummaan teemaan */
     }
 }
 
