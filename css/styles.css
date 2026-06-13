@@ -494,7 +494,7 @@ a {
     font-size: 1.1rem; 
     font-weight: 600; 
     color: #fff; 
-    margin-bottom: 4px; 
+    margin-bottom: 1px; 
 }
 
 .footer-sub-text { 
@@ -502,13 +502,32 @@ a {
     opacity: 0.7; 
 }
 
-.footer-contact { 
-    text-align: right; 
-    line-height: 1.1; 
+.footer-contact {
+    text-align: right;
+    line-height: 1;
 }
 
-.email-text { 
-    font-size: 0.8rem; 
+/* Ylempi otsikkorivi */
+.footer-contact .email-title {
+    font-weight: 500;
+    font-size: 1.0rem;
+    color: #fff;
+    margin: 0;
+}
+
+.footer-contact .email-text {
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    right: 8px; /* 🎛️ Säädä tätä (esim. 4px -> 6px), jos haluat siirtää vieläkin enemmän vasemmalle */
+}
+
+/* Sähköpostilinkin ulkoasu */
+.footer-contact .email-text a {
+    color: var(--footer-text);
+    text-decoration: none;
+    font-size: 0.85rem;
 }
 
 /* MOBIILINÄKYMÄ */
