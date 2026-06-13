@@ -504,7 +504,7 @@ a {
 
 .footer-contact {
     text-align: right;
-    line-height: 1;
+    line-height: 1.2;
 }
 
 /* Ylempi otsikkorivi */
@@ -515,12 +515,19 @@ a {
     margin: 0;
 }
 
+/* Sähköpostirivi kaikille laitteille */
 .footer-contact .email-text {
     margin: 0;
     padding: 0;
     display: block;
-    position: relative;
-    right: 8px; /* 🎛️ Säädä tätä (esim. 4px -> 6px), jos haluat siirtää vieläkin enemmän vasemmalle */
+}
+
+/* 💡 TÄMÄ MUUTETTIIN: Sähköposti siirtyy vasemmalle VAIN tietokoneen ruudulla */
+@media (min-width: 769px) {
+    .footer-contact .email-text {
+        position: relative;
+        right: 4px; 
+    }
 }
 
 /* Sähköpostilinkin ulkoasu */
@@ -565,7 +572,7 @@ a {
 .theme-section {
     margin-top: 0;
     margin-bottom: 50px;
-    border-top: none; /* Poistettu vanha viiva, sillä ylempi container hoitaa erotuksen */
+    border-top: none; 
     padding-top: 0;
 }
 
@@ -590,21 +597,21 @@ a {
     gap: 25px;
 }
 
-/* Teemakortit, jotka nousevat haaleasta taustasta esiin valkoisina */
+/* 💡 TÄMÄ MUUTETTIIN: Teemakorteilta poistettu ohut kehys ja lisätty ilmavuutta */
 .theme-card {
     background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    /* border poistettu kokonaan */
     border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); /* Entistä pehmeämpi ja tyylikkäämpi varjo */
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03); /* Hieman pehmeämpi ja syvempi varjo ilman kehystä */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
 }
 
 .theme-card:hover {
-    transform: translateY(-4px); /* Hieman vahvempi noste haalealla pohjalla */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transform: translateY(-4px); 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .theme-card:hover h4 {
@@ -624,7 +631,7 @@ a {
 }
 
 .theme-card-content {
-    padding: 18px; /* Hieman enemmän ilmaa tekstille */
+    padding: 18px; 
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -762,8 +769,9 @@ a {
         text-align: center; 
     }
 
+    /* 💡 TÄMÄ MUUTETTIIN: Varmistetaan !important-komennolla täydellinen keskitys mobiilissa */
     .footer-contact { 
-        text-align: center; 
+        text-align: center !important; 
     }
 
     /* Alaosioiden taustalaatikon pehmusteet mobiilissa */
